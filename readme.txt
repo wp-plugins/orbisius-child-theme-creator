@@ -1,7 +1,7 @@
 === Orbisius Child Theme Creator ===
 Contributors: lordspace
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
-Tags: child theme, CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius
+Tags: child theme, childtheme,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius
 Requires at least: 3.0
 Tested up to: 3.5.1
 Stable tag: 1.0.0
@@ -28,6 +28,10 @@ It also creates rtl.css if exists in the parent theme.
 = Usage =
 
 Go to Admin > Tools > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
+
+= Demo =
+
+http://www.youtube.com/watch?v=BZUVq6ZTv-o
 
 = Support =
 * Support is handled on our site: <a href="http://club.orbisius.com/support/" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>

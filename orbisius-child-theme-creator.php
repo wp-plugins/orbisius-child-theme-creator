@@ -222,7 +222,13 @@ function orbisius_child_theme_creator_tools_action() {
                 $app_title = urlencode($plugin_data['Name']);
                 $app_descr = urlencode($plugin_data['Description']);
             ?>
-            <h2>Share with friends</h2>
+            <h2>Demo</h2>
+            <p> 
+				<iframe width="560" height="315" src="http://www.youtube.com/embed/BZUVq6ZTv-o" frameborder="0" allowfullscreen></iframe>
+				
+				<br/>Video Link: <a href="http://www.youtube.com/watch?v=BZUVq6ZTv-o&feature=youtu.be" target="_blank">http://www.youtube.com/watch?v=BZUVq6ZTv-o&feature=youtu.be</a>
+			</p>
+			<h2>Share with friends</h2>
             <p>
                 <!-- AddThis Button BEGIN -->
                 <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
