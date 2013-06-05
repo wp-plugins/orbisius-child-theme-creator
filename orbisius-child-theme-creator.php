@@ -199,6 +199,15 @@ function orbisius_child_theme_creator_tools_action() {
 
         <hr />
 
+		<h2>Support &amp; Premium Plugins</h2>
+		<div class="app-alert-notice">
+			<p>
+			** NOTE: ** We have launched our Club Orbisius site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>
+			which offers lots of free and premium plugins, video tutorials and more. The support is handled there as well.
+			<br/>Please do NOT use the WordPress forums or other places to seek support.
+			</p>
+		</div>
+			
         <h2>Want to hear about future plugins? Join our mailing List! (no spam)</h2>
             <p>
                 Get the latest news and updates about this and future cool <a href="http://profiles.wordpress.org/lordspace/"
@@ -260,14 +269,6 @@ function orbisius_child_theme_creator_tools_action() {
             </p>
             <?php endif ?>
 
-            <h2>Support &amp; Premium Plugins</h2>
-            <div class="app-alert-notice">
-                <p>
-                ** NOTE: ** We have launched our Club Orbisius site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>
-                which offers lots of free and premium plugins, video tutorials and more. The support is handled there as well.
-                <br/>Please do NOT use the WordPress forums or other places to seek support.
-                </p>
-            </div>
         </div>
     <?php
 }
