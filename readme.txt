@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: child theme, childtheme,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius
 Requires at least: 3.0
 Tested up to: 3.5.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
@@ -66,6 +66,9 @@ Then click on a theme and the plugin will create a child theme for you.
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
 == Changelog ==
+
+= 1.0.1 =
+Added links to video demo
 
 = 1.0.0 =
 Initial release
