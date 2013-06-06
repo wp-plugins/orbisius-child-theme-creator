@@ -449,26 +449,6 @@ class orbisius_child_theme_creator {
     public function get_details() {
         return $this->info_result;
     }
-    
-    /**
-     *
-     * @return bool success
-     */
-    public function install() {
-        $src = dirname(__FILE__) . '/dist/mibew164.zip';
-        $target_chat_dir_path = $this->target_dir_path;
-
-        // extract files
-        WP_Filesystem(); // we need to call this so we can use the unzip_file function
-        $res = unzip_file($src, $target_chat_dir_path); // wp func
-
-        $this->status = is_wp_error($res) ? 0 : 1;
-        $this->result = $res;
-
-        if (!$this->status) {
-            throw new Exception("There was an error with the mibew zip package.");
-        }
-    }
 
     /**
      *
@@ -477,50 +457,9 @@ class orbisius_child_theme_creator {
     function log($msg) {
         error_log($msg . "\n", 3, ini_get('error_log'));
     }
-    
-    /**
-     * This saves the settings in the chat's config file: chat_dir/libs/config.php
-     */
-    public function update_chat_config() {
-        // let's create the db tables.
-        $cfg_data = $this->read_wp_config();
-
-        $target_chat_dir_path = $this->target_dir_path;
-        $chat_config_buff = file_get_contents($target_chat_dir_path . '/libs/config.php');
-        /*
-        $webimroot = "/chat";
-        $mysqlhost = "localhost";
-        $mysqldb = "orbisius_installer_db";
-        $mysqllogin = "root";
-        $mysqlpass = "aaaaaa";
-        $mysqlprefix = "orbisius_installer_";
-         */
-        $chat_config_buff = preg_replace('#(webimroot\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . '/' . $this->chat_web_dir . '$3', $chat_config_buff);
-        $chat_config_buff = preg_replace('#(mysqlhost\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . $cfg_data['db_host'] . '$3', $chat_config_buff);
-        $chat_config_buff = preg_replace('#(mysqldb\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . $cfg_data['db_name'] . '$3', $chat_config_buff);
-        $chat_config_buff = preg_replace('#(mysqllogin\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . $cfg_data['db_user'] . '$3', $chat_config_buff);
-        $chat_config_buff = preg_replace('#(mysqlpass\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . $cfg_data['db_pass'] . '$3', $chat_config_buff);
-        $chat_config_buff = preg_replace('#(mysqlprefix\s*=\s*["\'])(.*?)(["\']\s*;\s*)#si', '$1' . $cfg_data['db_prefix']
-                    . $this->get_chat_db_suffix() . '$3', $chat_config_buff);
-
-        file_put_contents($target_chat_dir_path . '/libs/config.php', $chat_config_buff);
-    }
 }
 
 class orbisius_child_theme_creator_util {
-    /**
-     * Returns the main site's URL. no subdirectories
-     */
-    function get_site_url($main_site_url = '') {
-        // we need to install the chat at the main location
-        // e.g. site.com/chat
-        // WP will return a link with /blog or a subdirectory.
-        $main_site_url = preg_replace('#(http?://[\w\.-]+).*#si', '$1', $main_site_url);
-        $main_site_url = rtrim($main_site_url, '/') . '/';
-
-        return $main_site_url;
-    }
-
     /**
      * Outputs a message (adds some paragraphs).
      */
