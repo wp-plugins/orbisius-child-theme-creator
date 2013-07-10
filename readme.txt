@@ -67,8 +67,11 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.0.2 =
+* Tested with wp 3.5.2
+
 = 1.0.1 =
-Added links to video demo
+* Added links to video demo
 
 = 1.0.0 =
-Initial release
+* Initial release
