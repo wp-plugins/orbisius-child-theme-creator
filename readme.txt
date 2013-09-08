@@ -78,7 +78,8 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 = 1.0.3 =
 * Tested with wp 3.6
-* Added a few notices
+* Added settings page in case users want to check it.
+* Added a few notices about <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme_changelog&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
 
 = 1.0.2 =
 * Tested with wp 3.5.2

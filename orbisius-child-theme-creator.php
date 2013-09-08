@@ -70,6 +70,8 @@ function orbisius_child_theme_creator_admin_init() {
  * @since 0.1
  */
 function orbisius_child_theme_creator_setup_admin() {
+    add_options_page( 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_settings_page' );
+
 	add_submenu_page( 'tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__,
             'orbisius_child_theme_creator_tools_action');
 	
@@ -86,6 +88,156 @@ function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
     }
 
     return $links;
+}
+
+// Generates Options for the plugin
+function orbisius_child_theme_creator_settings_page() {
+    ?>
+
+    <div class="wrap orbisius_child_theme_creator_container">
+        <h2>Orbisius Child Theme Creator</h2>
+
+        <div class="updated"><p>
+            Are you afraid of breaking your site? We have launched a <strong>free</strong> service
+                (<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=settings_screen&utm_campaign=product"
+                   target="_blank" title="[new window]">http://qsandbox.com</a>)
+                that allows you to setup a test/sandbox
+                WordPress site in seconds. No technical knowledge is required.
+                <br/>Join today and test themes and plugins before you actually put them on your live site. For more info go to:
+                <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=settings_screen&utm_campaign=product"
+                   target="_blank" title="[new window]">http://qsandbox.com</a>
+        </p></div>
+
+        <div class="updated0"><p>
+            This plugin doesn't currently have any configuration options. To use it go to <strong>Tools &rarr; Orbisius Child Theme Creator</strong>
+        </p></div>
+        
+        <h2>Video Demo</h2>
+
+        <p class="orbisius_child_theme_creator_demo_video hide00">
+            <iframe width="560" height="315" src="http://www.youtube.com/embed/BZUVq6ZTv-o" frameborder="0" allowfullscreen></iframe>
+
+            <br/>Video Link: <a href="www.youtube.com/watch?v=BZUVq6ZTv-o"
+                                target="_blank">www.youtube.com/watch?v=BZUVq6ZTv-o</a>
+         </p>
+
+        <?php
+            $plugin_data = orbisius_child_theme_creator_get_plugin_data();
+
+            $app_link = urlencode($plugin_data['PluginURI']);
+            $app_title = urlencode($plugin_data['Name']);
+            $app_descr = urlencode($plugin_data['Description']);
+        ?>
+        <h2>Share</h2>
+        <p>
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <a class="addthis_button_facebook" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_twitter" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_google_plusone" g:plusone:count="false" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_linkedin" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_email" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_myspace" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_google" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_digg" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_delicious" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_stumbleupon" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_tumblr" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_favorites" addthis:url="<?php echo $app_link?>" addthis:title="<?php echo $app_title?>" addthis:description="<?php echo $app_descr?>"></a>
+                <a class="addthis_button_compact"></a>
+            </div>
+            <!-- The JS code is in the footer -->
+
+            <script type="text/javascript">
+            var addthis_config = {"data_track_clickback":true};
+            var addthis_share = {
+                templates: { twitter: 'Check out {{title}} #WordPress #plugin at {{lurl}} (via @orbisius)' }
+            }
+            </script>
+            <!-- AddThis Button START part2 -->
+            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=lordspace"></script>
+            <!-- AddThis Button END part2 -->
+        </p>
+
+        <h2>Support & Feature Requests</h2>
+        <div class="updated"><p>
+            ** NOTE: ** Support is handled on our site: <a href="http://club.orbisius.com/support/" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>.
+            Please do NOT use the WordPress forums or other places to seek support.
+        </p></div>
+
+        <h2>Mailing List</h2>
+        <p>
+            Get the latest news and updates about this and future cool
+                <a href="http://profiles.wordpress.org/lordspace/"
+                    target="_blank" title="Opens a page with the pugins we developed. [New Window/Tab]">plugins we develop</a>.
+        </p>
+        <p>
+            <!-- // MAILCHIMP SUBSCRIBE CODE \\ -->
+            1) <a href="http://eepurl.com/guNzr" target="_blank">Subscribe to our newsletter</a>
+            <!-- \\ MAILCHIMP SUBSCRIBE CODE // -->
+        </p>
+        <p>OR</p>
+        <p>
+            2) Subscribe using our QR code. [Scan it with your mobile device].<br/>
+            <img src="<?php echo plugin_dir_url(__FILE__); ?>/i/guNzr.qr.2.png" alt="" />
+        </p>
+
+        <?php orbisius_child_theme_creator_generate_ext_content(); ?>
+    </div>
+    <?php
+}
+
+/**
+ * Returns some plugin data such name and URL. This info is inserted as HTML
+ * comment surrounding the embed code.
+ * @return array
+ */
+function orbisius_child_theme_creator_get_plugin_data() {
+    // pull only these vars
+    $default_headers = array(
+		'Name' => 'Plugin Name',
+		'PluginURI' => 'Plugin URI',
+		'Description' => 'Description',
+	);
+
+    $plugin_data = get_file_data(__FILE__, $default_headers, 'plugin');
+
+    $url = $plugin_data['PluginURI'];
+    $name = $plugin_data['Name'];
+
+    $data['name'] = $name;
+    $data['url'] = $url;
+
+    $data = array_merge($data, $plugin_data);
+
+    return $data;
+}
+
+/**
+ * Outputs or returns the HTML content for IFRAME promo content.
+ */
+function orbisius_child_theme_creator_generate_ext_content($echo = 1) {
+    $plugin_slug = basename(__FILE__);
+    $plugin_slug = str_replace('.php', '', $plugin_slug);
+    $plugin_slug = strtolower($plugin_slug); // jic
+
+    $domain = !empty($_SERVER['DEV_ENV'])
+                ? 'http://orbclub.com.clients.com'
+                : 'http://club.orbisius.com';
+
+    $url = $domain . '/wpu/content/wp/' . $plugin_slug . '/';
+
+    $buff = <<<BUFF_EOF
+    <iframe style="width:100%;min-height:300px;height: auto;" width="100%" height="480"
+            src="$url" frameborder="0" allowfullscreen></iframe>
+
+BUFF_EOF;
+
+    if ($echo) {
+        echo $buff;
+    } else {
+        return $buff;
+    }
 }
 
 /**
@@ -155,7 +307,7 @@ function orbisius_child_theme_creator_tools_action() {
             <div class="updated">
                 <p>Choose a parent theme from the list below and click on the <strong>Create Child Theme</strong> button.</p>
                 Are you afraid of breaking your site? We have launched a <strong>FREE</strong> service
-                (<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=tools&utm_campaign=product"
+                (<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
                    target="_blank" title="[new window]">http://qsandbox.com</a>)
                 that allows you to setup a test/sandbox
                 WordPress site in seconds. No technical knowledge is required.
