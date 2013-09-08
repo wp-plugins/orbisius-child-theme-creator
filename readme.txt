@@ -23,9 +23,9 @@ We have noticed that some child themes created by this plugin do not work as exp
 This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress'
 recommended functions for themes supporting child themes.
 
-We have launched a free service that allows you to setup a test/sandbox WordPress site in seconds.
-Join today and test themes and plugins before you actually put them on your live site.
-<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="[new window]">http://qsandbox.com</a>
+We have launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
+Join today and test themes and plugins before you actually put them on your live site. For more info go to:
+<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
 
 = Features =
 * Create a theme with one click of a button
