@@ -159,6 +159,10 @@ function orbisius_child_theme_creator_settings_page() {
             <!-- AddThis Button END part2 -->
         </p>
 
+        <h2>Troubleshooting</h2>
+        If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
+        <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=settings_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
+
         <h2>Support & Feature Requests</h2>
         <div class="updated"><p>
             ** NOTE: ** Support is handled on our site: <a href="http://club.orbisius.com/support/" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>.

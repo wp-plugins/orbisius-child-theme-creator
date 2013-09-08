@@ -1,7 +1,7 @@
 === Orbisius Child Theme Creator ===
 Contributors: lordspace
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
-Tags: child theme, childtheme,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius
+Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
 Tested up to: 3.6
 Stable tag: 1.0.2
@@ -35,7 +35,6 @@ Join today and test themes and plugins before you actually put them on your live
 * Create *unlimited* child themes from a parent theme. The plugin will add Child 01, Child 02 etc.
 
 = Usage =
-
 Go to Admin > Tools > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
 
 = Demo =
@@ -70,8 +69,11 @@ n/a
 Just install the plugin and activate it. Then go to Admin > Tools > Orbisius Child Theme Creator.
 Then click on a theme and the plugin will create a child theme for you.
 
-= What to do next? =
+= Troubleshooting =
+If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
+<a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=readme_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
 
+= What to do next? =
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
 == Changelog ==
