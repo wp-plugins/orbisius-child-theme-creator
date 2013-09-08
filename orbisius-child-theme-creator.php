@@ -46,7 +46,8 @@ function orbisius_child_theme_creator_admin_notice_message() {
     if (!$chat_installed
             && (stripos($_SERVER['REQUEST_URI'], 'plugins.php') !== false)) {
       $just_link = 'tools.php?page=' . plugin_basename(__FILE__);
-      echo "<div class='updated'><p>$name has been installed. To create a child theme go to <a href='$just_link'><strong>Tools &rarr; $name</strong></a></p></div>";
+      echo "<div class='updated'><p>$name has been installed. To create a child theme go to
+          <a href='$just_link'><strong>Tools &rarr; $name</strong></a></p></div>";
    }
 }
 
