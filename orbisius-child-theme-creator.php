@@ -310,7 +310,7 @@ function orbisius_child_theme_creator_tools_action() {
             <?php //wp_nonce_field( basename(__FILE__) . '-action', 'orbisius_child_theme_creator_nonce' ); ?>
             <div class="updated">
                 <p>Choose a parent theme from the list below and click on the <strong>Create Child Theme</strong> button.</p>
-                Are you afraid of breaking your site? We have launched a <strong>FREE</strong> service
+               Some untested themes and plugin may break your site. We have launched a <strong>FREE</strong> service
                 (<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
                    target="_blank" title="[new window]">http://qsandbox.com</a>)
                 that allows you to setup a test/sandbox
