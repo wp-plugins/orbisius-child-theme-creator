@@ -592,6 +592,7 @@ class orbisius_child_theme_creator {
 
         // RTL langs; make rtl.css to point to the parent file as well
         if (file_exists($this->parent_theme_dir . 'rtl.css')) {
+            $rtl_buff = '';
             $rtl_buff .= "/*\n";
             $rtl_buff .= "Theme Name: $parent_theme_data->Name $this->target_name_suffix\n";
             $rtl_buff .= "Template: $this->parent_theme_basedir\n";
@@ -630,7 +631,7 @@ class orbisius_child_theme_creator_util {
     /**
      * Outputs a message (adds some paragraphs).
      */
-    function msg($msg, $status = 0) {
+    static public function msg($msg, $status = 0) {
         $msg = join("<br/>\n", (array) $msg);
 
         if (empty($status)) {

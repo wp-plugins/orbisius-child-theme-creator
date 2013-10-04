@@ -78,6 +78,10 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.0.4 =
+* Tested with wp 3.6.1
+* Fixed some notices
+
 = 1.0.3 =
 * Tested with wp 3.6
 * Added settings page in case users want to check it.
