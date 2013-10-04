@@ -98,7 +98,7 @@ function orbisius_child_theme_creator_settings_page() {
         <h2>Orbisius Child Theme Creator</h2>
 
         <div class="updated"><p>
-            Are you afraid of breaking your site? We have launched a <strong>free</strong> service
+            Some untested themes and plugin may break your site. We have launched a <strong>free</strong> service
                 (<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=settings_screen&utm_campaign=product"
                    target="_blank" title="[new window]">http://qsandbox.com</a>)
                 that allows you to setup a test/sandbox
