@@ -82,9 +82,11 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Tested with wp 3.6.1
 * Added a link in the Appearance
 * Added header.php to the copied file list
+* Added a checkbox in case the user wants to switch to the newly created theme
 * Removed parent theme's license from the copied list
 * Removed the Create Child Theme From themes that are child themes already
 * Skipping hidden files (files starting with a dot)
+* Copying admin/ from the parent theme if it exists
 * Fixed some notices
 
 = 1.0.3 =

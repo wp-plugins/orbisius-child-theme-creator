@@ -618,6 +618,11 @@ class orbisius_child_theme_creator {
             $stat = intval($stat);
             $stats += $stat;
         }
+
+        // Some themes have admin files for control panel stuff. So Let's copy it as well.
+        if (is_dir($this->parent_theme_dir . 'admin/')) {
+            orbisius_child_theme_creator_util::copy($this->parent_theme_dir . 'admin/', $this->target_dir_path . 'admin/');
+        }
     }
 
     /**
@@ -689,8 +694,48 @@ class orbisius_child_theme_creator {
 
 }
 
+/**
+ * Util funcs
+ */
 class orbisius_child_theme_creator_util {
+    /**
+     * Recursive function to copy (all subdirectories and contents).
+     * It doesn't create folder in the target folder.
+     * Note: this may be slow if there are a lot of files.
+     * The native call might be quicker.
+     *
+     * Example: src: folder/1/ target: folder/2/
+     * @see http://stackoverflow.com/questions/5707806/recursive-copy-of-directory
+     */
+    static public function copy($src, $dest, $perm = 0775) {
+        if (!is_dir($dest)) {
+            mkdir($dest, $perm, 1);
+        }
 
+        if (is_dir($src)) {
+            $dir = opendir($src);
+
+            while ( false !== ( $file = readdir($dir) ) ) {
+                if ( $file == '.' || $file == '..' || $file == '.git'  || $file == '.svn' ) {
+                    continue;
+                }
+
+                $new_src = rtrim($src, '/') . '/' . $file;
+                $new_dest = rtrim($dest, '/') . '/' . $file;
+
+                if ( is_dir( $new_src ) ) {
+                    self::copy( $new_src, $new_dest );
+                } else {
+                    copy( $new_src, $new_dest );
+                }
+            }
+
+            closedir($dir);
+        } else { // can also handle simple copy commands
+            copy($src, $dest);
+        }
+    }
+    
     /**
      * Loads files from a directory but skips . and ..
      */
