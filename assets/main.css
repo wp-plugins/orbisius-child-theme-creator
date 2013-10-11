@@ -58,6 +58,10 @@
     text-decoration: none;
 }
 
+.orbisius_child_theme_creator_container .highlight {
+    background: #FFFF33;
+}
+
 /* dlg button colouring */
 .orbisius_child_theme_creator_container .app-dialog-button-ok {
     background: green !important;
@@ -91,5 +95,9 @@
 
 .orbisius_child_theme_creator_container .available-theme:hover {
     border: 2px solid #444;
+    background: #ccc;
+}
+
+.orbisius_child_theme_creator_container .saving_action {
     background: #ccc;
 }

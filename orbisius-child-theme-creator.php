@@ -59,8 +59,16 @@ function orbisius_child_theme_creator_admin_notice_message() {
  * Also searches tags
  */
 function orbisius_child_theme_creator_admin_init() {
-    wp_register_style(dirname(__FILE__), plugins_url('/assets/main.css', __FILE__), false);
-    wp_enqueue_style(dirname(__FILE__));
+    $suffix = '';
+    $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
+    //$suffix = $dev ? '' : '.min';
+    
+    wp_register_style( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false);
+    wp_enqueue_style( 'orbisius_child_theme_creator' );
+
+    /*wp_enqueue_script( 'jquery' );
+    wp_register_script( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.js", __FILE__), array('jquery', ), '1.0', true);
+    wp_enqueue_script( 'orbisius_child_theme_creator' );*/
 }
 
 /**
@@ -71,10 +79,11 @@ function orbisius_child_theme_creator_admin_init() {
  */
 function orbisius_child_theme_creator_setup_admin() {
     add_options_page( 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_settings_page' );
+    add_theme_page( 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_tools_action' );
 
 	add_submenu_page( 'tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__,
             'orbisius_child_theme_creator_tools_action');
-	
+
 	// when plugins are show add a settings link near my plugin for a quick access to the settings page.
 	add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
 }
@@ -262,6 +271,7 @@ function orbisius_child_theme_creator_tools_action() {
     $parent_theme_base_dirname = trim($parent_theme_base_dirname);
     $parent_theme_base_dirname = preg_replace('#[^\w-]#si', '-', $parent_theme_base_dirname);
     $parent_theme_base_dirname = preg_replace('#[_-]+#si', '-', $parent_theme_base_dirname);
+    $parent_theme_base_dirname = trim($parent_theme_base_dirname, '-');
 
     if (!empty($_POST) || !empty($parent_theme_base_dirname)) {
         if (!wp_verify_nonce($orbisius_child_theme_creator_nonce, basename(__FILE__) . '-action')) {
@@ -300,14 +310,12 @@ function orbisius_child_theme_creator_tools_action() {
     }
 
     ?>
-    <div class="wrap orbisius-child_theme_creator-container">
+    <div class="wrap orbisius_child_theme_creator_container">
         <h2>Orbisius Child Theme Creator</h2>
 
         <hr />
         <?php echo $msg; ?>
 
-        <form id="orbisius_child_theme_creator_form" class="orbisius_child_theme_creator_form" method="post">
-            <?php //wp_nonce_field( basename(__FILE__) . '-action', 'orbisius_child_theme_creator_nonce' ); ?>
             <div class="updated">
                 <p>Choose a parent theme from the list below and click on the <strong>Create Child Theme</strong> button.</p>
                Some untested themes and plugin may break your site. We have launched a <strong>FREE</strong> service
@@ -344,17 +352,31 @@ function orbisius_child_theme_creator_tools_action() {
                     $create_url .= '&parent_theme_base_dirname=' . $parent_theme_base_dirname_fmt;
                     $create_url .= '&orbisius_child_theme_creator_nonce=' . $nonce;
 
+                    /*$create_url2 = esc_url( add_query_arg(
+                        array( 'parent_theme_base_dirname' => $parent_theme_base_dirname_fmt,
+                    ), admin_url( 'themes.php' ) ) );*/
+
                     $buff .= "<div class='available-theme'>\n";
+                    $buff .= "<form action='$create_url' method='post'>\n";
                     $buff .= "<img class='screenshot' src='$src' alt='' />\n";
                     $buff .= "<h3>$theme_obj->Name</h3>\n";
                     $buff .= "<div class='theme-author'>By <a title='Visit author homepage' "
                             . "href='$theme_obj->AuthorURI' target='_blank'>$theme_obj->Author</a></div>\n";
                     $buff .= "<div class='action-links'>\n";
                     $buff .= "<ul>\n";
-                    $buff .= "<li><a href='$create_url' class='button button-primary'>Create Child Theme</a></li>\n";
+
+                    $parent_theme = $theme_obj->get('Template');
+
+                    if (empty($parent_theme)) {
+                        $buff .= "<li><button type='submit' class='button button-primary'>Create Child Theme</button></li>\n";
+                    } else {
+                        $buff .= "<li>(child theme)</li>\n";
+                    }
+
                     $buff .= "<li>Version: $theme_obj->Version</li>\n";
                     $buff .= "</ul>\n";
                     $buff .= "</div> <!-- /action-links -->\n";
+                    $buff .= "</form> <!-- /form -->\n";
                     $buff .= "</div> <!-- /available-theme -->\n";
                 }
 
@@ -362,7 +384,6 @@ function orbisius_child_theme_creator_tools_action() {
             //var_dump($themes);
                 echo $buff;
             ?>
-        </form>
 
         <hr />
 
@@ -441,6 +462,19 @@ function orbisius_child_theme_creator_tools_action() {
 }
 
 /**
+ * It seems WP intentionally adds slashes for consistency with php.
+ * Please note: WordPress Core and most plugins will still be expecting slashes, and the above code will confuse and break them.
+ * If you must unslash, consider only doing it to your own data which isn't used by others:
+ * @see http://codex.wordpress.org/Function_Reference/stripslashes_deep
+ */
+function orbisius_child_theme_creator_get_request() {
+    $req = $_REQUEST;
+    $req = stripslashes_deep( $req );
+
+    return $req;
+}
+
+/**
 * adds some HTML comments in the page so people would know that this plugin powers their site.
 */
 function orbisius_child_theme_creator_add_plugin_credits() {
@@ -495,17 +529,7 @@ class orbisius_child_theme_creator {
      * Loads files from a directory but skips . and ..
      */
     public function load_files($dir) {
-        $files = array();
-        $all_files = scandir($dir);
-
-        foreach ($all_files as $file) {
-            if ($file == '.' || $file == '..') {
-				continue;
-			}
-
-            $files[] = $file;
-        }
-
+        $files = orbisius_child_theme_creator_util::load_files();
         return $files;
     }
 
@@ -544,7 +568,7 @@ class orbisius_child_theme_creator {
      */
     public function copy_main_files() {
         $stats = 0;
-        $main_files = array('screenshot.png', 'footer.php', 'license.txt');
+        $main_files = array('screenshot.png', 'header.php', 'footer.php', );
 
         foreach ($main_files as $file) {
             if (!file_exists($this->parent_theme_dir . $file)) {
@@ -629,6 +653,23 @@ class orbisius_child_theme_creator {
 
 class orbisius_child_theme_creator_util {
     /**
+     * Loads files from a directory but skips . and ..
+     */
+    public static function load_files($dir) {
+        $files = array();
+        $all_files = scandir($dir);
+
+        foreach ($all_files as $file) {
+            if ($file == '.' || $file == '..' || substr($file, 0, 1) == '.') { // skip hidden files
+				continue;
+			}
+
+            $files[] = $file;
+        }
+
+        return $files;
+    }
+    /**
      * Outputs a message (adds some paragraphs).
      */
     static public function msg($msg, $status = 0) {
@@ -645,5 +686,70 @@ class orbisius_child_theme_creator_util {
         $str = "<div class='$cls'><p>$msg</p></div>";
 
         return $str;
+    }
+}
+
+/**
+ * HTML related methods
+ */
+class orbisius_child_theme_creator_html {
+    /**
+     *
+     * Appends a parameter to an url; uses '?' or '&'. It's the reverse of parse_str().
+     * If no URL is supplied no prefix is added (? or &)
+     *
+     * @param string $url
+     * @param array $params
+     * @return string
+     */
+    public static function add_url_params($url, $params = array()) {
+        $str = $query_start = '';
+
+        $params = (array) $params;
+
+        if (empty($params)) {
+            return $url;
+        }
+
+        if (!empty($url)) {
+            $query_start = (strpos($url, '?') === false) ? '?' : '&';
+        }
+
+        $str = $url . $query_start . http_build_query($params);
+
+        return $str;
+    }
+
+    // generates HTML select
+    public static function html_select($name = '', $sel = null, $options = array(), $attr = '') {
+        $name = trim($name);
+        $elem_name = $name;
+        $elem_name = strtolower($elem_name);
+        $elem_name = preg_replace('#[^\w]#si', '_', $elem_name);
+        $elem_name = trim($elem_name, '_');
+
+        $html = "\n" . '<select id="' . esc_attr($elem_name) . '" name="' . esc_attr($name) . '" ' . $attr . '>' . "\n";
+
+        foreach ($options as $key => $label) {
+            $selected = $sel == $key ? ' selected="selected"' : '';
+
+            // if the key contains underscores that means these are labels
+            // and should be readonly
+            if (strpos($key, '__') !== false) {
+                $selected .= ' disabled="disabled" ';
+            }
+
+            if (preg_match('#__sys_([\w-]+)#si', $label, $matches)) {
+                $label = str_replace($matches[0], '', $label);
+                $selected .= " class='$matches[1]' ";
+            }
+            
+            $html .= "\t<option value='$key' $selected>$label</option>\n";
+        }
+
+        $html .= '</select>';
+        $html .= "\n";
+
+        return $html;
     }
 }
