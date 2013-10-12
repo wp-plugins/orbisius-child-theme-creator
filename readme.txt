@@ -1,5 +1,5 @@
 === Orbisius Child Theme Creator ===
-Contributors: lordspace
+Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
