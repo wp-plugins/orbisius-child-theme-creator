@@ -259,6 +259,24 @@ BUFF_EOF;
  * @since 1.0
  */
 function orbisius_child_theme_creator_tools_action() {
+    // ACL checks *borrowed* from wp-admin/theme-install.php
+    if ( ! current_user_can('install_themes') ) {
+    	wp_die( __( 'You do not have sufficient permissions to install themes on this site.' ) );
+    }
+
+    if ( is_multisite() && ! is_network_admin() ) {
+        $next_url = network_admin_url( 'theme-install.php' );
+
+        if (headers_sent()) {
+            $success = "You need more permissions. <a href='$next_url'>Continue</a>";
+            wp_die($success);
+        } else {
+            wp_redirect($next_url);
+        }
+
+        exit();
+    }
+    
     $msg = '';
     $errors = $success = array();
     $parent_theme_base_dirname = empty($_REQUEST['parent_theme_base_dirname']) ? '' : wp_kses($_REQUEST['parent_theme_base_dirname'], array());
@@ -323,10 +341,17 @@ function orbisius_child_theme_creator_tools_action() {
         }
     }
 
+    if ( is_multisite() ) {
+        $msg .= orbisius_child_theme_creator_util::msg("You are running WordPress in MultiSite configuration. 
+            Orbisius Child Theme Creator hasn't been tested in WordPress multisite setup.", 2);
+    }
+
     if (!empty($errors)) {
-        $msg = orbisius_child_theme_creator_util::msg($errors);
-    } elseif (!empty($success)) {
-        $msg = orbisius_child_theme_creator_util::msg($success, 1);
+        $msg .= orbisius_child_theme_creator_util::msg($errors);
+    }
+
+    if (!empty($success)) {
+        $msg .= orbisius_child_theme_creator_util::msg($success, 1);
     }
     ?>
     <div class="wrap orbisius_child_theme_creator_container">

@@ -97,6 +97,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Removed the Create Child Theme From themes that are child themes already
 * Skipping hidden files (files starting with a dot)
 * Copying admin/ from the parent theme if it exists
+* Added some security checks if the user actually has permission to install themes
 * Fixed some notices
 
 = 1.0.3 =
