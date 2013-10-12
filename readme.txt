@@ -73,6 +73,15 @@ Then click on a theme and the plugin will create a child theme for you.
 If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
 <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=readme_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
 
+= The child theme is created but doesn't have some styles or doesn't show the admin panel of the parent theme =
+OK. Please contact the theme author if his/her theme is child theme friendly.
+Also which files does the theme need in order to work well.
+
+= My Site is Broken =
+!@$@!$. Ok. Calm down. When you created the theme did you click on copy functions.php from advanced options?
+Ok. You'll need to use FTP client and go to in the wordpress folder and then wp-content/themes/AAAAA-child-01/ and delete functions.php
+AAAAA is of course  the directory of your parent theme.
+
 = What to do next? =
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 

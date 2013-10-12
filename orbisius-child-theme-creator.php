@@ -401,13 +401,21 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
         $parent_theme = $theme_obj->get('Template');
 
         if (empty($parent_theme)) { // Normal themes / no child ones
-            $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> Switch theme to the new theme after it is created</label></li>\n";
-
             if (file_exists($functions_file)) {
-                $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
-                    (it the theme is not well written this may crash your site)</label></li>\n";
+                $adv_container_id = md5($src);
+                
+                $buff .= "
+                    <li><a href='javascript:void(0)' onclick='jQuery(\"#orbisius_ctc_act_adv_$adv_container_id\").slideToggle(\"slow\");'>+ Advanced</a> (show/hide)
+                        <div id='orbisius_ctc_act_adv_$adv_container_id' class='app-hide'>
+                        <label><input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
+                        (<span class='app-serious-notice'><strong>Danger</strong>: if the theme doesn't support
+                        <a href='http://wp.tutsplus.com/tutorials/creative-coding/understanding-wordpress-pluggable-functions-and-their-usage/'
+                        target='_blank'>pluggable functions</a> this <strong>will crash your site</strong>.</span>)</label>
+                    </li>\n
+                ";
             }
 
+            $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> Switch theme to the new theme after it is created</label></li>\n";
             $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
         } else {
             $buff .= "<li>&nbsp;</li>\n";
