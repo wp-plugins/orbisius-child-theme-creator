@@ -282,14 +282,18 @@ function orbisius_child_theme_creator_tools_action() {
             try {
                 $installer = new orbisius_child_theme_creator($parent_theme_base_dirname);
 
+                // Does the user want to copy the functions.php?
+                if (!empty($_REQUEST['copy_functions_php'])) {
+                    $installer->add_files('functions.php');
+                }
+
                 $installer->check_permissions();
                 $installer->copy_main_files();
                 $installer->generate_style();
 
                 $success[] = "The child theme has been successfully created.";
                 $success[] = $installer->get_details();
-
-                // Does the user want to switch to the newly created theme?
+                
                 if (!empty($_REQUEST['switch'])) {
                     $child_theme_base_dir = $installer->get_child_base_dir();
                     $theme = wp_get_theme($child_theme_base_dir);
@@ -362,6 +366,7 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
     foreach ($themes as $theme_basedir_name => $theme_obj) {
         // get the web uri for the current theme and go 1 level up
         $src = dirname(get_template_directory_uri()) . "/$theme_basedir_name/screenshot.png";
+        $functions_file = dirname(get_template_directory()) . "/$theme_basedir_name/functions.php";
         $parent_theme_base_dirname_fmt = urlencode($theme_basedir_name);
         $create_url = $_SERVER['REQUEST_URI'];
 
@@ -378,6 +383,7 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
 
         $author_name = $theme_obj->get('Author');
         $author_name = strip_tags($author_name);
+        $author_name = empty($author_name) ? 'n/a' : $author_name;
 
         $author_uri = $theme_obj->get('AuthorURI');
         $author_line = empty($author_uri)
@@ -394,12 +400,18 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
 
         $parent_theme = $theme_obj->get('Template');
 
-        if (empty($parent_theme)) {
-            $buff .= "<li><label><input type='checkbox' name='switch' value='1' /> Switch theme to the new theme after it is created</label></li>\n";
-            $buff .= "<li><button type='submit' class='button button-primary'>Create Child Theme</button></li>\n";
+        if (empty($parent_theme)) { // Normal themes / no child ones
+            $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> Switch theme to the new theme after it is created</label></li>\n";
+
+            if (file_exists($functions_file)) {
+                $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
+                    (it the theme is not well written this may crash your site)</label></li>\n";
+            }
+
+            $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
         } else {
             $buff .= "<li>&nbsp;</li>\n";
-            $buff .= "<li>(child theme)</li>\n";
+            $buff .= "<li>[child theme]</li>\n";
         }
 
         $buff .= "<li>Version: $theme_obj->Version</li>\n";
@@ -602,12 +614,27 @@ class orbisius_child_theme_creator {
     }
 
     /**
+     * What files do we have to copy from the parent theme.
+     * @var array
+     */
+    private $main_files = array('screenshot.png', 'header.php', 'footer.php', );
+
+    /**
+     * 
+     */
+    public function add_files($files) {
+        $files = (array) $files;
+        $this->main_files = array_merge($files, $this->main_files);
+    }
+    
+    /**
      * Copy some files from the parent theme.
      * @return bool success
      */
     public function copy_main_files() {
         $stats = 0;
-        $main_files = array('screenshot.png', 'header.php', 'footer.php',);
+
+        $main_files = $this->main_files;
 
         foreach ($main_files as $file) {
             if (!file_exists($this->parent_theme_dir . $file)) {

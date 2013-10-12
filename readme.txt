@@ -83,6 +83,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Added a link in the Appearance
 * Added header.php to the copied file list
 * Added a checkbox in case the user wants to switch to the newly created theme
+* Added a checkbox in case the user wants to copy the functions.php from the parent theme
 * Removed parent theme's license from the copied list
 * Removed the Create Child Theme From themes that are child themes already
 * Skipping hidden files (files starting with a dot)
