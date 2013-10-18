@@ -105,6 +105,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Added an option for network wide theme activation (which is mutually exclusive with make theme active).
 * Added double editor for easy theme editing.
 * Added Orbisius: Edit to the theme list
+* Aded minimized versions for main css and js
 
 = 1.0.4 =
 * Tested with wp 3.6.1

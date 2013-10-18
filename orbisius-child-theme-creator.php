@@ -64,7 +64,7 @@ function orbisius_child_theme_creator_admin_notice_message() {
 function orbisius_child_theme_creator_admin_init() {
     $suffix = '';
     $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
-    //$suffix = $dev ? '' : '.min';
+    $suffix = $dev ? '' : '.min';
 
     wp_register_style('orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false);
     wp_enqueue_style('orbisius_child_theme_creator');
