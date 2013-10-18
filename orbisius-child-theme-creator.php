@@ -81,15 +81,16 @@ function orbisius_child_theme_creator_admin_init() {
  * @since 0.1
  */
 function orbisius_child_theme_creator_setup_admin() {
-    add_options_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_settings_page');
-    add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_tools_action');
-    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options',
-            'orbisius_ctc_theme_editor_action', 'orbisius_ctc_theme_editor' );
-    add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_tools_action');
+    add_options_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_settings_page', 'orbisius_child_theme_creator_settings_page');
+    add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_themes_action', 'orbisius_child_theme_creator_tools_action');
+    add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_tools_action', 'orbisius_child_theme_creator_tools_action');
 
     // when plugins are show add a settings link near my plugin for a quick access to the settings page.
     add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
-    add_filter('theme_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link222', 50, 2);
+
+    // Theme Editor
+    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options', 'orbisius_ctc_theme_editor_action', 'orbisius_ctc_theme_editor' );
+    add_filter('theme_action_links', 'orbisius_child_theme_creator_add_edit_theme_link', 50, 2);
 }
 
 // Add the ? settings link in Plugins page very good
@@ -110,7 +111,7 @@ function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
  * @param WP_Theme/string Obj $theme
  * @return array
  */
-function orbisius_child_theme_creator_add_plugin_settings_link222($actions, $theme) {
+function orbisius_child_theme_creator_add_edit_theme_link($actions, $theme) {
     $link = orbisius_child_theme_creator_util::get_theme_editor_link( array( 'theme_1' => is_scalar($theme) ? $theme : $theme->get_template()) );
     $link_html = "<a href='$link' title='Opens this theme in Orbisius Theme Editor which features double textx editor.'>Orbisius: Edit</a>";
 
@@ -138,7 +139,7 @@ function orbisius_child_theme_creator_settings_page() {
             </p></div>
 
         <div class="updated0"><p>
-                This plugin doesn't currently have any configuration options. To use it go to <strong>Tools &rarr; Orbisius Child Theme Creator</strong>
+                This plugin doesn't currently have any configuration options. To use it go to <strong>Appearance &rarr; Orbisius Child Theme Creator</strong>
             </p></div>
 
         <h2>Video Demo</h2>
@@ -292,7 +293,7 @@ function orbisius_child_theme_creator_tools_action() {
         $next_url = orbisius_child_theme_creator_util::get_create_child_pages_link();
 
         if (headers_sent()) {
-            $success = "In order to create a child theme in a multisite WordPress environment you will have you to do it from Network Admin &gt; Apperance"
+            $success = "In order to create a child theme in a multisite WordPress environment you must do it from Network Admin &gt; Apperance"
                     . "<br/><a href='$next_url' class='button button-primary'>Continue</a>";
             wp_die($success);
         } else {
@@ -999,6 +1000,20 @@ class orbisius_child_theme_creator_html {
  * Everythin happens with AJAX
  */
 function orbisius_ctc_theme_editor() {
+    if ( is_multisite() && ! is_network_admin() ) {
+        $next_url = orbisius_child_theme_creator_util::get_create_child_pages_link();
+
+        if (headers_sent()) {
+            $success = "In order to edit a theme in a multisite WordPress environment you must do it from Network Admin &gt; Apperance"
+                    . "<br/><a href='$next_url' class='button button-primary'>Continue</a>";
+            wp_die($success);
+        } else {
+            wp_redirect($next_url);
+        }
+
+        exit();
+    }
+
     $msg = 'Pick any two themes and copy snippets from one to the other.';
     ?>
     <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
