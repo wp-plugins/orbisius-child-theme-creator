@@ -28,8 +28,18 @@
 // Set up plugin
 add_action('admin_init', 'orbisius_child_theme_creator_admin_init');
 add_action('admin_menu', 'orbisius_child_theme_creator_setup_admin');
+add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000); // be the last in the footer
 add_action('admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
+
+function orbisius_child_theme_creator_admin_get_create_child_pages_link() {
+    $rel_path = 'themes.php?page=' . plugin_basename(__FILE__);
+    $create_child_themes_page_link = is_multisite()
+                ? network_admin_url($rel_path)
+                : admin_url($rel_path);
+
+    return $create_child_themes_page_link;
+}
 
 /**
  * Show a notice in the admin if the chat hasn't been installed yet.
@@ -44,9 +54,9 @@ function orbisius_child_theme_creator_admin_notice_message() {
     // show it everywhere but not on our page.
     //if (stripos($_SERVER['REQUEST_URI'], basename(__FILE__)) === false) {
     if (!$chat_installed && (stripos($_SERVER['REQUEST_URI'], 'plugins.php') !== false)) {
-        $just_link = 'tools.php?page=' . plugin_basename(__FILE__);
+        $just_link = orbisius_child_theme_creator_admin_get_create_child_pages_link();
         echo "<div class='updated'><p>$name has been installed. To create a child theme go to
-          <a href='$just_link'><strong>Tools &rarr; $name</strong></a></p></div>";
+          <a href='$just_link'><strong>Appearance &rarr; $name</strong></a></p></div>";
     }
 }
 
@@ -264,11 +274,14 @@ function orbisius_child_theme_creator_tools_action() {
     	wp_die( __( 'You do not have sufficient permissions to install themes on this site.' ) );
     }
 
-    if ( is_multisite() && ! is_network_admin() ) {
-        $next_url = network_admin_url( 'theme-install.php' );
+    $multi_site = is_multisite();
+
+    if ( $multi_site && ! is_network_admin() ) {
+        $next_url = orbisius_child_theme_creator_admin_get_create_child_pages_link();
 
         if (headers_sent()) {
-            $success = "You need more permissions. <a href='$next_url'>Continue</a>";
+            $success = "In order to create a child theme in a multisite WordPress environment you will have you to do it from Network Admin &gt; Apperance"
+                    . "<br/><a href='$next_url' class='button button-primary'>Continue</a>";
             wp_die($success);
         } else {
             wp_redirect($next_url);
@@ -312,7 +325,7 @@ function orbisius_child_theme_creator_tools_action() {
                 $success[] = "The child theme has been successfully created.";
                 $success[] = $installer->get_details();
                 
-                if (!empty($_REQUEST['switch'])) {
+                if (!$multi_site && !empty($_REQUEST['switch'])) {
                     $child_theme_base_dir = $installer->get_child_base_dir();
                     $theme = wp_get_theme($child_theme_base_dir);
 
@@ -329,6 +342,12 @@ function orbisius_child_theme_creator_tools_action() {
                         wp_safe_redirect($next_url);
                         exit;
                     }
+                } elseif ($multi_site && !empty($_REQUEST['orbisius_child_theme_creator_make_network_wide_available'])) {
+                    // Make child theme an allowed theme (network enable theme)
+                    $allowed_themes = get_site_option( 'allowedthemes' );
+                    $new_theme_name = $installer->get_child_base_dir();
+                    $allowed_themes[ $new_theme_name ] = true;
+                    update_site_option( 'allowedthemes', $allowed_themes );
                 }
             } catch (Exception $e) {
                 $errors[] = "There was an error during the chat installation.";
@@ -341,9 +360,9 @@ function orbisius_child_theme_creator_tools_action() {
         }
     }
 
-    if ( is_multisite() ) {
+    if ( 0&&$multi_site ) {
         $msg .= orbisius_child_theme_creator_util::msg("You are running WordPress in MultiSite configuration. 
-            Orbisius Child Theme Creator hasn't been tested in WordPress multisite setup.", 2);
+            Please report any glitches that you may find.", 2);
     }
 
     if (!empty($errors)) {
@@ -430,17 +449,38 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
                 $adv_container_id = md5($src);
                 
                 $buff .= "
-                    <li><a href='javascript:void(0)' onclick='jQuery(\"#orbisius_ctc_act_adv_$adv_container_id\").slideToggle(\"slow\");'>+ Advanced</a> (show/hide)
-                        <div id='orbisius_ctc_act_adv_$adv_container_id' class='app-hide'>
-                        <label><input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
-                        (<span class='app-serious-notice'><strong>Danger</strong>: if the theme doesn't support
-                        <a href='http://wp.tutsplus.com/tutorials/creative-coding/understanding-wordpress-pluggable-functions-and-their-usage/'
-                        target='_blank'>pluggable functions</a> this <strong>will crash your site</strong>.</span>)</label>
-                    </li>\n
-                ";
+                    <li>
+                        <a href='javascript:void(0)' onclick='jQuery(\"#orbisius_ctc_act_adv_$adv_container_id\").slideToggle(\"slow\");'>+ Advanced</a> (show/hide)
+                        <div id='orbisius_ctc_act_adv_$adv_container_id' class='app-hide'>";
+
+                $buff .= "<div>
+                                <label>
+                                    <input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
+                                    (<span class='app-serious-notice'><strong>Danger</strong>: if the theme doesn't support
+                                    <a href='http://wp.tutsplus.com/tutorials/creative-coding/understanding-wordpress-pluggable-functions-and-their-usage/'
+                                        target='_blank'>pluggable functions</a> this <strong>will crash your site</strong>. Make a backup is highly recommended.</span>)
+                                </label>
+                            </div>";
+                
+                $buff .= "
+                        </div> <!-- /orbisius_ctc_act_adv_$adv_container_id -->
+                    </li>\n";
             }
 
-            $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> Switch theme to the new theme after it is created</label></li>\n";
+            // Let's allow the user to make that theme network wide usable
+            if ($multi_site) {
+                $buff .= "<li>
+                        <div>
+                            <label>
+                                <input type='checkbox' id='orbisius_child_theme_creator_make_network_wide_available'
+                                name='orbisius_child_theme_creator_make_network_wide_available' value='1' /> Make the new theme network wide available
+                            </label>
+                        </div></li>\n";
+            } else {
+                $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> "
+                        . "Switch theme to the new theme after it is created</label></li>\n";
+            }
+            
             $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
         } else {
             $buff .= "<li>&nbsp;</li>\n";

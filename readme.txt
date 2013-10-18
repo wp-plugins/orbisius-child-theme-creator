@@ -87,6 +87,11 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.0.5 =
+* Tested under WordPress Multisite environment
+* Added menus in WordPress Multisite environment
+* Added an option for network wide theme activation (which is mutually exclusive with make theme active).
+
 = 1.0.4 =
 * Tested with wp 3.6.1
 * Added a link in the Appearance
