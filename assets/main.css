@@ -101,3 +101,18 @@
 .orbisius_child_theme_creator_container .saving_action {
     background: #ccc;
 }
+
+/* Theme Editor */
+.orbisius_ctc_theme_editor_container .highlight {
+    background: #FFFF33;
+}
+
+.orbisius_ctc_theme_editor_container .app-dialog-button-ok {
+    background: green !important;
+    color: white !important;
+}
+
+.orbisius_ctc_theme_editor_container .app-dialog-button-cancel {
+    background: red !important;
+    color: white !important;
+}

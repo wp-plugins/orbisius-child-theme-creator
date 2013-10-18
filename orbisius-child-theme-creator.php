@@ -32,14 +32,8 @@ add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000); // be the last in the footer
 add_action('admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
 
-function orbisius_child_theme_creator_admin_get_create_child_pages_link() {
-    $rel_path = 'themes.php?page=' . plugin_basename(__FILE__);
-    $create_child_themes_page_link = is_multisite()
-                ? network_admin_url($rel_path)
-                : admin_url($rel_path);
-
-    return $create_child_themes_page_link;
-}
+add_action( 'wp_ajax_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
+add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 
 /**
  * Show a notice in the admin if the chat hasn't been installed yet.
@@ -54,7 +48,7 @@ function orbisius_child_theme_creator_admin_notice_message() {
     // show it everywhere but not on our page.
     //if (stripos($_SERVER['REQUEST_URI'], basename(__FILE__)) === false) {
     if (!$chat_installed && (stripos($_SERVER['REQUEST_URI'], 'plugins.php') !== false)) {
-        $just_link = orbisius_child_theme_creator_admin_get_create_child_pages_link();
+        $just_link = orbisius_child_theme_creator_util::get_create_child_pages_link();
         echo "<div class='updated'><p>$name has been installed. To create a child theme go to
           <a href='$just_link'><strong>Appearance &rarr; $name</strong></a></p></div>";
     }
@@ -75,9 +69,9 @@ function orbisius_child_theme_creator_admin_init() {
     wp_register_style('orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false);
     wp_enqueue_style('orbisius_child_theme_creator');
 
-    /* wp_enqueue_script( 'jquery' );
-      wp_register_script( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.js", __FILE__), array('jquery', ), '1.0', true);
-      wp_enqueue_script( 'orbisius_child_theme_creator' ); */
+    wp_enqueue_script( 'jquery' );
+    wp_register_script( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.js", __FILE__), array('jquery', ), '1.0', true);
+    wp_enqueue_script( 'orbisius_child_theme_creator' );
 }
 
 /**
@@ -89,22 +83,40 @@ function orbisius_child_theme_creator_admin_init() {
 function orbisius_child_theme_creator_setup_admin() {
     add_options_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_settings_page');
     add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_tools_action');
-
+    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options',
+            'orbisius_ctc_theme_editor_action', 'orbisius_ctc_theme_editor' );
     add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', __FILE__, 'orbisius_child_theme_creator_tools_action');
 
     // when plugins are show add a settings link near my plugin for a quick access to the settings page.
     add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
+    add_filter('theme_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link222', 50, 2);
 }
 
 // Add the ? settings link in Plugins page very good
 function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
     if ($file == plugin_basename(__FILE__)) {
-        $prefix = 'tools.php?page=' . plugin_basename(__FILE__);
-        $dashboard_link = "<a href=\"{$prefix}\">" . 'Create a Child Theme' . '</a>';
-        array_unshift($links, $dashboard_link);
+        $link = orbisius_child_theme_creator_util::get_create_child_pages_link();
+
+        $link_html = "<a href='$link'>Create a Child Theme</a>";
+        array_unshift($links, $link_html);
     }
 
     return $links;
+}
+
+/**
+ * This adds an edit button in Apperance under each theme.
+ * @param array $actions
+ * @param WP_Theme/string Obj $theme
+ * @return array
+ */
+function orbisius_child_theme_creator_add_plugin_settings_link222($actions, $theme) {
+    $link = orbisius_child_theme_creator_util::get_theme_editor_link( array( 'theme_1' => is_scalar($theme) ? $theme : $theme->get_template()) );
+    $link_html = "<a href='$link' title='Opens this theme in Orbisius Theme Editor which features double textx editor.'>Orbisius: Edit</a>";
+
+    $actions['orb_ctc_editor'] = $link_html;
+
+    return $actions;
 }
 
 // Generates Options for the plugin
@@ -277,7 +289,7 @@ function orbisius_child_theme_creator_tools_action() {
     $multi_site = is_multisite();
 
     if ( $multi_site && ! is_network_admin() ) {
-        $next_url = orbisius_child_theme_creator_admin_get_create_child_pages_link();
+        $next_url = orbisius_child_theme_creator_util::get_create_child_pages_link();
 
         if (headers_sent()) {
             $success = "In order to create a child theme in a multisite WordPress environment you will have you to do it from Network Admin &gt; Apperance"
@@ -377,20 +389,18 @@ function orbisius_child_theme_creator_tools_action() {
         <h2>Orbisius Child Theme Creator
 
             <div class="" style="float: right;padding: 3px; _border: 1px solid #D54E21;">
-                Cool Links:
-                <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-editor/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
-                   target="_blank" title="Opens in new tab/window. This plugin allows you to quickly edit two theme files at once and copy snippets from each one. Try it.">Orbisius Theme Editor</a>
-
-                | <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
+                Links:
+                <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
                      target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
-Test themes and plugins before you actually put them on your site">Free Test WordPress Site</a> (2sec)
+                     Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
+
+                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-linksutm_campaign=plugin-update"
+                     title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
 
                 | <a href="#help" title="[new window]">Help</a>
-
             </div>
         </h2>
 
-        <hr />
     <?php echo $msg; ?>
         <div class="updated">
             <p>
@@ -434,6 +444,11 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
                 ? $author_name
                 : "<a title='Visit author homepage' href='$author_uri' target='_blank'>$author_name</a>";
         
+        $author_line .= " | Ver.$theme_obj->Version\n";
+
+        $edit_theme_link = orbisius_child_theme_creator_util::get_theme_editor_link( array('theme_1' => $theme_basedir_name) );
+        $author_line .= " | <a href='$edit_theme_link' title='Edit with Orbisius Theme Editor'>Edit</a>\n";
+
         $buff .= "<div class='available-theme'>\n";
         $buff .= "<form action='$create_url' method='post'>\n";
         $buff .= "<img class='screenshot' src='$src' alt='' />\n";
@@ -483,11 +498,9 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
             
             $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
         } else {
-            $buff .= "<li>&nbsp;</li>\n";
             $buff .= "<li>[child theme]</li>\n";
         }
-
-        $buff .= "<li>Version: $theme_obj->Version</li>\n";
+    
         $buff .= "</ul>\n";
         $buff .= "</div> <!-- /action-links -->\n";
         $buff .= "</form> <!-- /form -->\n";
@@ -498,8 +511,6 @@ Test themes and plugins before you actually put them on your site">Free Test Wor
     //var_dump($themes);
     echo $buff;
     ?>
-
-        <hr />
 
         <a name="help"></a>
         <h2>Support &amp; Premium Plugins</h2>
@@ -799,6 +810,45 @@ class orbisius_child_theme_creator {
  */
 class orbisius_child_theme_creator_util {
     /**
+     * Returns a link to appearance. Taking into account multisite.
+     * 
+     * @param array $params
+     * @return string
+     */
+    static public function get_create_child_pages_link($params = array()) {
+        $rel_path = 'themes.php?page=' . plugin_basename(__FILE__);
+
+        if (!empty($params)) {
+            $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);
+        }
+
+        $create_child_themes_page_link = is_multisite()
+                    ? network_admin_url($rel_path)
+                    : admin_url($rel_path);
+
+        return $create_child_themes_page_link;
+    }
+
+    /**
+     * Returns the link to the Theme Editor e.g. when a theme_1 or theme_2 is supplied.
+     * @param type $params
+     * @return string
+     */
+    static public function get_theme_editor_link($params = array()) {
+        $rel_path = 'themes.php?page=orbisius_ctc_theme_editor_action';
+
+        if (!empty($params)) {
+            $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);
+        }
+
+        $link = is_multisite()
+                    ? network_admin_url($rel_path)
+                    : admin_url($rel_path);
+
+        return $link;
+    }
+
+    /**
      * Recursive function to copy (all subdirectories and contents).
      * It doesn't create folder in the target folder.
      * Note: this may be slow if there are a lot of files.
@@ -835,7 +885,7 @@ class orbisius_child_theme_creator_util {
             copy($src, $dest);
         }
     }
-    
+
     /**
      * Loads files from a directory but skips . and ..
      */
@@ -926,6 +976,9 @@ class orbisius_child_theme_creator_html {
                 $selected .= ' disabled="disabled" ';
             }
 
+            // This makes certain options to have certain CSS class
+            // which can be used to highlight the row
+            // the key must start with __sys_CLASS_NAME
             if (preg_match('#__sys_([\w-]+)#si', $label, $matches)) {
                 $label = str_replace($matches[0], '', $label);
                 $selected .= " class='$matches[1]' ";
@@ -939,5 +992,230 @@ class orbisius_child_theme_creator_html {
 
         return $html;
     }
+}
 
+/**
+ * This method creates 2 panes that the user is able to use to edit theme files.
+ * Everythin happens with AJAX
+ */
+function orbisius_ctc_theme_editor() {
+    $msg = 'Pick any two themes and copy snippets from one to the other.';
+    ?>
+    <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
+        <h2>Orbisius Theme Editor</h2>
+
+        <div class="updated"><p><?php echo $msg; ?></p></div>
+
+        <?php
+            $buff = $theme_1_file = $theme_2_file = '';
+            $req = orbisius_ctc_theme_editor_get_request();
+
+            $html_dropdown_themes = array('' => '== SELECT THEME ==');
+
+            $theme_1 = empty($req['theme_1']) ? '' : $req['theme_1'];
+            $theme_2 = empty($req['theme_2']) ? '' : $req['theme_2'];
+
+            $theme_load_args = array();
+            $themes = wp_get_themes( $theme_load_args );
+
+            $current_theme = wp_get_theme();
+
+            // we use the same CSS as in WP's appearances but put only the buttons we want.
+            foreach ($themes as $theme_basedir_name => $theme_obj) {
+                $theme_name = $theme_obj->Name;
+
+                $theme_dir = $theme_basedir_name;
+
+                $parent_theme = $theme_obj->get('Template');
+
+                // Is this a child theme?
+                if ( !empty($parent_theme) ) {
+                    $theme_name .= " (child of $parent_theme)";
+                }
+
+                // Is this the current theme?
+                if ($theme_basedir_name == $current_theme->get_stylesheet()) {
+                    $theme_name .= ' (site theme) __sys_highlight';
+                }
+
+                $html_dropdown_themes[$theme_dir] = $theme_name;
+            }
+
+            $html_dropdown_theme_1_files = array(
+                '' => '<== SELECT THEME ==',
+            );
+
+        ?>
+
+        <table class="widefat">
+            <tr>
+                <td width="50%">
+                    <form id="orbisius_ctc_theme_editor_theme_1_form" class="orbisius_ctc_theme_editor_theme_1_form">
+                        <strong>Theme #1:</strong>
+                        <?php echo orbisius_child_theme_creator_html::html_select('theme_1', $theme_1, $html_dropdown_themes); ?>
+
+                        <span class="theme_1_file_container">
+                            | <strong>File:</strong>
+                            <?php echo orbisius_child_theme_creator_html::html_select('theme_1_file', $theme_1_file, $html_dropdown_theme_1_files); ?>
+                        </span>
+
+                        <textarea id="theme_1_file_contents" name="theme_1_file_contents" rows="30" class="widefat"></textarea>
+                        <div>
+                            <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Update</button>
+                            <span class="status"></span>
+                        </div>
+                    </form>
+                </td>
+                <td width="50%">
+                    <form id="orbisius_ctc_theme_editor_theme_2_form" class="orbisius_ctc_theme_editor_theme_2_form">
+                        <strong>Theme #2:</strong>
+                        <?php echo orbisius_child_theme_creator_html::html_select('theme_2', $theme_2, $html_dropdown_themes); ?>
+
+                        <span class="theme_2_file_container">
+                            | <strong>File:</strong>
+                            <?php echo orbisius_child_theme_creator_html::html_select('theme_2_file', $theme_2_file, $html_dropdown_theme_1_files); ?>
+                        </span>
+
+                        <textarea id="theme_2_file_contents" name="theme_2_file_contents" rows="30" class="widefat"></textarea>
+                        <div>
+                            <button type='submit' class='button button-primary' id="theme_2_submit" name="theme_2_submit">Update</button>
+                            <span class="status"></span>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    <?php
+}
+
+/**
+ * This is called via ajax. Depending on the sub_cmd param a different method will be called.
+ *
+ */
+function orbisius_ctc_theme_editor_ajax() {
+    $buff = 'INVALID AJAX SUB_CMD';
+
+    $req = orbisius_ctc_theme_editor_get_request();
+    $sub_cmd = empty($req['sub_cmd']) ? '' : $req['sub_cmd'];
+
+    switch ($sub_cmd) {
+        case 'generate_dropdown':
+            $buff = orbisius_ctc_theme_editor_generate_dropdown();
+
+            break;
+
+        case 'load_file':
+            $buff = orbisius_ctc_theme_editor_manage_file(1);
+            break;
+
+        case 'save_file':
+            $buff = orbisius_ctc_theme_editor_manage_file(2);
+
+            break;
+
+        default:
+            break;
+    }
+
+
+    die($buff);
+}
+
+/**
+ * It seems WP intentionally adds slashes for consistency with php.
+ * Please note: WordPress Core and most plugins will still be expecting slashes, and the above code will confuse and break them.
+ * If you must unslash, consider only doing it to your own data which isn't used by others:
+ * @see http://codex.wordpress.org/Function_Reference/stripslashes_deep
+ */
+function orbisius_ctc_theme_editor_get_request() {
+    $req = $_REQUEST;
+    $req = stripslashes_deep( $req );
+
+    return $req;
+}
+
+/**
+ * This returns an HTML select with the selected theme's files.
+ * the name/id of that select must be either theme_1_file or theme_2_file
+ * @return string
+ */
+function orbisius_ctc_theme_editor_generate_dropdown() {
+    $theme_base_dir = $theme_1_file = '';
+    $req = orbisius_ctc_theme_editor_get_request();
+
+    $select_name = 'theme_1_file';
+
+    if (!empty($req['theme_1'])) {
+        $theme_base_dir = empty($req['theme_1']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_1']);
+        $theme_1_file = empty($req['theme_1_file']) ? 'style.css' : $req['theme_1_file'];
+    } elseif (!empty($req['theme_2'])) {
+        $theme_base_dir = empty($req['theme_2']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_2']);
+        $theme_1_file = empty($req['theme_2_file']) ? 'style.css' : $req['theme_2_file'];
+        $select_name = 'theme_2_file';
+    } else {
+        return 'Invalid params.';
+    }
+
+    $theme_dir = get_theme_root() . "/$theme_base_dir/";
+
+    if (empty($theme_base_dir) || !is_dir($theme_dir)) {
+        return 'Selected theme is invalid.';
+    }
+
+    $files = array();
+    $all_files = orbisius_child_theme_creator_util::load_files($theme_dir);
+
+    foreach ($all_files as $file) {
+        if (preg_match('#\.(php|css|js|txt)$#si', $file)) {
+            $files[] = $file;
+        }
+    }
+
+    // we're going to make values to be keys as well.
+    $html_dropdown_theme_1_files = array_combine($files, $files);
+    $buff = orbisius_child_theme_creator_html::html_select($select_name, $theme_1_file, $html_dropdown_theme_1_files);
+
+    return $buff;
+}
+
+/**
+ * Reads or writes contents to a file
+ * @param type $read
+ * @return string
+ */
+function orbisius_ctc_theme_editor_manage_file($read = 1) {
+    $buff = $theme_base_dir = $theme_file = '';
+
+    $req = orbisius_ctc_theme_editor_get_request();
+
+    if (!empty($req['theme_1']) && !empty($req['theme_1_file'])) {
+        $theme_base_dir = empty($req['theme_1']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_1']);
+        $theme_file = empty($req['theme_1_file']) ? 'style.css' : sanitize_file_name($req['theme_1_file']);
+        $theme_file_contents = empty($req['theme_1_file_contents']) ? '' : $req['theme_1_file_contents'];
+    } elseif (!empty($req['theme_2']) && !empty($req['theme_2_file'])) {
+        $theme_base_dir = empty($req['theme_2']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_2']);
+        $theme_file = empty($req['theme_2_file']) ? 'style.css' : sanitize_file_name($req['theme_2_file']);
+        $theme_file_contents = empty($req['theme_2_file_contents']) ? '' : $req['theme_2_file_contents'];
+    } else {
+        return 'Missing data!';
+    }
+
+    $theme_dir = get_theme_root() . "/$theme_base_dir/";
+
+    if (empty($theme_base_dir) || !is_dir($theme_dir)) {
+        return 'Selected theme is invalid.';
+    } elseif (!file_exists($theme_dir . $theme_file)) {
+        return 'Selected file is invalid.';
+    }
+
+    $theme_file = $theme_dir . $theme_file;
+
+    if ($read == 1) {
+        $buff = file_get_contents($theme_file);
+    } elseif ($read == 2) {
+        file_put_contents($theme_file, $theme_file_contents);
+        $buff = $theme_file_contents;
+    }
+
+    return $buff;
 }

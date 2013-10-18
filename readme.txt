@@ -34,8 +34,20 @@ Join today and test themes and plugins before you actually put them on your live
 * When moving through the themes the currently looked one will have a nice background & border
 * Create *unlimited* child themes from a parent theme. The plugin will add Child 01, Child 02 etc.
 
-= Usage =
-Go to Admin > Tools > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
+This plugin allows you to quickly edit theme files from Appearance &gt; Orbisius Theme Editor (entry added by the same plugin)
+It features two editors and you can pick snippets from one theme and paste into another.
+
+= Features =
+* Edit two theme files at the same time
+* Ajax -> No page refresh
+* Easy to use interface
+* Supports WordPress Multisite
+
+= Usage : To create a child theme go to =
+Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
+
+= Usage : To edit themes files go to =
+Go to Admin > Appearance > Orbisius Theme Editor then click on the theme you like and the child theme will be created for you.
 
 = Demo =
 
@@ -91,6 +103,8 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Tested under WordPress Multisite environment
 * Added menus in WordPress Multisite environment
 * Added an option for network wide theme activation (which is mutually exclusive with make theme active).
+* Added double editor for easy theme editing.
+* Added Orbisius: Edit to the theme list
 
 = 1.0.4 =
 * Tested with wp 3.6.1
