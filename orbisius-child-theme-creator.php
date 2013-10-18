@@ -31,23 +31,25 @@ add_action('admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000); // be the last in the footer
 add_action('admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
+add_action('network_admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
 
 add_action( 'wp_ajax_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 
 /**
- * Show a notice in the admin if the chat hasn't been installed yet.
+ * Show a notice in the plugins area to let the user know how to work with the plugin.
+ * On multisite the message is shown only on the network site.
  */
 function orbisius_child_theme_creator_admin_notice_message() {
-    $plugin_data = get_plugin_data(__FILE__);
+    global $pagenow;
+    
+    $plugin_data = orbisius_child_theme_creator_get_plugin_data();
     $name = $plugin_data['Name'];
+    $show_notice = 1; // todo check cfg for dismiss
 
-    $upload_dir_rec = wp_upload_dir();
-    $chat_installed = file_exists($upload_dir_rec['basedir'] . '.ht-orbisius-child_theme_creator');
-
-    // show it everywhere but not on our page.
-    //if (stripos($_SERVER['REQUEST_URI'], basename(__FILE__)) === false) {
-    if (!$chat_installed && (stripos($_SERVER['REQUEST_URI'], 'plugins.php') !== false)) {
+    if ($show_notice
+            && ( stripos($pagenow, 'plugins.php') !== false )
+            && ( !is_multisite() || ( is_multisite() && is_network_admin() ) ) ) {
         $just_link = orbisius_child_theme_creator_util::get_create_child_pages_link();
         echo "<div class='updated'><p>$name has been installed. To create a child theme go to
           <a href='$just_link'><strong>Appearance &rarr; $name</strong></a></p></div>";
@@ -523,7 +525,7 @@ function orbisius_child_theme_creator_tools_action() {
         </div>
         <?php if (1) : ?>
         <?php
-        $plugin_data = get_plugin_data(__FILE__);
+        $plugin_data = orbisius_child_theme_creator_get_plugin_data();
 
         $app_link = urlencode($plugin_data['PluginURI']);
         $app_title = urlencode($plugin_data['Name']);
@@ -817,7 +819,7 @@ class orbisius_child_theme_creator_util {
      * @return string
      */
     static public function get_create_child_pages_link($params = array()) {
-        $rel_path = 'themes.php?page=' . plugin_basename(__FILE__);
+        $rel_path = 'themes.php?page=orbisius_child_theme_creator_themes_action';
 
         if (!empty($params)) {
             $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);
@@ -1015,9 +1017,12 @@ function orbisius_ctc_theme_editor() {
     }
 
     $msg = 'Pick any two themes and copy snippets from one to the other.';
+
+    $plugin_data = orbisius_child_theme_creator_get_plugin_data();
+    
     ?>
     <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
-        <h2>Orbisius Theme Editor</h2>
+        <h2>Orbisius Theme Editor <small>(Part of <a href='<?php echo $plugin_data['url'];?>' target="_blank">Orbisius Child Theme Creator</a>)</small></h2>
 
         <div class="updated"><p><?php echo $msg; ?></p></div>
 

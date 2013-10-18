@@ -6,6 +6,7 @@ Requires at least: 3.0
 Tested up to: 3.6.1
 Stable tag: 1.0.4
 License: GPLv2 or later
+Network:true
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 
@@ -18,10 +19,10 @@ This plugin allows you to quickly create child themes from any theme that you ha
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 It also creates rtl.css if exists in the parent theme.
 
-= New and Important =
-We have noticed that some child themes created by this plugin do not work as expected.
-This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress'
-recommended functions for themes supporting child themes.
+= Important =
+> We have noticed that some child themes created by this plugin do not work as expected.
+> This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress' recommended functions for themes that support child themes.
+> Please check with the created of the theme first to see if their theme supports child themes.
 
 We have launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
 Join today and test themes and plugins before you actually put them on your live site. For more info go to:
@@ -33,6 +34,7 @@ Join today and test themes and plugins before you actually put them on your live
 * Easy to use interface
 * When moving through the themes the currently looked one will have a nice background & border
 * Create *unlimited* child themes from a parent theme. The plugin will add Child 01, Child 02 etc.
+* Edit theme files with our double theme editor.
 
 This plugin allows you to quickly edit theme files from Appearance &gt; Orbisius Theme Editor (entry added by the same plugin)
 It features two editors and you can pick snippets from one theme and paste into another.
@@ -62,13 +64,20 @@ http://www.youtube.com/watch?v=BZUVq6ZTv-o
 Do you need an amazing plugin created especially for your needs? Contact me.
 Svetoslav Marinov (Slavi) | <a href="http://orbisius.com" title="Custom Web Programming, Web Design, e-commerce, e-store, Wordpress Plugin Development, Facebook and Mobile App Development in Niagara Falls, St. Catharines, Ontario, Canada" target="_blank">Custom Web and Mobile Programming by Orbisius.com</a>
 
+= Hire Us =
+Do you need any WordPress work done? e.g. WordPress tweaks, new plugin development or existing plugin improvements.
+
+Do you need a trusted <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-linksutm_campaign=plugin-update"
+                     title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">WordPress Developer</a> to hire?
+
 == Upgrade Notice ==
 n/a
 
 == Screenshots ==
 1. Plugin page after installation
-2. Orbisius Child Theme Creator in Tools > Orbisius Child Theme Creator - before creating a child theme
-3. Orbisius Child Theme Creator in Tools > Orbisius Child Theme Creator - after creating a child theme
+2. Orbisius Child Theme Creator in Appearance > Orbisius Child Theme Creator - before creating a child theme
+3. Orbisius Child Theme Creator in Appearance > Orbisius Child Theme Creator - after creating a child theme
+4. Orbisius Theme Editor in Action from Admin > Appearance > Orbisius Theme Editor
 
 == Installation ==
 
@@ -78,7 +87,7 @@ n/a
 == Frequently Asked Questions ==
 
 = How to use this plugin? =
-Just install the plugin and activate it. Then go to Admin > Tools > Orbisius Child Theme Creator.
+Just install the plugin and activate it. Then go to Admin > Appearance > Orbisius Child Theme Creator.
 Then click on a theme and the plugin will create a child theme for you.
 
 = Troubleshooting =
@@ -105,6 +114,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Added an option for network wide theme activation (which is mutually exclusive with make theme active).
 * Added double editor for easy theme editing.
 * Added Orbisius: Edit to the theme list
+* Show a notice in the plugins area to let the user know how to work with the plugin. On multisite the message is shown only on the network site.
 * Aded minimized versions for main css and js
 
 = 1.0.4 =
