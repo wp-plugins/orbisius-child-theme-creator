@@ -138,7 +138,7 @@ function orbisius_child_theme_creator_settings_page() {
                 <br/>Join today and test themes and plugins before you actually put them on your live site. For more info go to:
                 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=settings_screen&utm_campaign=product"
                    target="_blank" title="[new window]">http://qsandbox.com</a>
-            </p></div>
+        </p></div>
 
         <div class="updated0"><p>
                 This plugin doesn't currently have any configuration options. To use it go to <strong>Appearance &rarr; Orbisius Child Theme Creator</strong>
@@ -375,11 +375,6 @@ function orbisius_child_theme_creator_tools_action() {
         }
     }
 
-    if ( 0&&$multi_site ) {
-        $msg .= orbisius_child_theme_creator_util::msg("You are running WordPress in MultiSite configuration. 
-            Please report any glitches that you may find.", 2);
-    }
-
     if (!empty($errors)) {
         $msg .= orbisius_child_theme_creator_util::msg($errors);
     }
@@ -389,30 +384,30 @@ function orbisius_child_theme_creator_tools_action() {
     }
     ?>
     <div class="wrap orbisius_child_theme_creator_container">
-        <h2>Orbisius Child Theme Creator
-
-            <div class="" style="float: right;padding: 3px; _border: 1px solid #D54E21;">
+        <h2 style="display:inline;">Orbisius Child Theme Creator</h2>
+        <div style="float: right;padding: 3px;" class="updated">
                 Links:
                 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
                      target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
                      Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
 
-                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-linksutm_campaign=plugin-update"
+                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-links&utm_campaign=plugin-update"
                      title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
 
-                | <a href="#help" title="[new window]">Help</a>
-            </div>
-        </h2>
-
-    <?php echo $msg; ?>
-        <div class="updated">
-            <p>
-                Choose a parent theme from the list below and click on the <strong>Create Child Theme</strong> button.
-            </p>
+                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Help</a>
         </div>
+        
+    <?php echo $msg; ?>
 
     <?php
     $buff = '';
+    $buff .= "<h2>Available Themes</h2>\n";
+
+    // call to action.
+    $buff .= "<div class='updated'><p>\n";
+    $buff .= "Decide which parent theme you want to use from the list below and then click on the <strong>Create Child Theme</strong> button.";
+    $buff .= "</p></div>\n";
+    
     $buff .= "<div id='availablethemes' class='theme_container'>\n";
     $nonce = wp_create_nonce(basename(__FILE__) . '-action');
 
@@ -421,6 +416,12 @@ function orbisius_child_theme_creator_tools_action() {
 
     // we use the same CSS as in WP's appearances but put only the buttons we want.
     foreach ($themes as $theme_basedir_name => $theme_obj) {
+        $parent_theme = $theme_obj->get('Template');
+
+        if (!empty($parent_theme)) {
+            continue; // no kids allowed here.
+        }
+        
         // get the web uri for the current theme and go 1 level up
         $src = dirname(get_template_directory_uri()) . "/$theme_basedir_name/screenshot.png";
         $functions_file = dirname(get_template_directory()) . "/$theme_basedir_name/functions.php";
@@ -440,6 +441,7 @@ function orbisius_child_theme_creator_tools_action() {
 
         $author_name = $theme_obj->get('Author');
         $author_name = strip_tags($author_name);
+        $author_name = trim($author_name);
         $author_name = empty($author_name) ? 'n/a' : $author_name;
 
         $author_uri = $theme_obj->get('AuthorURI');
@@ -460,49 +462,41 @@ function orbisius_child_theme_creator_tools_action() {
         $buff .= "<div class='action-links'>\n";
         $buff .= "<ul>\n";
 
-        $parent_theme = $theme_obj->get('Template');
+        if (isset($_REQUEST['orb_show_copy_functions']) && file_exists($functions_file)) {
+            $adv_container_id = md5($src);
 
-        if (empty($parent_theme)) { // Normal themes / no child ones
-            if (file_exists($functions_file)) {
-                $adv_container_id = md5($src);
-                
-                $buff .= "
-                    <li>
-                        <a href='javascript:void(0)' onclick='jQuery(\"#orbisius_ctc_act_adv_$adv_container_id\").slideToggle(\"slow\");'>+ Advanced</a> (show/hide)
-                        <div id='orbisius_ctc_act_adv_$adv_container_id' class='app-hide'>";
+            $buff .= "
+                <li>
+                    <a href='javascript:void(0)' onclick='jQuery(\"#orbisius_ctc_act_adv_$adv_container_id\").slideToggle(\"slow\");'>+ Advanced</a> (show/hide)
+                    <div id='orbisius_ctc_act_adv_$adv_container_id' class='app-hide'>";
 
-                $buff .= "<div>
-                                <label>
-                                    <input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
-                                    (<span class='app-serious-notice'><strong>Danger</strong>: if the theme doesn't support
-                                    <a href='http://wp.tutsplus.com/tutorials/creative-coding/understanding-wordpress-pluggable-functions-and-their-usage/'
-                                        target='_blank'>pluggable functions</a> this <strong>will crash your site</strong>. Make a backup is highly recommended.</span>)
-                                </label>
-                            </div>";
-                
-                $buff .= "
-                        </div> <!-- /orbisius_ctc_act_adv_$adv_container_id -->
-                    </li>\n";
-            }
+            $buff .= "<label>
+                                <input type='checkbox' id='orbisius_child_theme_creator_copy_functions_php' name='copy_functions_php' value='1' /> Copy functons.php
+                                (<span class='app-serious-notice'><strong>Danger</strong>: if the theme doesn't support
+                                <a href='http://wp.tutsplus.com/tutorials/creative-coding/understanding-wordpress-pluggable-functions-and-their-usage/'
+                                    target='_blank'>pluggable functions</a> this <strong>will crash your site</strong>. Make a backup is highly recommended. In most cases you won't need to copy functions.php</span>)
+                      </label>
+                    ";
 
-            // Let's allow the user to make that theme network wide usable
-            if ($multi_site) {
-                $buff .= "<li>
-                        <div>
-                            <label>
-                                <input type='checkbox' id='orbisius_child_theme_creator_make_network_wide_available'
-                                name='orbisius_child_theme_creator_make_network_wide_available' value='1' /> Make the new theme network wide available
-                            </label>
-                        </div></li>\n";
-            } else {
-                $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> "
-                        . "Switch theme to the new theme after it is created</label></li>\n";
-            }
-            
-            $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
-        } else {
-            $buff .= "<li>[child theme]</li>\n";
+            $buff .= "
+                    </div> <!-- /orbisius_ctc_act_adv_$adv_container_id -->
+                </li>\n";
         }
+
+        // Let's allow the user to make that theme network wide usable
+        if ($multi_site) {
+            $buff .= "<li>
+                        <label>
+                            <input type='checkbox' id='orbisius_child_theme_creator_make_network_wide_available'
+                            name='orbisius_child_theme_creator_make_network_wide_available' value='1' /> Make the new theme network wide available
+                        </label>
+                    </li>\n";
+        } else {
+            $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> "
+                    . "Switch theme to the new theme after it is created</label></li>\n";
+        }
+
+        $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
     
         $buff .= "</ul>\n";
         $buff .= "</div> <!-- /action-links -->\n";
@@ -510,16 +504,52 @@ function orbisius_child_theme_creator_tools_action() {
         $buff .= "</div> <!-- /available-theme -->\n";
     }
 
-    $buff .= "</div> <!-- /availablethemes -->\n";
+    $buff .= "<br class='clear' /><h2>Child Themes</h2>\n";
+
+    // list child themes
+    // we use the same CSS as in WP's appearances but put only the buttons we want.
+    foreach ($themes as $theme_basedir_name => $theme_obj) {
+        $parent_theme = $theme_obj->get('Template');
+
+        if (empty($parent_theme)) {
+            continue; // no parents allowed here.
+        }
+        
+        // get the web uri for the current theme and go 1 level up
+        $src = dirname(get_template_directory_uri()) . "/$theme_basedir_name/screenshot.png";
+       
+        $author_name = $theme_obj->get('Author');
+        $author_name = strip_tags($author_name);
+        $author_name = empty($author_name) ? 'n/a' : $author_name;
+
+        $author_uri = $theme_obj->get('AuthorURI');
+        $author_line = empty($author_uri)
+                ? $author_name
+                : "<a title='Visit author homepage' href='$author_uri' target='_blank'>$author_name</a>";
+
+        $author_line .= " | Ver.$theme_obj->Version\n";
+
+        $edit_theme_link = orbisius_child_theme_creator_util::get_theme_editor_link( array('theme_1' => $theme_basedir_name) );
+        $author_line .= " | <a href='$edit_theme_link' title='Edit with Orbisius Theme Editor'>Edit</a>\n";
+
+        $buff .= "<div class='available-theme'>\n";
+        $buff .= "<img class='screenshot' src='$src' alt='' />\n";
+        $buff .= "<h3>$theme_obj->Name</h3>\n";
+        $buff .= "<div class='theme-author'>By $author_line</div>\n";
+        $buff .= "</div> <!-- /available-theme -->\n";
+    }
+
+    $buff .= "</div> <!-- /availablethemes -->\n <br class='clear' />";
+
     //var_dump($themes);
     echo $buff;
     ?>
 
         <a name="help"></a>
         <h2>Support &amp; Premium Plugins</h2>
-        <div class="updated">
+        <div class="updated0">
             <p>
-                The support is handled on our Club Orbisius site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>.
+                The support is handled on our Club Orbisius site: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/" target="_blank" title="[new window]">http://club.orbisius.com/</a>.
                 Please do NOT use the WordPress forums or other places to seek support.
             </p>
         </div>
@@ -532,9 +562,9 @@ function orbisius_child_theme_creator_tools_action() {
         $app_descr = urlencode($plugin_data['Description']);
         ?>
 
-            <h2>Like this plugin? Share it with your friends</h2>
-            <p>
-                <!-- AddThis Button BEGIN -->
+        <h2>Like this plugin? Share it with your friends</h2>
+        <p>
+            <!-- AddThis Button BEGIN -->
             <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
                 <a class="addthis_button_facebook" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
                 <a class="addthis_button_twitter" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
@@ -553,10 +583,10 @@ function orbisius_child_theme_creator_tools_action() {
             <!-- The JS code is in the footer -->
 
             <script type="text/javascript">
-                var addthis_config = {"data_track_clickback": true};
+                var addthis_config = { "data_track_clickback": true };
                 var addthis_share = {
                     templates: {twitter: 'Check out {{title}} #wordpress #plugin at {{lurl}} (via @orbisius)'}
-                }
+                };
             </script>
             <!-- AddThis Button START part2 -->
             <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
@@ -585,7 +615,7 @@ function orbisius_child_theme_creator_tools_action() {
 
         <br/>Video Link: <a href="http://www.youtube.com/watch?v=BZUVq6ZTv-o&feature=youtu.be" target="_blank">http://www.youtube.com/watch?v=BZUVq6ZTv-o&feature=youtu.be</a>
     </p>
-    </div>
+    </div> <!-- /wrap -->
     <?php
 }
 
@@ -1022,7 +1052,18 @@ function orbisius_ctc_theme_editor() {
     
     ?>
     <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
-        <h2>Orbisius Theme Editor <small>(Part of <a href='<?php echo $plugin_data['url'];?>' target="_blank">Orbisius Child Theme Creator</a>)</small></h2>
+        <h2 style="display:inline;">Orbisius Theme Editor <small>(Part of <a href='<?php echo $plugin_data['url'];?>' target="_blank">Orbisius Child Theme Creator</a>)</small></h2>
+        <div style="float: right;padding: 3px;" class="updated">
+                Links:
+                <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product"
+                     target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
+                     Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
+
+                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-editor&utm_medium=plugin-links&utm_campaign=plugin-update"
+                     title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+
+                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Help</a>
+        </div>
 
         <div class="updated"><p><?php echo $msg; ?></p></div>
 
@@ -1030,15 +1071,15 @@ function orbisius_ctc_theme_editor() {
             $buff = $theme_1_file = $theme_2_file = '';
             $req = orbisius_ctc_theme_editor_get_request();
 
+            $current_theme = wp_get_theme();
+            
             $html_dropdown_themes = array('' => '== SELECT THEME ==');
 
-            $theme_1 = empty($req['theme_1']) ? '' : $req['theme_1'];
+            $theme_1 = empty($req['theme_1']) ? $current_theme->get_stylesheet() : $req['theme_1'];
             $theme_2 = empty($req['theme_2']) ? '' : $req['theme_2'];
 
             $theme_load_args = array();
             $themes = wp_get_themes( $theme_load_args );
-
-            $current_theme = wp_get_theme();
 
             // we use the same CSS as in WP's appearances but put only the buttons we want.
             foreach ($themes as $theme_basedir_name => $theme_obj) {
@@ -1083,6 +1124,12 @@ function orbisius_ctc_theme_editor() {
                         <div>
                             <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Update</button>
                             <span class="status"></span>
+
+                            <!--<button class='button' id="theme_1_new_file" name="theme_1_new_file_btn">New File</button>
+                            <div class="theme_1_new_file_container app-hide">
+                                <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
+                                <div>e.g. test.js, extra.css etc</div>
+                            </div>-->
                         </div>
                     </form>
                 </td>
@@ -1199,8 +1246,9 @@ function orbisius_ctc_theme_editor_generate_dropdown() {
 }
 
 /**
- * Reads or writes contents to a file
- * @param type $read
+ * Reads or writes contents to a file.
+ * If the saving is not successfull it will return an empty buffer.
+ * @param int $read - 1, write 2
  * @return string
  */
 function orbisius_ctc_theme_editor_manage_file($read = 1) {
@@ -1233,8 +1281,8 @@ function orbisius_ctc_theme_editor_manage_file($read = 1) {
     if ($read == 1) {
         $buff = file_get_contents($theme_file);
     } elseif ($read == 2) {
-        file_put_contents($theme_file, $theme_file_contents);
-        $buff = $theme_file_contents;
+        $status = file_put_contents($theme_file, $theme_file_contents);
+        $buff = !empty($status) ? $theme_file_contents : '';
     }
 
     return $buff;

@@ -71,7 +71,7 @@ function app_handle_theme_change(form_id, action, target_container, result) {
 }
 
 /**
- * Sends ajax call to WP. Different requests append sub_cmd because WP is used key: 'action'.
+ * Sends ajax call to WP. Different requests append sub_cmd because WP is using key: 'action'.
  * Depending on the target element a different method for setting the value is used.
  *
  * @param {type} form_id
@@ -81,38 +81,53 @@ function app_handle_theme_change(form_id, action, target_container, result) {
  * @returns {undefined}
  */
 function app_load(form_id, action, target_container, callback) {
-    var result = 'Loading...';
+    var loading_text = '<span class="app-alert-notice">Loading...</span>';
+    var loading_text_just_text = 'Loading...'; // used in textarea, select etc.
     var undo_readonly = 0;
+    var is_save_action = action.indexOf('save') >= 0;
 
-    if (action.indexOf('save') >= 0) { // save action
+    if (is_save_action) { // save action
         if (jQuery(target_container).is("input,textarea")) {
             jQuery(target_container).attr('readonly', 'readonly');
             jQuery(target_container).addClass('saving_action');
         }
 
-        jQuery('.status', jQuery(target_container).parent()).html(result);
+        jQuery('.status', jQuery(target_container).parent()).html(loading_text);
     } else {
         if (jQuery(target_container).is("input,textarea")) {
-            jQuery(target_container).val(result);
+            jQuery(target_container).val(loading_text_just_text);
             jQuery(target_container).addClass('saving_action');
         } else if (jQuery(target_container).is("select")) { // for loading. we want to override options of the select
-            jQuery(target_container + ' option').text(result);
+            jQuery(target_container + ' option').text(loading_text_just_text);
         } else {
-            jQuery(target_container).html(result);
+            jQuery(target_container).html(loading_text);
         }
     }
 
     jQuery.ajax({
         type : "post",
         //dataType : "json",
-        url : ajaxurl, // contains all the necessary params
+        url : ajaxurl, // WP defines it and it contains all the necessary params
         data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
 
         success : function (result) {
-            if (jQuery(target_container).is("input,textarea")) {
-                jQuery(target_container).val(result);
-            } else {
-                jQuery(target_container).html(result);
+            // http://stackoverflow.com/questions/2432749/jquery-delay-not-delaying
+            if (result != '') {
+                if (jQuery(target_container).is("input,textarea")) {
+                    jQuery(target_container).val(result);
+                } else {
+                    jQuery(target_container).html(result);
+                }
+
+                if (is_save_action) { // save action
+                    jQuery('.status', jQuery(target_container).parent()).html('Saved.').addClass('app-alert-success');
+
+                    setTimeout(function () {
+                        jQuery('.status', jQuery(target_container).parent()).empty().removeClass('app-alert-success app-alert-error');
+                    }, 2000);
+                }
+            } else if (is_save_action) { // save action
+                jQuery('.status', jQuery(target_container).parent()).html('Oops. Cannot save.').addClass('app-alert-error');
             }
 
             if (typeof callback != 'undefined') {
@@ -123,16 +138,9 @@ function app_load(form_id, action, target_container, callback) {
         complete : function (result) { // this is always called
             jQuery(target_container).removeClass('saving_action');
 
-            if (action.indexOf('save') >= 0) { // save action
+            if (is_save_action) { // save action
                 if (jQuery(target_container).is("input,textarea")) {
                     jQuery(target_container).removeAttr('readonly');
-
-                    // http://stackoverflow.com/questions/2432749/jquery-delay-not-delaying
-                    jQuery('.status', jQuery(target_container).parent()).html('Saved.');
-
-                    setTimeout(function () {
-                        jQuery('.status', jQuery(target_container).parent()).empty();
-                    }, 2000);
                 }
             }
         }

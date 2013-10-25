@@ -103,10 +103,20 @@ Also which files does the theme need in order to work well.
 Ok. You'll need to use FTP client and go to in the wordpress folder and then wp-content/themes/AAAAA-child-01/ and delete functions.php
 AAAAA is of course  the directory of your parent theme.
 
+= I want to be able to copy functions.php =
+Please use Orbisius Theme Editor (part of this plugin)
+
 = What to do next? =
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
 == Changelog ==
+
+= 1.0.6 =
+* Tested with WP 3.7
+* Loading current theme in the left editor if there is no theme selected yet.
+* Reduced the font size of the links in the top right corner of Child Theme Creator and Theme Editor
+* Separated Parent themes from Child ones
+* Hid the advanced section. Was confusing and scaring people
 
 = 1.0.5 =
 * Tested under WordPress Multisite environment
