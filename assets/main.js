@@ -5,13 +5,16 @@ var orbisius_child_theme_creator = {
      * @returns str
      */
     sanitize_file_name : function (val) {
-        val = val.replace(/[^\w-.\s]/i, '');
-        val = val.replace(/\s/i, '-');
-        val = val.replace(/^\.+/i, '');
-        val = val.replace(/\.+$/i, '');
-        val = val.replace(/\.+/i, '.');
-        val = val.replace(/-+/i, '-');
-        val = val.replace(/_+/i, '_');
+        val = val.replace(/[^\w-.\s]/ig, '');
+        val = val.replace(/\s+/ig, '-');
+        val = val.replace(/\.+/ig, '.');
+        val = val.replace(/-+/ig, '-');
+        val = val.replace(/_+/ig, '_');
+
+        // rm leading/trailing chars
+        val = val.replace(/^[._-]+/ig, '');
+        val = val.replace(/[._-]+$/ig, '');
+        
         val = jQuery.trim(val);
 
         return val;
