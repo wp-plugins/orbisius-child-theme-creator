@@ -3,8 +3,8 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
-Tested up to: 3.6.1
-Stable tag: 1.0.5
+Tested up to: 3.7
+Stable tag: 1.0.6
 License: GPLv2 or later
 Network:true
 
