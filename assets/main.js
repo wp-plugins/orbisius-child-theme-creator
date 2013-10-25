@@ -1,4 +1,47 @@
-/* Theme Editor Code */
+var orbisius_child_theme_creator = {
+    /**
+     * This is a file name that the user enters. It will be cleaned of spaces and repeating chars.
+     * @param str val
+     * @returns str
+     */
+    sanitize_file_name : function (val) {
+        val = val.replace(/[^\w-.\s]/i, '');
+        val = val.replace(/\s/i, '-');
+        val = val.replace(/^\.+/i, '');
+        val = val.replace(/\.+$/i, '');
+        val = val.replace(/\.+/i, '.');
+        val = val.replace(/-+/i, '-');
+        val = val.replace(/_+/i, '_');
+        val = jQuery.trim(val);
+
+        return val;
+    },
+
+    /**
+     * Deletes a file by sending an ajax request.
+     * The file should be the currently selected one from the dropdown menu.
+     * After the ajax call finishes the selected element is removed from the
+     * dropdown and a trigger event is triggered so the content box gets
+     * reloaded/refilled with new content.
+     *
+     * @param str file_name
+     * @param str form_id
+     * @returns void
+     */
+    delete_file : function(file_name, form_id) {
+        jQuery.ajax({
+            type : "post",
+            url : ajaxurl, // WP defines it and it contains all the necessary params
+            data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape('delete_file'),
+
+            success : function (result) {
+                jQuery("#theme_1_file option:selected").remove();
+                jQuery("#theme_1_file").trigger('change');
+            }
+        });
+    }
+};
+
 jQuery(document).ready(function($) {
     orbisius_ctc_theme_editor_setup();
 });
@@ -18,6 +61,102 @@ function orbisius_ctc_theme_editor_setup() {
         // prefill dropdown files with the current theme's files.
         app_load('#orbisius_ctc_theme_editor_theme_1_form', 'generate_dropdown', '#theme_1_file', app_handle_theme_change);
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Delete File
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#theme_1_delete_file_btn').on("click", function () {
+        var selected_file = $('#theme_1_file').val();
+
+        if (confirm('Delete: [' + selected_file + '] ? Are you sure?', '')) {
+            orbisius_child_theme_creator.delete_file(selected_file, '#orbisius_ctc_theme_editor_theme_1_form');
+        }
+    });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // New File
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#theme_1_new_file_btn').on("click", function () {
+        $('#theme_1_new_file_container').toggle('slow');
+        $('#theme_1_new_file').focus();
+    });
+
+    // The user enters a file name. Let's check if it exists.
+    $('#theme_1_new_file').on("input", function (event) {
+        var new_file = $('#theme_1_new_file').val();
+        new_file = orbisius_child_theme_creator.sanitize_file_name(new_file);
+
+        var ok = 1; // let's by positive by default
+
+        // Let's check if that file exists by checking if there is an entry in the options
+        $("#theme_1_file option").each(function() { // idx, val
+            var cur_val = $(this).val();
+
+            if (cur_val == new_file) {
+                ok = 0;
+                return ;
+            }
+        });
+
+        if (ok) {
+            $('.status', $('#theme_1_new_file_container')).text('').removeClass('app-alert-error');
+        } else {
+            var err = 'File with that name already exists.';
+            $('.status', $('#theme_1_new_file_container')).text(err).addClass('app-alert-error');
+        }
+    });
+
+    /**
+     * New File: On OK this will hide the form but will add a new element
+     * to the theme files dropdown.
+     */
+    $('#theme_1_new_file_btn_ok').on("click", function () {
+        var val = $('#theme_1_new_file').val();
+        val = orbisius_child_theme_creator.sanitize_file_name(val);
+        var text = val;
+
+        if (val == '') {
+            alert('Invalid or empty value for filename.');
+            $('#theme_1_new_file').focus();
+            return ;
+        }
+
+        var ok = 1; // let's by positive by default
+        
+        // Let's check if that file exists by checking if there is an entry in the options
+        $("#theme_1_file option").each(function() { // idx, val
+            var cur_val = $(this).val();
+
+            if (cur_val == val) {
+                ok = 0;
+                return ;
+            }
+        });
+
+        if (!ok) {
+            alert('File with that name already exists.');
+            $('#theme_1_new_file').focus();
+            return ;
+        }
+
+        // unselects current element from the dropdown.
+        $("select theme_1_file").prop("selected", false);
+        var new_option = $('<option></option>').val(val).html(text).prop("selected", true);
+
+        $('#theme_1_file').append( new_option ); // select
+        $('#theme_1_new_file_container').hide('slow');
+        $('#theme_1_new_file').val(''); // text box for new file
+        $('#theme_1_file_contents').val('').focus(); // textarea
+    });
+
+    // This is when the cancel button is clicked so the user doesn't want a new file.
+    $('#theme_1_new_file_btn_cancel').on("click", function () {
+        $('#theme_1_new_file').val('');
+        $('#theme_1_new_file_container').hide('slow');
+        $('.status', $('#theme_1_new_file_container')).text('').removeClass('app-alert-error');
+    });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Change theme selection
     $('#theme_1').on("change", function () {

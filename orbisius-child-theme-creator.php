@@ -1128,14 +1128,26 @@ function orbisius_ctc_theme_editor() {
                         <div>
                             <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Update</button>
                             <span class="status"></span>
-
-                            <!--<button class='button' id="theme_1_new_file" name="theme_1_new_file_btn">New File</button>
-                            <div class="theme_1_new_file_container app-hide">
-                                <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
-                                <div>e.g. test.js, extra.css etc</div>
-                            </div>-->
                         </div>
                     </form>
+
+                    <br/>
+                    <hr />
+                    <div>
+                        <button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
+
+                        <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
+                            <h3>New File</h3>
+                            <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
+                            <span class="status"></span>
+                            <div>e.g. test.js, extra.css etc</div>
+
+                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_submit">OK</button>
+                            or <a href='javascript:void(0)' class='app-button-negative' id="theme_1_new_file_btn_cancel" name="theme_1_submit">Cancel</a>
+                        </div>
+
+                        <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_1_delete_file_btn" name="theme_1_delete_file_btn">Delete File</a>
+                    </div>
                 </td>
                 <td width="50%">
                     <form id="orbisius_ctc_theme_editor_theme_2_form" class="orbisius_ctc_theme_editor_theme_2_form">
@@ -1181,6 +1193,11 @@ function orbisius_ctc_theme_editor_ajax() {
 
         case 'save_file':
             $buff = orbisius_ctc_theme_editor_manage_file(2);
+
+            break;
+
+        case 'delete_file':
+            $buff = orbisius_ctc_theme_editor_manage_file(3);
 
             break;
 
@@ -1252,10 +1269,10 @@ function orbisius_ctc_theme_editor_generate_dropdown() {
 /**
  * Reads or writes contents to a file.
  * If the saving is not successfull it will return an empty buffer.
- * @param int $read - 1, write 2
+ * @param int $cmd_id : read - 1, write - 2, delete - 3
  * @return string
  */
-function orbisius_ctc_theme_editor_manage_file($read = 1) {
+function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
     $buff = $theme_base_dir = $theme_file = '';
 
     $req = orbisius_ctc_theme_editor_get_request();
@@ -1276,17 +1293,21 @@ function orbisius_ctc_theme_editor_manage_file($read = 1) {
 
     if (empty($theme_base_dir) || !is_dir($theme_dir)) {
         return 'Selected theme is invalid.';
-    } elseif (!file_exists($theme_dir . $theme_file)) {
+    } elseif (!file_exists($theme_dir . $theme_file) && $cmd_id == 1) {
         return 'Selected file is invalid.';
     }
 
     $theme_file = $theme_dir . $theme_file;
 
-    if ($read == 1) {
+    if ($cmd_id == 1) {
         $buff = file_get_contents($theme_file);
-    } elseif ($read == 2) {
+    } elseif ($cmd_id == 2) {
         $status = file_put_contents($theme_file, $theme_file_contents);
         $buff = !empty($status) ? $theme_file_contents : '';
+    } elseif ($cmd_id == 3 && (!empty($req['theme_1_file']) || !empty($req['theme_2_file']))) {
+        $status = unlink($theme_file);
+    } else {
+        
     }
 
     return $buff;

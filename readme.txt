@@ -111,6 +111,11 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.0.7 =
+* Added: Theme Editor
+* - New File, checks for existing file are made on typing.
+* - Delete File
+
 = 1.0.6 =
 * Tested with WP 3.7
 * Loading current theme in the left editor if there is no theme selected yet.
