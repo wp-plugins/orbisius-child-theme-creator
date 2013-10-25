@@ -116,7 +116,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Loading current theme in the left editor if there is no theme selected yet.
 * Reduced the font size of the links in the top right corner of Child Theme Creator and Theme Editor
 * Separated Parent themes from Child ones
-* Hid the advanced section. Was confusing and scaring people
+* Hid the advanced section. Was confusing and scaring people. If you really want to copy functions pass &orb_show_copy_functions parameter to the Child Plugin page.
 
 = 1.0.5 =
 * Tested under WordPress Multisite environment

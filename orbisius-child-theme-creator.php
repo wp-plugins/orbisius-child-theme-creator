@@ -386,7 +386,6 @@ function orbisius_child_theme_creator_tools_action() {
     <div class="wrap orbisius_child_theme_creator_container">
         <h2 style="display:inline;">Orbisius Child Theme Creator</h2>
         <div style="float: right;padding: 3px;" class="updated">
-                Links:
                 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
                      target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
                      Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
@@ -394,7 +393,11 @@ function orbisius_child_theme_creator_tools_action() {
                 | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-links&utm_campaign=plugin-update"
                      title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
 
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Help</a>
+                | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
+
+                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
+
+                | <a href="#help" title="">Help</a>
         </div>
         
     <?php echo $msg; ?>
@@ -547,7 +550,7 @@ function orbisius_child_theme_creator_tools_action() {
 
         <a name="help"></a>
         <h2>Support &amp; Premium Plugins</h2>
-        <div class="updated0">
+        <div class="updated">
             <p>
                 The support is handled on our Club Orbisius site: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/" target="_blank" title="[new window]">http://club.orbisius.com/</a>.
                 Please do NOT use the WordPress forums or other places to seek support.
@@ -1054,7 +1057,6 @@ function orbisius_ctc_theme_editor() {
     <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
         <h2 style="display:inline;">Orbisius Theme Editor <small>(Part of <a href='<?php echo $plugin_data['url'];?>' target="_blank">Orbisius Child Theme Creator</a>)</small></h2>
         <div style="float: right;padding: 3px;" class="updated">
-                Links:
                 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product"
                      target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
                      Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
@@ -1062,7 +1064,9 @@ function orbisius_ctc_theme_editor() {
                 | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-editor&utm_medium=plugin-links&utm_campaign=plugin-update"
                      title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
 
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Help</a>
+                | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
+                
+                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
         </div>
 
         <div class="updated"><p><?php echo $msg; ?></p></div>
