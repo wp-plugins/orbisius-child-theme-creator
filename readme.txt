@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
 Tested up to: 3.7.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 Network:true
 
@@ -119,13 +119,11 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
-= 1.0.9 =
-* Added a quick fix to use file modification time for the css and js assets.
-
 = 1.0.8 =
 * Tested with WP 3.7.1
 * Added New File and Delete operations for Theme Editor #1 (left)
 * Respects the DISALLOW_FILE_EDIT constant, which if set to true will disable the Theme editor
+* Added a quick fix to use file modification time for the css and js assets.
 
 = 1.0.7 =
 * Added: Theme Editor
