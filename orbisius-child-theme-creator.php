@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Child Theme Creator
   Plugin URI: http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/
   Description: This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
-  Version: 1.0.6
+  Version: 1.0.7
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
  */
@@ -508,7 +508,8 @@ function orbisius_child_theme_creator_tools_action() {
     }
 
     $buff .= "<br class='clear' /><h2>Child Themes</h2>\n";
-
+    $child_themes_cnt = 0;
+    
     // list child themes
     // we use the same CSS as in WP's appearances but put only the buttons we want.
     foreach ($themes as $theme_basedir_name => $theme_obj) {
@@ -517,6 +518,8 @@ function orbisius_child_theme_creator_tools_action() {
         if (empty($parent_theme)) {
             continue; // no parents allowed here.
         }
+
+        $child_themes_cnt++;
         
         // get the web uri for the current theme and go 1 level up
         $src = dirname(get_template_directory_uri()) . "/$theme_basedir_name/screenshot.png";
@@ -540,6 +543,10 @@ function orbisius_child_theme_creator_tools_action() {
         $buff .= "<h3>$theme_obj->Name</h3>\n";
         $buff .= "<div class='theme-author'>By $author_line</div>\n";
         $buff .= "</div> <!-- /available-theme -->\n";
+    }
+
+    if ( $child_themes_cnt == 0 ) {
+        $buff .= "<div>No child themes found.</div>\n";
     }
 
     $buff .= "</div> <!-- /availablethemes -->\n <br class='clear' />";
@@ -1047,6 +1054,10 @@ function orbisius_ctc_theme_editor() {
         }
 
         exit();
+    }
+
+    if (defined('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT) {
+        wp_die('Theme editor is disabled due to DISALLOW_FILE_EDIT constant is set to true in wp-config.php', 'Orbisius Theme Editor disabled by config');
     }
 
     $msg = 'Pick any two themes and copy snippets from one to the other.';

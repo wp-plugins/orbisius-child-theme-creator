@@ -3,8 +3,8 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
-Tested up to: 3.7
-Stable tag: 1.0.6
+Tested up to: 3.7.1
+Stable tag: 1.0.7
 License: GPLv2 or later
 Network:true
 
@@ -28,7 +28,7 @@ We have launched a **FREE** service that allows you to setup a test/sandbox Word
 Join today and test themes and plugins before you actually put them on your live site. For more info go to:
 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
 
-= Features =
+= Child Theme Creator Features =
 * Create a theme with one click of a button
 * Never forget what files to copy and what to skip when creating child themes.
 * Easy to use interface
@@ -39,11 +39,14 @@ Join today and test themes and plugins before you actually put them on your live
 This plugin allows you to quickly edit theme files from Appearance &gt; Orbisius Theme Editor (entry added by the same plugin)
 It features two editors and you can pick snippets from one theme and paste into another.
 
-= Features =
+= Theme Editor Features =
 * Edit two theme files at the same time
 * Ajax -> No page refresh
 * Easy to use interface
 * Supports WordPress Multisite
+* Create a new file (+ checks if the file exists)
+* Delete file
+* Respects the DISALLOW_FILE_EDIT constant, which if set to true will disable the Theme editor
 
 = Usage : To create a child theme go to =
 Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
@@ -90,9 +93,10 @@ n/a
 Just install the plugin and activate it. Then go to Admin > Appearance > Orbisius Child Theme Creator.
 Then click on a theme and the plugin will create a child theme for you.
 
-= Troubleshooting =
-If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
-<a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=readme_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
+= How to disable Orbisius Theme Editor Plugin? =
+Just put this line right after the first <?php tag in the wp-config.php. This will also remove the WordPress' Theme/Plugin editors as well.
+
+define('DISALLOW_FILE_EDIT', true);
 
 = The child theme is created but doesn't have some styles or doesn't show the admin panel of the parent theme =
 OK. Please contact the theme author if his/her theme is child theme friendly.
@@ -106,10 +110,19 @@ AAAAA is of course  the directory of your parent theme.
 = I want to be able to copy functions.php =
 Please use Orbisius Theme Editor (part of this plugin)
 
+= Troubleshooting =
+If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
+<a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=readme_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
+
 = What to do next? =
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
 == Changelog ==
+
+= 1.0.8 =
+* Tested with WP 3.7.1
+* Added New File and Delete operations for Theme Editor #1 (left)
+* Respects the DISALLOW_FILE_EDIT constant, which if set to true will disable the Theme editor
 
 = 1.0.7 =
 * Added: Theme Editor
