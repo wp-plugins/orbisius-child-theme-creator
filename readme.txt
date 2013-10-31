@@ -119,6 +119,9 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.0.9 =
+* Added a quick fix to use file modification time for the css and js assets.
+
 = 1.0.8 =
 * Tested with WP 3.7.1
 * Added New File and Delete operations for Theme Editor #1 (left)

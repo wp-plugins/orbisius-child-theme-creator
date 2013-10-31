@@ -68,11 +68,13 @@ function orbisius_child_theme_creator_admin_init() {
     $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
     $suffix = $dev ? '' : '.min';
 
-    wp_register_style('orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false);
+    wp_register_style('orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false,
+            filemtime( plugin_dir_path( __FILE__ ) . "/assets/main{$suffix}.css" ) );
     wp_enqueue_style('orbisius_child_theme_creator');
 
     wp_enqueue_script( 'jquery' );
-    wp_register_script( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.js", __FILE__), array('jquery', ), '1.0', true);
+    wp_register_script( 'orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.js", __FILE__), array('jquery', ),
+            filemtime( plugin_dir_path( __FILE__ ) . "/assets/main{$suffix}.js" ), true);
     wp_enqueue_script( 'orbisius_child_theme_creator' );
 }
 
