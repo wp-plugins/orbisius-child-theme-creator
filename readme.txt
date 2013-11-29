@@ -11,10 +11,6 @@ This plugin allows you to quickly create child themes from any theme that you ha
 
 == Description ==
 
-= Support =
-> Support is handled on our site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>
-> Please do NOT use the WordPress forums or other places to seek support.
-
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 It also creates rtl.css if exists in the parent theme.
 
@@ -58,8 +54,8 @@ Go to Admin > Appearance > Orbisius Theme Editor then click on the theme you lik
 http://www.youtube.com/watch?v=BZUVq6ZTv-o
 
 = Support =
-* Support is handled on our site: <a href="http://club.orbisius.com/support/" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>
-* Please do NOT use the WordPress forums or other places to seek support.
+> Support is handled on our site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>
+> Please do NOT use the WordPress forums or other places to seek support.
 
 = Author =
 
