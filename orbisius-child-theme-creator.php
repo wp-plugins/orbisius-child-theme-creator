@@ -27,6 +27,7 @@
 
 // Set up plugin
 add_action('admin_init', 'orbisius_child_theme_creator_admin_init');
+add_action('admin_enqueue_scripts', 'orbisius_child_theme_creator_admin_enqueue_scripts');
 add_action('admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000); // be the last in the footer
@@ -59,11 +60,23 @@ function orbisius_child_theme_creator_admin_notice_message() {
 /**
  * @package Orbisius Child Theme Creator
  * @since 1.0
- *
- * Searches through posts to see if any matches the REQUEST_URI.
- * Also searches tags
  */
 function orbisius_child_theme_creator_admin_init() {
+
+}
+
+/**
+ * @package Orbisius Child Theme Creator
+ * @since 1.0
+ *
+ * Loads plugin's JS/CSS files only on child theme creator pages in admin area.
+ * Also searches tags
+ */
+function orbisius_child_theme_creator_admin_enqueue_scripts($current_page = '') {
+    if (strpos($current_page, 'orbisius_child_theme_creator') === false) {
+        return ;
+    }
+    
     $suffix = '';
     $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
     $suffix = $dev ? '' : '.min';
@@ -93,7 +106,7 @@ function orbisius_child_theme_creator_setup_admin() {
     add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
 
     // Theme Editor
-    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options', 'orbisius_ctc_theme_editor_action', 'orbisius_ctc_theme_editor' );
+    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options', 'orbisius_child_theme_creator_theme_editor_action', 'orbisius_ctc_theme_editor' );
     add_filter('theme_action_links', 'orbisius_child_theme_creator_add_edit_theme_link', 50, 2);
 }
 
@@ -880,7 +893,7 @@ class orbisius_child_theme_creator_util {
      * @return string
      */
     static public function get_theme_editor_link($params = array()) {
-        $rel_path = 'themes.php?page=orbisius_ctc_theme_editor_action';
+        $rel_path = 'themes.php?page=orbisius_child_theme_creator_theme_editor_action';
 
         if (!empty($params)) {
             $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);

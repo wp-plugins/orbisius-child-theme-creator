@@ -6,7 +6,6 @@ Requires at least: 3.0
 Tested up to: 3.7.1
 Stable tag: 1.0.8
 License: GPLv2 or later
-Network:true
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 
@@ -118,6 +117,10 @@ If your site becomes broken due to a child theme (mis)configuration. Please chec
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
 == Changelog ==
+
+= 1.0.9 =
+* Fixed: JS errors are cause errors with other plugins
+* Loads plugin's JS/CSS files only on child theme creator pages (admin area)
 
 = 1.0.8 =
 * Tested with WP 3.7.1
