@@ -114,6 +114,9 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.1.0 =
+* Added a new feature to Customize title, description etc of the new child theme
+
 = 1.0.9 =
 * Fixed: JS errors are cause errors with other plugins
 * Loads plugin's JS/CSS files only on child theme creator pages (admin area)

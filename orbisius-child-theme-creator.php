@@ -324,6 +324,7 @@ function orbisius_child_theme_creator_tools_action() {
     $errors = $success = array();
     $parent_theme_base_dirname = empty($_REQUEST['parent_theme_base_dirname']) ? '' : wp_kses($_REQUEST['parent_theme_base_dirname'], array());
     $orbisius_child_theme_creator_nonce = empty($_REQUEST['orbisius_child_theme_creator_nonce']) ? '' : $_REQUEST['orbisius_child_theme_creator_nonce'];
+    $child_custom_info = empty($_REQUEST['child_custom_info']) ? array() : $_REQUEST['child_custom_info'];
 
     $parent_theme_base_dirname = trim($parent_theme_base_dirname);
     $parent_theme_base_dirname = preg_replace('#[^\w-]#si', '-', $parent_theme_base_dirname);
@@ -342,6 +343,7 @@ function orbisius_child_theme_creator_tools_action() {
         if (empty($errors)) {
             try {
                 $installer = new orbisius_child_theme_creator($parent_theme_base_dirname);
+                $installer->custom_info($child_custom_info);
 
                 // Does the user want to copy the functions.php?
                 if (!empty($_REQUEST['copy_functions_php'])) {
@@ -458,16 +460,27 @@ function orbisius_child_theme_creator_tools_action() {
           ), admin_url( 'themes.php' ) ) ); */
 
         $author_name = $theme_obj->get('Author');
-        $author_name = strip_tags($author_name);
-        $author_name = trim($author_name);
+        $author_name = orbisius_child_theme_creator_util::sanitize_data($author_name);
         $author_name = empty($author_name) ? 'n/a' : $author_name;
 
+        $ver = $theme_obj->get('Version');
+        $ver = orbisius_child_theme_creator_util::sanitize_data($ver);
+        $ver_esc = esc_attr($ver);
+        
+        $theme_name = $theme_obj->get('Name');
+        $theme_name = orbisius_child_theme_creator_util::sanitize_data($theme_name);
+
+        $theme_uri = $theme_obj->get('ThemeURI');
+        $theme_uri = orbisius_child_theme_creator_util::sanitize_data($theme_uri);
+
         $author_uri = $theme_obj->get('AuthorURI');
+        $author_uri = orbisius_child_theme_creator_util::sanitize_data($author_uri);
+
         $author_line = empty($author_uri)
                 ? $author_name
                 : "<a title='Visit author homepage' href='$author_uri' target='_blank'>$author_name</a>";
         
-        $author_line .= " | Ver.$theme_obj->Version\n";
+        $author_line .= " | Ver.$ver_esc\n";
 
         $edit_theme_link = orbisius_child_theme_creator_util::get_theme_editor_link( array('theme_1' => $theme_basedir_name) );
         $author_line .= " | <a href='$edit_theme_link' title='Edit with Orbisius Theme Editor'>Edit</a>\n";
@@ -475,7 +488,7 @@ function orbisius_child_theme_creator_tools_action() {
         $buff .= "<div class='available-theme'>\n";
         $buff .= "<form action='$create_url' method='post'>\n";
         $buff .= "<img class='screenshot' src='$src' alt='' />\n";
-        $buff .= "<h3>$theme_obj->Name</h3>\n";
+        $buff .= "<h3>$theme_name</h3>\n";
         $buff .= "<div class='theme-author'>By $author_line</div>\n";
         $buff .= "<div class='action-links'>\n";
         $buff .= "<ul>\n";
@@ -513,6 +526,55 @@ function orbisius_child_theme_creator_tools_action() {
             $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_switch' name='switch' value='1' /> "
                     . "Switch theme to the new theme after it is created</label></li>\n";
         }
+
+        // This allows the users to specify title and description of the target child theme
+        $customize_info_container_id = 'orbisius_ctc_cust_info_' . md5($src);
+        
+        $buff .= "<li><label><input type='checkbox' id='orbisius_child_theme_creator_customize_info' name='customize_info' value='1'"
+                . " onclick='jQuery(\"#$customize_info_container_id\").toggle(\"fast\");' /> "
+                    . "Customize title, description etc.<br/></label></li>\n";
+
+        $cust_info_name = 'Child of ' . $theme_name;
+        $cust_info_name_esc = esc_attr($cust_info_name);
+
+        $cust_info_descr = $theme_obj->Description;
+        $cust_info_descr = wp_kses($cust_info_descr, array());
+        $cust_info_descr_esc = esc_attr($cust_info_descr);
+
+        $author_name_esc = esc_attr($author_name);
+        $author_uri_esc = esc_attr($author_uri);
+        $theme_uri_esc = esc_attr($theme_uri);
+
+        $buff .= "<div id='$customize_info_container_id' class='app-hide'>
+                  <table class='form-table'>
+                    <tr>
+                        <td>Title</td>
+                        <td><input type='text' id='cust_child_theme_title_$customize_info_container_id' name='child_custom_info[name]' value='' placeholder='$cust_info_name_esc' /></td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td><textarea id='cust_child_theme_descr_$customize_info_container_id' name='child_custom_info[descr]' placeholder='$cust_info_descr_esc' rows='4'></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Theme Site</td>
+                        <td><input type='text' id='cust_child_theme_uri_$customize_info_container_id' name='child_custom_info[theme_uri]' value='' placeholder='$theme_uri_esc' /></td>
+                    </tr>
+                    <tr>
+                        <td>Author Name</td>
+                        <td><input type='text' id='cust_child_theme_author_$customize_info_container_id' name='child_custom_info[author]' value='' placeholder='$author_name_esc' /></td>
+                    </tr>
+                    <tr>
+                        <td>Author Site</td>
+                        <td><input type='text' id='cust_child_theme_author_site_$customize_info_container_id' name='child_custom_info[author_uri]' value='' placeholder='$author_uri_esc' /></td>
+                    </tr>
+                    <tr>
+                        <td>Version</td>
+                        <td><input type='text' id='cust_child_theme_ver_$customize_info_container_id' name='child_custom_info[ver]' value='' placeholder='$ver' /></td>
+                    </tr>
+                  </table>
+                </div> <!-- /$customize_info_container_id -->
+        ";
+        // /This allows the users to specify title and description of the target child theme
 
         $buff .= "<li> <button type='submit' class='button button-primary'>Create Child Theme</button> </li>\n";
     
@@ -718,6 +780,28 @@ class orbisius_child_theme_creator {
         return $this->target_base_dirname;
     }
 
+    private $custom_info = array();
+
+    /**
+     * Get/sets custom info that is related to the child theme
+     * It accepts array or key val or just get all of the custom data
+     * @param void
+     * @return string returns the dirname (not abs) of the child theme
+     */
+    public function custom_info($key = null, $value = null) {
+        if (!is_null($key)) {
+            if (is_array($key)) { // set array
+                $this->custom_info = orbisius_child_theme_creator_util::sanitize_data($key);
+            } else if (!is_null($value)) { // set scalar
+                $this->custom_info[$key] = orbisius_child_theme_creator_util::sanitize_data($value);
+            } else { // get for a key
+                return $this->custom_info[$key];
+            }
+        }
+
+        return $this->custom_info; // all custom info requested
+    }
+
     /**
      * Loads files from a directory but skips . and ..
      */
@@ -808,15 +892,48 @@ class orbisius_child_theme_creator {
 
         $parent_theme_data = version_compare($wp_version, '3.4', '>=') ? wp_get_theme($this->parent_theme_basedir) : (object) get_theme_data($this->target_dir_path . 'style.css');
 
+        $theme_name = "$parent_theme_data->Name $this->target_name_suffix";
+        $theme_uri = $parent_theme_data->ThemeURI;
+        $theme_descr = "$this->target_name_suffix theme for the $parent_theme_data->Name theme";
+        $theme_author = $parent_theme_data->Author;
+        $theme_author_uri = $parent_theme_data->AuthorURI;
+        $ver = $parent_theme_data->Version;
+
+        $custom_info = $this->custom_info();
+
+        if (!empty($custom_info['name'])) {
+            $theme_name = $custom_info['name'];
+        }
+
+        if (!empty($custom_info['theme_uri'])) {
+            $theme_uri = $custom_info['theme_uri'];
+        }
+
+        if (!empty($custom_info['descr'])) {
+            $theme_descr = $custom_info['descr'];
+        }
+
+        if (!empty($custom_info['author'])) {
+            $theme_author = $custom_info['author'];
+        }
+
+        if (!empty($custom_info['author_uri'])) {
+            $theme_author_uri = $custom_info['author_uri'];
+        }
+
+        if (!empty($custom_info['ver'])) {
+            $ver = $custom_info['ver'];
+        }
+
         $buff = '';
         $buff .= "/*\n";
-        $buff .= "Theme Name: $parent_theme_data->Name $this->target_name_suffix\n";
-        $buff .= "Theme URI: $parent_theme_data->ThemeURI\n";
-        $buff .= "Description: $this->target_name_suffix theme for the $parent_theme_data->Name theme\n";
-        $buff .= "Author: $parent_theme_data->Author\n";
-        $buff .= "Author URI: $parent_theme_data->AuthorURI\n";
+        $buff .= "Theme Name: $theme_name\n";
+        $buff .= "Theme URI: $theme_uri\n";
+        $buff .= "Description: $theme_descr\n";
+        $buff .= "Author: $theme_author\n";
+        $buff .= "Author URI: $theme_author_uri\n";
         $buff .= "Template: $this->parent_theme_basedir\n";
-        $buff .= "Version: $parent_theme_data->Version\n";
+        $buff .= "Version: $ver\n";
         $buff .= "*/\n";
 
         $buff .= "\n/* Generated by $app_title ($app_link) on " . date('r') . " */ \n\n";
@@ -829,7 +946,7 @@ class orbisius_child_theme_creator {
         if (file_exists($this->parent_theme_dir . 'rtl.css')) {
             $rtl_buff = '';
             $rtl_buff .= "/*\n";
-            $rtl_buff .= "Theme Name: $parent_theme_data->Name $this->target_name_suffix\n";
+            $rtl_buff .= "Theme Name: $theme_name\n";
             $rtl_buff .= "Template: $this->parent_theme_basedir\n";
             $rtl_buff .= "*/\n";
 
@@ -840,9 +957,11 @@ class orbisius_child_theme_creator {
             file_put_contents($this->target_dir_path . 'rtl.css', $rtl_buff);
         }
 
+        $themes_url = admin_url('themes.php');
+
         $this->info_result = "$parent_theme_data->Name " . $this->target_name_suffix . ' has been created in ' . $this->target_dir_path
                 . ' based on ' . $parent_theme_data->Name . ' theme.'
-                . "\n<br/>Next Go to Appearance > Themes and Activate the new theme.";
+                . "\n<br/>Next go to <a href='$themes_url'><strong>Appearance &gt; Themes</strong></a> and Activate the new theme.";
     }
 
     /**
@@ -867,6 +986,26 @@ class orbisius_child_theme_creator {
  * Util funcs
  */
 class orbisius_child_theme_creator_util {
+    /**
+     * Uses wp_kses to sanitize the data
+     * @param  str/array $value
+     * @return mixed: str/array
+     * @throws Exception
+     */
+    public static function sanitize_data($value = null) {
+        if (is_scalar($value)) {
+            $value = wp_kses($value, array());
+            $value = preg_replace('#\s+#si', ' ', $value);
+            $value = trim($value);
+        } else if (is_array($value)) {
+            $value = array_map(__METHOD__, $value);
+        } else {
+            throw new Exception(__METHOD__.  " Cannot sanitize because of invalid input data.");
+        }
+
+        return $value;
+    }
+
     /**
      * Returns a link to appearance. Taking into account multisite.
      * 
