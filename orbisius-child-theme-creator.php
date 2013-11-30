@@ -1289,7 +1289,7 @@ function orbisius_ctc_theme_editor() {
                             <?php echo orbisius_child_theme_creator_html::html_select('theme_1_file', $theme_1_file, $html_dropdown_theme_1_files); ?>
                         </span>
 
-                        <textarea id="theme_1_file_contents" name="theme_1_file_contents" rows="30" class="widefat"></textarea>
+                        <textarea id="theme_1_file_contents" name="theme_1_file_contents" rows="25" class="widefat"></textarea>
                         <div>
                             <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Update</button>
                             <span class="status"></span>
@@ -1324,7 +1324,7 @@ function orbisius_ctc_theme_editor() {
                             <?php echo orbisius_child_theme_creator_html::html_select('theme_2_file', $theme_2_file, $html_dropdown_theme_1_files); ?>
                         </span>
 
-                        <textarea id="theme_2_file_contents" name="theme_2_file_contents" rows="30" class="widefat"></textarea>
+                        <textarea id="theme_2_file_contents" name="theme_2_file_contents" rows="25" class="widefat"></textarea>
                         <div>
                             <button type='submit' class='button button-primary' id="theme_2_submit" name="theme_2_submit">Update</button>
                             <span class="status"></span>

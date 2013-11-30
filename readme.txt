@@ -114,6 +114,9 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.1.2 =
+* Reduced the height of the editors
+
 = 1.1.1 =
 * Fix: The version 1.1.0 wasn't released properly.
 
