@@ -77,7 +77,6 @@ function orbisius_child_theme_creator_admin_enqueue_scripts($current_page = '') 
         return ;
     }
     
-    $suffix = '';
     $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
     $suffix = $dev ? '' : '.min';
 
