@@ -116,3 +116,9 @@
     background: red !important;
     color: white !important;
 }
+
+/* The dropdowns move to a new line when files are longer */
+.orbisius_ctc_theme_editor_container #theme_1, .orbisius_ctc_theme_editor_container #theme_2, 
+	.orbisius_ctc_theme_editor_container #theme_1_file, .orbisius_ctc_theme_editor_container #theme_2_file {
+	max-width:40%;
+}

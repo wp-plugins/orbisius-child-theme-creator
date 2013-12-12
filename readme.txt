@@ -3,7 +3,7 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.0
-Tested up to: 3.7.1
+Tested up to: 3.8
 Stable tag: 1.1.1
 License: GPLv2 or later
 
@@ -115,7 +115,9 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 == Changelog ==
 
 = 1.1.2 =
-* Reduced the height of the editors
+* Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
+* Restricted the width of the dropdowns in the theme editor so they don't push the editor and the buttons down.
+* Tested with WP 3.8
 
 = 1.1.1 =
 * Fix: The version 1.1.0 wasn't released properly.
