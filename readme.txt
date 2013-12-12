@@ -117,6 +117,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
 * Restricted the width of the dropdowns in the theme editor so they don't push the editor and the buttons down.
+* Tweaked the position of the New File button and the new form that appears.
 * Tested with WP 3.8
 
 = 1.1.1 =

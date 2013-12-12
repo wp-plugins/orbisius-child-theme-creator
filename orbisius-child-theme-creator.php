@@ -1295,22 +1295,21 @@ function orbisius_ctc_theme_editor() {
                         </div>
                     </form>
 
-                    <br/>
                     <hr />
-                    <div>
-                        <button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
-
-                        <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
-                            <h3>New File</h3>
-                            <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
-                            <span class="status"></span>
-                            <div>e.g. test.js, extra.css etc</div>
-
-                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_submit">OK</button>
-                            or <a href='javascript:void(0)' class='app-button-negative' id="theme_1_new_file_btn_cancel" name="theme_1_submit">Cancel</a>
-                        </div>
-
+                    <div>                    
+						<button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
                         <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_1_delete_file_btn" name="theme_1_delete_file_btn">Delete File</a>
+						
+                        <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
+                            <strong>New File</strong>
+                            <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
+							<span>e.g. test.js, extra.css etc</span>
+                            <span class="status"></span>
+							
+							<br/>
+                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_submit">Save</button>
+                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_submit">Cancel</a>
+                        </div>						
                     </div>
                 </td>
                 <td width="50%">
