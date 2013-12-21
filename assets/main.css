@@ -122,3 +122,7 @@
 	.orbisius_ctc_theme_editor_container #theme_1_file, .orbisius_ctc_theme_editor_container #theme_2_file {
 	max-width:40%;
 }
+
+.orbisius_ctc_theme_editor_container .primary_buttons {
+    margin-top:5px;
+}

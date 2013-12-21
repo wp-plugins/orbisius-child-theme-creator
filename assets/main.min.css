@@ -15,6 +15,7 @@
 .orbisius_child_theme_creator_container .available-theme:hover{border:2px solid #444;background:#ccc}
 .orbisius_child_theme_creator_container .saving_action{background:#ccc}
 .orbisius_ctc_theme_editor_container #theme_1,.orbisius_ctc_theme_editor_container #theme_2,.orbisius_ctc_theme_editor_container #theme_1_file,.orbisius_ctc_theme_editor_container #theme_2_file{max-width:40%}
+.orbisius_ctc_theme_editor_container .primary_buttons{margin-top:5px}
 .orbisius_child_theme_creator_container .highlight,.orbisius_ctc_theme_editor_container .highlight{background:#FF3}
 .orbisius_child_theme_creator_container .app-dialog-button-ok,.orbisius_ctc_theme_editor_container .app-dialog-button-ok{background:green!important;color:#FFF!important}
 .orbisius_child_theme_creator_container .app-dialog-button-cancel,.orbisius_ctc_theme_editor_container .app-dialog-button-cancel{background:red!important;color:#FFF!important}
