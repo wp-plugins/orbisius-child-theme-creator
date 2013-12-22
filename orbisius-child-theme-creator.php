@@ -1399,7 +1399,8 @@ function orbisius_ctc_theme_editor() {
                             <!-- send -->
                             <div id='theme_1_send_container' class="theme_1_send_container app-hide">
                                 <p>
-                                    Use this form to email the current theme to yourself or a colleague. Separate multiple emails with with comma.<br/>
+                                    Email selected theme and parent theme (if any) to yourself or a colleague.
+                                    Separate multiple emails with with comma.<br/>
                                     <strong>To:</strong>
                                     <input type="text" id="theme_1_send_to" name="email" value="" placeholder="Enter email" />
 
@@ -1509,32 +1510,57 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
 
     $status_rec['msg'] = 'Sent.';
 
+    $theme_obj = wp_get_theme( $theme_base_dir ); // since 3.4
+
     $all_themes_root = get_theme_root();
     $theme_dir = get_theme_root() . "/$theme_base_dir/";
 
-    if (empty($theme_base_dir) || !is_dir($theme_dir)) {
-        $status_rec['status'] = 'Selected theme is invalid.';
+    if (empty($theme_base_dir) || empty($theme_obj) || !$theme_obj->exists() || !is_dir($theme_dir)) {
+        $status_rec['msg'] = 'Selected theme is invalid.';
         return $status_rec;
     }
 
-    $files = array();
+    $host = empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'];
+    $host = preg_replace('#^w+\.#si', '', $host);
+    $host_suff = empty($host) ? '' : '' . $host . '_';
+
+    $parent_theme_base_dir = $theme_obj->get('Template');
+
+    $id = !empty($parent_theme_base_dir) ? 'child_theme_' : '';
+
+    $theme_name = $theme_obj->get( 'Name' );
     $all_files = orbisius_child_theme_creator_util::load_files($theme_dir, 1);
 
     $upload_dir = wp_upload_dir();
     $dir = $upload_dir['basedir'] . '/'; // C:\path\to\wordpress\wp-content\uploads
-    $target_zip_file = $dir . $theme_base_dir . '__' . date('Y-m-d__H_m_s') . '.zip';
+    $target_zip_file = $dir . $host_suff . $id . $theme_base_dir . '__' . date('Y-m-d__H_m_s') . '.zip';
 
     $prefix_to_strip = $all_themes_root . '/';
     $result = orbisius_child_theme_creator_util::create_zip($all_files, $target_zip_file, true,
-            $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
+                $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
 
     $status_rec['status'] = $result;
 
     if ($result) {
        $attachments = array( $target_zip_file );
-       $subject = $_SERVER['HTTP_HOST'] . ': Theme (zip): ' . $theme_base_dir;
+
+       if (!empty($parent_theme_base_dir)) { // Parent theme Zipping
+           $id = 'parent_theme_';
+           $target_parent_zip_file = $dir . $host_suff . $id . $parent_theme_base_dir . '__' . date('Y-m-d__H_m_s') . '.zip';
+
+           $theme_dir = get_theme_root() . "/$parent_theme_base_dir/";
+           $all_files = orbisius_child_theme_creator_util::load_files($theme_dir, 1);
+           $result = orbisius_child_theme_creator_util::create_zip($all_files, $target_parent_zip_file, true,
+                $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
+
+           if ($result) {
+               $attachments[] = $target_parent_zip_file;
+           }
+       }
+
+       $subject = $_SERVER['HTTP_HOST'] . ': Theme (zip): ' . $theme_name . ' ' . $theme_base_dir;
        $headers = array();
-       $message = "Hi,\n\nPlease find the attached theme.\n\n--\nSent from Orbisius Child Theme Creator.\n";
+       $message = "Hi,\n\nPlease find the attached theme.\n\nSent from Orbisius Child Theme Creator.\n";
        //$headers = 'From:  <myname@example.com>' . "\r\n";
        wp_mail($to, $subject, $message, $headers, $attachments );
 

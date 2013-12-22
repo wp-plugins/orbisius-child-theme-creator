@@ -2,7 +2,7 @@
 Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
-Requires at least: 3.0
+Requires at least: 3.4
 Tested up to: 3.8
 Stable tag: 1.1.2
 License: GPLv2 or later
@@ -39,9 +39,12 @@ It features two editors and you can pick snippets from one theme and paste into 
 * Ajax -> No page refresh
 * Easy to use interface
 * Supports WordPress Multisite
-* Create a new file (+ checks if the file exists)
+* Create a New File (+ checks if the file exists)
 * Delete file
 * Respects the DISALLOW_FILE_EDIT constant, which if set to true will disable the Theme editor
+* Since (v1.1.3) PHP syntax check
+* Since (v1.1.3) Send selected theme and parent theme (if any) to yourself or a colleague.
+* Since (v1.1.3) Implemented theme files to be listed recursively (i.e. all files from the selected theme)
 
 = Usage : To create a child theme go to =
 Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
@@ -117,7 +120,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 = 1.1.3 =
 * Updated CSS to add some top-margin above the update/save changed buttons
 * Added php syntax check
-* Added Send button so people can email the theme files to a colleague to to themselves
+* Added Send button so you can email the selected theme and parent theme (if any) to yourself or a colleague.
 * Implemented theme files to be listed recursively (i.e. all files from the selected theme)
 
 = 1.1.2 =
