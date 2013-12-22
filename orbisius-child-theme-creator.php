@@ -1855,7 +1855,7 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
        $host = empty($_SERVER['HTTP_HOST']) ? '' : str_ireplace('www.', '', $_SERVER['HTTP_HOST']);
        $subject = 'Theme (zip): ' . $theme_name;
        $headers = array();
-       $message = "Hi,\n\nPlease find the attached theme file(s). " . $site_str . "\n\nSent from Orbisius Child Theme Creator.\n";
+       $message = "Hi,\n\nPlease find the attached theme file(s). \n" . $site_str . "\n\nSent from Orbisius Child Theme Creator.\n";
        $headers = "From: $host WordPress <wordpress@$host>" . "\r\n";
        wp_mail($to, $subject, $message, $headers, $attachments );
 
