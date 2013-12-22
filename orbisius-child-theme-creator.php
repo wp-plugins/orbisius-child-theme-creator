@@ -986,6 +986,33 @@ class orbisius_child_theme_creator {
  */
 class orbisius_child_theme_creator_util {
     /**
+     * This cleans filenames but leaves some of the / because some files can be dir1/file.txt.
+     * $jail_root must be added because it will also prefix the path with a directory i.e. jail
+     *
+     * @param type $file_name
+     * @param type $jail_root
+     * @return string
+     */
+    public static function sanitize_file_name($file_name = null, $jail_root = '') {
+        if (empty($jail_root)) {
+            $file_name = sanitize_file_name($file_name); // wp func
+        } else {
+            $file_name = str_replace('/', '__SLASH__', $file_name);
+            $file_name = sanitize_file_name($file_name); // wp func
+            $file_name = str_replace('__SLASH__', '/', $file_name);
+        }
+
+        $file_name = preg_replace('#(?:\/+|\\+)#si', '/', $file_name);
+        $file_name = ltrim($file_name, '/'); // rm leading /
+
+        if (!empty($jail_root)) {
+            $file_name = $jail_root . $file_name;
+        }
+
+        return $file_name;
+    }
+
+    /**
      * Uses wp_kses to sanitize the data
      * @param  str/array $value
      * @return mixed: str/array
@@ -1639,31 +1666,35 @@ function orbisius_ctc_theme_editor_generate_dropdown() {
  * @return string
  */
 function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
-    $buff = $theme_base_dir = $theme_file = '';
+    $buff = $theme_base_dir = $theme_dir = $theme_file = '';
 
     $req = orbisius_ctc_theme_editor_get_request();
 
+    $theme_root = trailingslashit( get_theme_root() );
+
     if (!empty($req['theme_1']) && !empty($req['theme_1_file'])) {
-        $theme_base_dir = empty($req['theme_1']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_1']);
-        $theme_file = empty($req['theme_1_file']) ? 'style.css' : sanitize_file_name($req['theme_1_file']);
+        $theme_base_dir = empty($req['theme_1']) ? '______________' : preg_replace('#[^\w-]#si', '', $req['theme_1']);
+        $theme_dir = $theme_root . "$theme_base_dir/";
+        $theme_file = empty($req['theme_1_file']) ? $theme_dir . 'style.css' : orbisius_child_theme_creator_util::sanitize_file_name($req['theme_1_file'], $theme_dir);
         $theme_file_contents = empty($req['theme_1_file_contents']) ? '' : $req['theme_1_file_contents'];
     } elseif (!empty($req['theme_2']) && !empty($req['theme_2_file'])) {
-        $theme_base_dir = empty($req['theme_2']) ? '' : preg_replace('#[^\w-]#si', '', $req['theme_2']);
-        $theme_file = empty($req['theme_2_file']) ? 'style.css' : sanitize_file_name($req['theme_2_file']);
+        $theme_base_dir = empty($req['theme_2']) ? '______________' : preg_replace('#[^\w-]#si', '', $req['theme_2']);
+        $theme_dir = $theme_root . "$theme_base_dir/";
+        $theme_file = empty($req['theme_2_file']) ? $theme_dir . 'style.css' : orbisius_child_theme_creator_util::sanitize_file_name($req['theme_2_file'], $theme_dir);
         $theme_file_contents = empty($req['theme_2_file_contents']) ? '' : $req['theme_2_file_contents'];
     } else {
         return 'Missing data!';
     }
-
-    $theme_dir = get_theme_root() . "/$theme_base_dir/";
-
+    
+    //$theme_dir = $theme_root . "$theme_base_dir/";
     if (empty($theme_base_dir) || !is_dir($theme_dir)) {
         return 'Selected theme is invalid.';
-    } elseif (!file_exists($theme_dir . $theme_file) && $cmd_id == 1) {
+    } elseif (!file_exists($theme_file) && $cmd_id == 1) {
+    //} elseif (!file_exists($theme_dir . $theme_file) && $cmd_id == 1) {
         return 'Selected file is invalid.';
     }
 
-    $theme_file = $theme_dir . $theme_file;
+    //$theme_file = $theme_dir . $theme_file; //
 
     if ($cmd_id == 1) {
         $buff = file_get_contents($theme_file);
