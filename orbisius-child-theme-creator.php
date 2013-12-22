@@ -1534,7 +1534,7 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
        $attachments = array( $target_zip_file );
        $subject = $_SERVER['HTTP_HOST'] . ': Theme (zip): ' . $theme_base_dir;
        $headers = array();
-       $message = "Hi\nPlease find the attached theme.\n\n--Sent from Orbisius Child Theme Creator.\n";
+       $message = "Hi,\n\nPlease find the attached theme.\n\n--\nSent from Orbisius Child Theme Creator.\n";
        //$headers = 'From:  <myname@example.com>' . "\r\n";
        wp_mail($to, $subject, $message, $headers, $attachments );
 
