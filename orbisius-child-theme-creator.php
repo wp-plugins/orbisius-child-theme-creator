@@ -232,6 +232,8 @@ function orbisius_child_theme_creator_settings_page() {
     ?>
 
     <div class="wrap orbisius_child_theme_creator_container">
+
+        <div id="icon-options-general" class="icon32"></div>
         <h2>Orbisius Child Theme Creator</h2>
 
         <div class="updated"><p>
@@ -247,84 +249,274 @@ function orbisius_child_theme_creator_settings_page() {
 
         <div class="updated0"><p>
                 This plugin doesn't currently have any configuration options. To use it go to <strong>Appearance &rarr; Orbisius Child Theme Creator</strong>
-            </p></div>
+        </p></div>
 
-        <h2>Video Demo</h2>
+        <div id="poststuff">
 
-        <p class="orbisius_child_theme_creator_demo_video hide00">
-            <iframe width="560" height="315" src="http://www.youtube.com/embed/BZUVq6ZTv-o" frameborder="0" allowfullscreen></iframe>
+            <div id="post-body" class="metabox-holder columns-2">
 
-            <br/>Video Link: <a href="www.youtube.com/watch?v=BZUVq6ZTv-o"
-                                target="_blank">www.youtube.com/watch?v=BZUVq6ZTv-o</a>
-        </p>
+                <!-- main content -->
+                <div id="post-body-content">
 
-    <?php
-    $plugin_data = orbisius_child_theme_creator_get_plugin_data();
+                    <div class="meta-box-sortables ui-sortable">
 
-    $app_link = urlencode($plugin_data['PluginURI']);
-    $app_title = urlencode($plugin_data['Name']);
-    $app_descr = urlencode($plugin_data['Description']);
-    ?>
-        <h2>Share</h2>
-        <p>
-            <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-            <a class="addthis_button_facebook" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_twitter" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_google_plusone" g:plusone:count="false" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_linkedin" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_email" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_myspace" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_google" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_digg" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_delicious" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_stumbleupon" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_tumblr" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_favorites" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
-            <a class="addthis_button_compact"></a>
-        </div>
-        <!-- The JS code is in the footer -->
 
-        <script type="text/javascript">
-            var addthis_config = {"data_track_clickback": true};
-            var addthis_share = {
-                templates: {twitter: 'Check out {{title}} #WordPress #plugin at {{lurl}} (via @orbisius)'}
-            }
-        </script>
-        <!-- AddThis Button START part2 -->
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=lordspace"></script>
-        <!-- AddThis Button END part2 -->
-    </p>
+                        <div class="postbox">
 
-    <h2>Troubleshooting</h2>
-    If your site becomes broken due to a child theme (mis)configuration. Please check another plugin of ours:
-    <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=settings_troubleshooting&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Fixer</a>
+                            <h3><span>Usage / Help</span></h3>
+                            <div class="inside">
 
-    <h2>Support & Feature Requests</h2>
+                                <strong>Process</strong><br/>
+                                <ul>
+                                    <li>Download a Theme that you like</li>
+                                    <li>Create a child theme based on it</li>
+                                    <li>Activate the child theme</li>
+                                    <li>Customize the child theme</li>
+                                </ul>
+
+                                <iframe width="560" height="315" src="http://www.youtube.com/embed/BZUVq6ZTv-o" frameborder="0" allowfullscreen></iframe>
+
+                            </div> <!-- .inside -->
+
+                        </div> <!-- .postbox -->
+
+<div class="postbox">
+                            <?php
+                                $plugin_data = orbisius_child_theme_creator_get_plugin_data();
+
+                                $app_link = urlencode($plugin_data['PluginURI']);
+                                $app_title = urlencode($plugin_data['Name']);
+                                $app_descr = urlencode($plugin_data['Description']);
+                                ?>
+                                <h3>Share</h3>
+                                <p>
+                                    <!-- AddThis Button BEGIN -->
+                                <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                    <a class="addthis_button_facebook" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_twitter" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_google_plusone" g:plusone:count="false" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_linkedin" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_email" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_myspace" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_google" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_digg" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_delicious" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_stumbleupon" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_tumblr" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_favorites" addthis:url="<?php echo $app_link ?>" addthis:title="<?php echo $app_title ?>" addthis:description="<?php echo $app_descr ?>"></a>
+                                    <a class="addthis_button_compact"></a>
+                                </div>
+                                <!-- The JS code is in the footer -->
+
+                                <script type="text/javascript">
+                                    var addthis_config = {"data_track_clickback": true};
+                                    var addthis_share = {
+                                        templates: {twitter: 'Check out {{title}} #WordPress #plugin at {{lurl}} (via @orbisius)'}
+                                    }
+                                </script>
+                                <!-- AddThis Button START part2 -->
+                                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=lordspace"></script>
+                                <!-- AddThis Button END part2 -->
+                        </div> <!-- .postbox -->
+                        
+                    </div> <!-- .meta-box-sortables .ui-sortable -->
+
+                </div> <!-- post-body-content -->
+
+                <!-- sidebar -->
+                <div id="postbox-container-1" class="postbox-container">
+
+                    <div class="meta-box-sortables">
+
+                        <div class="postbox">
+                            <h3><span>Hire Us</span></h3>
+                            <div class="inside">
+                                Hire us to create a plugin/web/mobile app for your business.
+                                <br/><a href="http://orbisius.com/page/free-quote/?utm_source=orbisius-child-theme-creator&utm_medium=plugin-settings&utm_campaign=product"
+                                   title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
+                                    class="button-primary" target="_blank">Get a Free Quote</a>
+                            </div> <!-- .inside -->
+                        </div> <!-- .postbox -->
+
+                        <div class="postbox">
+                            <h3><span>Newsletter</span></h3>
+                            <div class="inside">
+                                <!-- Begin MailChimp Signup Form -->
+                                <div id="mc_embed_signup">
+                                    <?php
+                                        $current_user = wp_get_current_user();
+                                        $email = empty($current_user->user_email) ? '' : $current_user->user_email;
+                                    ?>
+
+                                    <form action="http://WebWeb.us2.list-manage.com/subscribe/post?u=005070a78d0e52a7b567e96df&amp;id=1b83cd2093" method="post"
+                                          id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                                        <span>Get notified about cool plugins we release</span>
+                                        <!--<div class="indicates-required"><span class="app_asterisk">*</span> indicates required
+                                        </div>-->
+                                        <div class="mc-field-group">
+                                            <label for="mce-EMAIL">Email <span class="app_asterisk">*</span></label>
+                                            <input type="email" value="<?php echo esc_attr($email); ?>" name="EMAIL" class="required email" id="mce-EMAIL">
+                                        </div>
+                                        <div id="mce-responses" class="clear">
+                                            <div class="response" id="mce-error-response" style="display:none"></div>
+                                            <div class="response" id="mce-success-response" style="display:none"></div>
+                                        </div>	<div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button-primary"></div>
+                                    </form>
+                                </div>
+                                <!--End mc_embed_signup-->
+                            </div> <!-- .inside -->
+                        </div> <!-- .postbox -->
+
+                        <div class="postbox">
+                            <div class="inside">
+                                <!-- Twitter: code -->
+                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                                <!-- /Twitter: code -->
+
+                                <!-- Twitter: Orbisius_Follow:js -->
+                                    <a href="https://twitter.com/orbisius" class="twitter-follow-button"
+                                       data-align="right" data-show-count="false">Follow @orbisius</a>
+                                <!-- /Twitter: Orbisius_Follow:js -->
+
+                                &nbsp;
+
+                                <!-- Twitter: Tweet:js -->
+                                <a href="https://twitter.com/share" class="twitter-share-button"
+                                   data-lang="en" data-text="Checkout Like Gate Pro #WordPress #plugin.Increase your site & fb page's likes"
+                                   data-count="none" data-via="orbisius" data-related="orbisius"
+                                   data-url="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/">Tweet</a>
+                                <!-- /Twitter: Tweet:js -->
+
+                                <br/>
+                                <span>Support: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=plugin-settings&utm_campaign=product"
+                                    target="_blank" title="[new window]">Forums</a>
+
+                                    <!--|
+                                     <a href="http://docs.google.com/viewer?url=https%3A%2F%2Fdl.dropboxusercontent.com%2Fs%2Fwz83vm9841lz3o9%2FOrbisius_LikeGate_Documentation.pdf" target="_blank">Documentation</a>
+                                    -->
+                                </span>
+                            </div>
+
+                            <h3><span>Troubleshooting</span></h3>
+                            <div class="inside">
+                                If your site becomes broken because of a child theme check:
+                                <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-fixer/?utm_source=orbisius-child-theme-creator&utm_medium=settings_troubleshooting&utm_campaign=product"
+                                target="_blank" title="[new window]">Orbisius Theme Fixer</a>
+                            </div>
+                        </div> <!-- .postbox -->
+
+
+                        <div class="postbox"> <!-- quick-contact -->
+                            <?php
+                            $current_user = wp_get_current_user();
+                            $email = empty($current_user->user_email) ? '' : $current_user->user_email;
+                            $quick_form_action = is_ssl()
+                                    ? 'https://ssl.orbisius.com/apps/quick-contact/'
+                                    : 'http://apps.orbisius.com/quick-contact/';
+
+                            if (!empty($_SERVER['DEV_ENV'])) {
+                                $quick_form_action = 'http://localhost/projects/quick-contact/';
+                            }
+                            ?>
+                            <script>
+                                var like_gate_pro_quick_contact = {
+                                    validate_form : function () {
+                                        try {
+                                            var msg = jQuery('#like_gate_pro_msg').val().trim();
+                                            var email = jQuery('#like_gate_pro_email').val().trim();
+
+                                            email = email.replace(/\s+/, '');
+                                            email = email.replace(/\.+/, '.');
+                                            email = email.replace(/\@+/, '@');
+
+                                            if ( msg == '' ) {
+                                                alert('Enter your message.');
+                                                jQuery('#like_gate_pro_msg').focus().val(msg).css('border', '1px solid red');
+                                                return false;
+                                            } else {
+                                                // all is good clear borders
+                                                jQuery('#like_gate_pro_msg').css('border', '');
+                                            }
+
+                                            if ( email == '' || email.indexOf('@') <= 2 || email.indexOf('.') == -1) {
+                                                alert('Enter your email and make sure it is valid.');
+                                                jQuery('#like_gate_pro_email').focus().val(email).css('border', '1px solid red');
+                                                return false;
+                                            } else {
+                                                // all is good clear borders
+                                                jQuery('#like_gate_pro_email').css('border', '');
+                                            }
+
+                                            return true;
+                                        } catch(e) {};
+                                    }
+                                };
+                            </script>
+                            <h3><span>Quick Question or Suggestion</span></h3>
+                            <div class="inside">
+                                <div>
+                                    <form method="post" action="<?php echo $quick_form_action; ?>" target="_blank">
+                                        <?php
+                                            global $wp_version;
+											$plugin_data = get_plugin_data(__FILE__);
+
+                                            $hidden_data = array(
+                                                'site_url' => site_url(),
+                                                'wp_ver' => $wp_version,
+                                                'first_name' => $current_user->first_name,
+                                                'last_name' => $current_user->last_name,
+                                                'product_name' => $plugin_data['Name'],
+                                                'product_ver' => $plugin_data['Version'],
+                                                'woocommerce_ver' => defined('WOOCOMMERCE_VERSION') ? WOOCOMMERCE_VERSION : 'n/a',
+                                            );
+                                            $hid_data = http_build_query($hidden_data);
+                                            echo "<input type='hidden' name='data[sys_info]' value='$hid_data' />\n";
+                                        ?>
+                                        <textarea class="widefat" id='like_gate_pro_msg' name='data[msg]' required="required"></textarea>
+                                        <br/>Your Email: <input type="text" class=""
+                                               id="like_gate_pro_email" name='data[sender_email]' placeholder="Email" required="required"
+                                               value="<?php echo esc_attr($email); ?>"
+                                               />
+                                        <br/><input type="submit" class="button-primary" value="<?php _e('Send Feedback') ?>"
+                                                    onclick="return like_gate_pro_quick_contact.validate_form();" />
+                                        <br/>
+                                        What data will be sent
+                                        <a href='javascript:void(0);'
+                                            onclick='jQuery(".like_gate_pro_data_to_be_sent").toggle();'>(show/hide)</a>
+                                        <div class="hide app_hide like_gate_pro_data_to_be_sent">
+                                            <textarea class="widefat" rows="4" readonly="readonly" disabled="disabled"><?php
+                                            foreach ($hidden_data as $key => $val) {
+                                                if (is_array($val)) {
+                                                    $val = var_export($val, 1);
+                                                }
+
+                                                echo "$key: $val\n";
+                                            }
+                                            ?></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> <!-- .inside -->
+                         </div> <!-- .postbox --> <!-- /quick-contact -->
+
+                    </div> <!-- .meta-box-sortables -->
+
+                </div> <!-- #postbox-container-1 .postbox-container -->
+
+            </div> <!-- #post-body .metabox-holder .columns-2 -->
+
+            <br class="clear">
+        </div> <!-- #poststuff -->
+
+    </div> <!-- .wrap -->
+
+    <!--<h2>Support & Feature Requests</h2>
     <div class="updated"><p>
             ** NOTE: ** Support is handled on our site: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>.
             Please do NOT use the WordPress forums or other places to seek support.
-        </p></div>
-
-    <h2>Mailing List</h2>
-    <p>
-        Get the latest news and updates about this and future cool
-        <a href="http://profiles.wordpress.org/lordspace/"
-           target="_blank" title="Opens a page with the pugins we developed. [New Window/Tab]">plugins we develop</a>.
-    </p>
-    <p>
-        <!-- // MAILCHIMP SUBSCRIBE CODE \\ -->
-        1) <a href="http://eepurl.com/guNzr" target="_blank">Subscribe to our newsletter</a>
-        <!-- \\ MAILCHIMP SUBSCRIBE CODE // -->
-    </p>
-    <p>OR</p>
-    <p>
-        2) Subscribe using our QR code. [Scan it with your mobile device].<br/>
-        <img src="<?php echo plugin_dir_url(__FILE__); ?>/i/guNzr.qr.2.png" alt="" />
-    </p>
+    </p></div>-->
 
     <?php orbisius_child_theme_creator_generate_ext_content(); ?>
-    </div>
     <?php
 }
 
