@@ -27,6 +27,7 @@
 
 // Set up plugin
 add_action('admin_init', 'orbisius_child_theme_creator_admin_init');
+add_action('admin_init', 'orbisius_child_theme_creator_register_settings');
 add_action('admin_enqueue_scripts', 'orbisius_child_theme_creator_admin_enqueue_scripts');
 add_action('admin_menu', 'orbisius_child_theme_creator_setup_admin');
 add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
@@ -37,16 +38,35 @@ add_action('network_admin_notices', 'orbisius_child_theme_creator_admin_notice_m
 add_action( 'wp_ajax_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 
+
+register_activation_hook( __FILE__, 'orbisius_child_theme_creator_on_activate' );
+
+/**
+ * 
+ */
+function orbisius_child_theme_creator_on_activate() {
+    $opts = orbisius_child_theme_creator_get_options();
+
+    // Let's set the activation time so we can hide the notice in the plugins area.
+    if (empty($opts['setup_time'])) {
+        $opts['setup_time'] = time();
+        orbisius_child_theme_creator_set_options($opts);
+    }
+}
+
 /**
  * Show a notice in the plugins area to let the user know how to work with the plugin.
  * On multisite the message is shown only on the network site.
  */
 function orbisius_child_theme_creator_admin_notice_message() {
     global $pagenow;
+    $opts = orbisius_child_theme_creator_get_options();
     
     $plugin_data = orbisius_child_theme_creator_get_plugin_data();
     $name = $plugin_data['Name'];
-    $show_notice = 1; // todo check cfg for dismiss
+
+    // show notice only the first 24h
+    $show_notice = empty($opts['setup_time']) || ( time() - $opts['setup_time'] < 24 * 3600 );
 
     if ($show_notice
             && ( stripos($pagenow, 'plugins.php') !== false )
@@ -63,6 +83,68 @@ function orbisius_child_theme_creator_admin_notice_message() {
  */
 function orbisius_child_theme_creator_admin_init() {
 
+}
+
+/**
+ * Sets the setting variables
+ */
+function orbisius_child_theme_creator_register_settings() { // whitelist options
+    register_setting('orbisius_child_theme_creator_settings', 'orbisius_child_theme_creator_options',
+        'orbisius_child_theme_creator_validate_settings');
+}
+
+/**
+ * This is called by WP after the user hits the submit button.
+ * The variables are trimmed first and then passed to the who ever wantsto filter them.
+ * @param array the entered data from the settings page.
+ * @return array the modified input array
+ */
+function orbisius_child_theme_creator_validate_settings($input) { // whitelist options
+    $input = array_map('trim', $input);
+
+    // let extensions do their thing
+    $input_filtered = apply_filters('orbisius_child_theme_creator_ext_filter_settings', $input);
+
+    // did the extension break stuff?
+    $input = is_array($input_filtered) ? $input_filtered : $input;
+
+    return $input;
+}
+
+/**
+ * Retrieves the plugin options. It inserts some defaults.
+ * The saving is handled by the settings page. Basically, we submit to WP and it takes
+ * care of the saving.
+ *
+ * @return array
+ */
+function orbisius_child_theme_creator_get_options() {
+    $defaults = array(
+        'status' => 1,
+        'setup_time' => '',
+    );
+
+    $opts = get_option('orbisius_child_theme_creator_options');
+
+    $opts = (array) $opts;
+    $opts = array_merge($defaults, $opts);
+
+    return $opts;
+}
+
+/**
+* Updates options but it merges them unless $override is set to 1
+* that way we could just update one variable of the settings.
+*/
+function orbisius_child_theme_creator_set_options($opts = array(), $override = 0) {
+    if (!$override) {
+        $old_opts = orbisius_child_theme_creator_get_options();
+        $opts = array_merge($old_opts, $opts);
+    }
+
+    update_option('orbisius_child_theme_creator_options', $opts);
+
+    return $opts;
 }
 
 /**
@@ -97,15 +179,21 @@ function orbisius_child_theme_creator_admin_enqueue_scripts($current_page = '') 
  * @since 0.1
  */
 function orbisius_child_theme_creator_setup_admin() {
-    add_options_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_settings_page', 'orbisius_child_theme_creator_settings_page');
-    add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_themes_action', 'orbisius_child_theme_creator_tools_action');
-    add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 'orbisius_child_theme_creator_tools_action', 'orbisius_child_theme_creator_tools_action');
+    add_options_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options', 
+            'orbisius_child_theme_creator_settings_page', 'orbisius_child_theme_creator_settings_page');
+
+    add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options',
+            'orbisius_child_theme_creator_themes_action', 'orbisius_child_theme_creator_tools_action');
+
+    add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options',
+            'orbisius_child_theme_creator_tools_action', 'orbisius_child_theme_creator_tools_action');
 
     // when plugins are show add a settings link near my plugin for a quick access to the settings page.
     add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
 
     // Theme Editor
-    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options', 'orbisius_child_theme_creator_theme_editor_action', 'orbisius_ctc_theme_editor' );
+    add_theme_page( 'Orbisius Theme Editor', 'Orbisius Theme Editor', 'manage_options',
+            'orbisius_child_theme_creator_theme_editor_action', 'orbisius_ctc_theme_editor' );
     add_filter('theme_action_links', 'orbisius_child_theme_creator_add_edit_theme_link', 50, 2);
 }
 

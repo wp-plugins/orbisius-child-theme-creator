@@ -123,6 +123,8 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Added Send button so you can email the selected theme and parent theme (if any) to yourself or a colleague.
 * Implemented theme files to be listed recursively (i.e. all files from the selected theme)
 * Fixed JS error on Settings page.
+* Added uninstall.php file to clean after itself
+* Added a check and the notice that shows up on the plugins page won't show up after 24h
 
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
