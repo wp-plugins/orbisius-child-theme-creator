@@ -115,6 +115,12 @@ If your site becomes broken due to a child theme (mis)configuration. Please chec
 = What to do next? =
 Go to http://club.orbisius.com and post suggestions in our forum for new features that you'd like to see in this plugin or its extensions.
 
+= Need a custom plugin? =
+Let's talk.
+<a href="http://orbisius.com/page/free-quote/?utm_source=orbisius-child-theme-creator&utm_medium=plugin-readme-faq&utm_campaign=product"
+                                   title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
+                                    class="button-primary" target="_blank">Get a Free Quote</a>
+
 == Changelog ==
 
 = 1.1.3 =
