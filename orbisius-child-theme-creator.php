@@ -693,7 +693,10 @@ function orbisius_child_theme_creator_tools_action() {
                      Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
 
                 | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-links&utm_campaign=plugin-update"
-                     title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+                     target="_blank" title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+
+                | <a href="http://orbisius.us2.list-manage.com/subscribe?u=005070a78d0e52a7b567e96df&id=1b83cd2093" target="_blank"
+                     title="This opens in a new window/tab">Newsletter</a>
 
                 | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
 
@@ -1591,7 +1594,10 @@ function orbisius_ctc_theme_editor() {
                      Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
 
                 | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-editor&utm_medium=plugin-links&utm_campaign=plugin-update"
-                     title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+                     target="_blank" title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+
+                | <a href="http://orbisius.us2.list-manage.com/subscribe?u=005070a78d0e52a7b567e96df&id=1b83cd2093" target="_blank"
+                     title="This opens in a new window/tab">Newsletter</a>
 
                 | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
                 
