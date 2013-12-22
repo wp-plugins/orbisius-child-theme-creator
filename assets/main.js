@@ -196,7 +196,65 @@ function orbisius_ctc_theme_editor_setup() {
             } // success
         }); // ajax
     }); // click
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Send
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#theme_1_send_btn').on("click", function () {
+        $('#theme_1_send_container').toggle('slow');
+        $('#theme_1_send_to').focus();
+    });
+
+    // This is when the cancel button is clicked so the user doesn't want a new folder.
+    $('#theme_1_send_btn_cancel').on("click", function () {
+        //$('#theme_1_send_to').val(''); //??
+        $('#theme_1_send_container').hide('slow');
+    });
+
+    $('#theme_1_send_btn_ok').on("click", function () {
+        var to = jQuery('#theme_1_send_to').val().trim();
+
+        if (to.indexOf('@') == -1 || to.indexOf('.') < 1) {
+            alert('Invalid email(s).');
+            $('#theme_1_send_to').focus();
+            return;
+        }
+
+        var form_id = '#orbisius_ctc_theme_editor_theme_1_form';
+        var action = 'send_theme';
+        var target_container = '.orbisius_ctc_theme_editor_theme_1_primary_buttons .status';
+
+        jQuery(target_container)
+                .empty()
+                .removeClass('app-alert-success app-alert-error app-alert-notice')
+                .addClass( 'app-alert-notice')
+                .html('Processing ...');
+
+        jQuery.ajax({
+            type : "post",
+            //dataType : "json",
+            url : ajaxurl, // WP defines it and it contains all the necessary params
+            data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
+
+            success : function (json) {
+                jQuery(target_container)
+                        .empty()
+                        .removeClass('app-alert-notice')
+                        .html(json.msg)
+                        .addClass( json.status ? 'app-alert-success' : 'app-alert-error' );
+
+                if (json.status) { // auto hide on success
+                    setTimeout(function () {
+                        jQuery(target_container).empty().removeClass('app-alert-success app-alert-error');
+                        $('#theme_1_send_btn_cancel').click();
+                    }, 2000);
+                }
+            } // success
+        }); // ajax
+    }); // click
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////

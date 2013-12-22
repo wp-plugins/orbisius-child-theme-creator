@@ -1299,6 +1299,7 @@ function orbisius_ctc_theme_editor() {
                     <div>                    
 						<button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
                         <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
+                        <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
 
                         <!--
                         <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
@@ -1315,6 +1316,21 @@ function orbisius_ctc_theme_editor() {
                             <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_new_file_btn_ok">Save</button>
                             <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_new_file_btn_cancel">Cancel</a>
                         </div>
+
+                        <!-- send -->
+                        <div id='theme_1_send_container' class="theme_1_send_container app-hide">
+                            <p>
+                                Use this form to email the current theme to yourself or a colleague. Separate multiple emails with with comma.<br/>
+                                <strong>To:</strong>
+                                <input type="text" id="theme_1_send_to" name="to" value="" placeholder="Enter email"/>
+
+                                <button type='button' class='button button-primary' id="theme_1_send_btn_ok" name="theme_1_send_btn_ok">Send</button>
+                                <a href='javascript:void(0)' class='app-button-negative00 button delete'
+                                   id="theme_1_send_btn_cancel" name="theme_1_send_btn_cancel">Cancel</a>
+                            </p>
+                        </div>
+                        <!-- /send -->
+
 
                         <!-- new folder -->
                         <!--
@@ -1388,11 +1404,32 @@ function orbisius_ctc_theme_editor_ajax() {
 
             break;
 
+        case 'send_theme':
+            $buff = orbisius_ctc_theme_editor_manage_file(5);
+
+            break;
+
         default:
             break;
     }
 
     die($buff);
+}
+
+/**
+ *
+ * @param string $theme_base_dir
+ */
+function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
+    $status_rec = array(
+        'status' => 0,
+        'msg' => '',
+    );
+
+    $status_rec['status'] = 1;
+    $status_rec['msg'] = 'Sent.' . $theme_base_dir;
+
+    return $status_rec;
 }
 
 /**
@@ -1548,7 +1585,9 @@ function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
         $buff = !empty($status) ? $theme_file_contents : '';
     } elseif ($cmd_id == 3 && (!empty($req['theme_1_file']) || !empty($req['theme_2_file']))) {
         $status = unlink($theme_file);
-    } elseif ($cmd_id == 4) { // syntax check. create a tmp file and ask php to check it.
+    }
+
+    elseif ($cmd_id == 4) { // syntax check. create a tmp file and ask php to check it.
         $status_rec = orbisius_ctc_theme_editor_check_syntax($theme_file_contents);
         
         if (function_exists('wp_send_json')) { // since WP 3.5
@@ -1557,7 +1596,21 @@ function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
             @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
             $buff = json_encode($status_rec);
         }
-    } else {
+    }
+
+    elseif ($cmd_id == 5) { // zip
+        $to = empty($req['to']) ? '' : preg_replace('#[^\w-\.@,\'"]#si', '', $req['to']);
+        $status_rec = orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to);
+
+        if (function_exists('wp_send_json')) { // since WP 3.5
+            wp_send_json($status_rec);
+        } else {
+            @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+            $buff = json_encode($status_rec);
+        }
+    }
+    
+    else {
         
     }
 
