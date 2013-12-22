@@ -1478,7 +1478,7 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
         'msg' => '',
     );
 
-    $status_rec['msg'] = 'Sent.' . $theme_base_dir;
+    $status_rec['msg'] = 'Sent.';
 
     $all_themes_root = get_theme_root();
     $theme_dir = get_theme_root() . "/$theme_base_dir/";
@@ -1491,15 +1491,27 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
     $files = array();
     $all_files = orbisius_child_theme_creator_util::load_files($theme_dir, 1);
 
-    $prefix_to_strip = $all_themes_root . '/'; // TMP: root dir
-    $result = orbisius_child_theme_creator_util::create_zip($all_files, '/' . $theme_base_dir . '.zip', true, 
+    $upload_dir = wp_upload_dir();
+    $dir = $upload_dir['basedir'] . '/'; // C:\path\to\wordpress\wp-content\uploads
+    $target_zip_file = $dir . $theme_base_dir . '__' . date('Y-m-d__H_m_s') . '.zip';
+
+    $prefix_to_strip = $all_themes_root . '/';
+    $result = orbisius_child_theme_creator_util::create_zip($all_files, $target_zip_file, true,
             $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
 
     $status_rec['status'] = $result;
 
     if ($result) {
-        // todo
-        // attach the theme to an email and send it to: $to
+       $attachments = array( $target_zip_file );
+       $subject = $_SERVER['HTTP_HOST'] . ': Theme (zip): ' . $theme_base_dir;
+       $headers = array();
+       $message = "Hi\nPlease find the attached theme.\n\n--Sent from Orbisius Child Theme Creator.\n";
+       //$headers = 'From:  <myname@example.com>' . "\r\n";
+       wp_mail($to, $subject, $message, $headers, $attachments );
+
+       foreach ($attachments as $attachment) {
+           unlink($attachment);
+       }
     }
 
     return $status_rec;
