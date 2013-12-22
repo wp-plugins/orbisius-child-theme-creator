@@ -1341,63 +1341,65 @@ function orbisius_ctc_theme_editor() {
                         </span>
 
                         <textarea id="theme_1_file_contents" name="theme_1_file_contents" rows="22" class="widefat"></textarea>
+
                         <div class="orbisius_ctc_theme_editor_theme_1_primary_buttons primary_buttons">
                             <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Save Changes</button>
                             <span class="status"></span>
                         </div>
+
+                        <hr />
+                        <div class="orbisius_ctc_theme_editor_theme_1_secondary_buttons secondary_buttons">
+                            <button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
+                            <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
+                            <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
+
+                            <!--
+                            <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
+
+                            <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_1_delete_file_btn" name="theme_1_delete_file_btn">Delete File</a>
+
+                            <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
+                                <strong>New File</strong>
+                                <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
+                                <span>e.g. test.js, extra.css etc</span>
+                                <span class="status"></span>
+
+                                <br/>
+                                <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_new_file_btn_ok">Save</button>
+                                <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_new_file_btn_cancel">Cancel</a>
+                            </div>
+
+                            <!-- send -->
+                            <div id='theme_1_send_container' class="theme_1_send_container app-hide">
+                                <p>
+                                    Use this form to email the current theme to yourself or a colleague. Separate multiple emails with with comma.<br/>
+                                    <strong>To:</strong>
+                                    <input type="text" id="theme_1_send_to" name="email" value="" placeholder="Enter email" />
+
+                                    <button type='button' class='button button-primary' id="theme_1_send_btn_ok" name="theme_1_send_btn_ok">Send</button>
+                                    <a href='javascript:void(0)' class='app-button-negative00 button delete'
+                                       id="theme_1_send_btn_cancel" name="theme_1_send_btn_cancel">Cancel</a>
+                                </p>
+                            </div>
+                            <!-- /send -->
+
+
+                            <!-- new folder -->
+                            <!--
+                            <div id='theme_1_new_folder_container' class="theme_1_new_folder_container app-hide">
+                                <strong>New Folder</strong>
+                                <input type="text" id="theme_1_new_folder" name="theme_1_new_folder" value="" />
+                                <span>e.g. includes, data</span>
+                                <span class="status"></span>
+
+                                <br/>
+                                <button type='button' class='button button-primary' id="theme_1_new_folder_btn_ok" name="theme_1_new_folder_btn_ok">Save</button>
+                                <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_folder_btn_cancel" name="theme_1_new_folder_btn_cancel">Cancel</a>
+                            </div>-->
+                            <!-- /new folder -->
+                        </div> <!-- /secondary_buttons -->
                     </form>
 
-                    <hr />
-                    <div>                    
-						<button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
-                        <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
-                        <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
-
-                        <!--
-                        <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
-
-                        <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_1_delete_file_btn" name="theme_1_delete_file_btn">Delete File</a>
-						
-                        <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
-                            <strong>New File</strong>
-                            <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
-							<span>e.g. test.js, extra.css etc</span>
-                            <span class="status"></span>
-							
-							<br/>
-                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_new_file_btn_ok">Save</button>
-                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_new_file_btn_cancel">Cancel</a>
-                        </div>
-
-                        <!-- send -->
-                        <div id='theme_1_send_container' class="theme_1_send_container app-hide">
-                            <p>
-                                Use this form to email the current theme to yourself or a colleague. Separate multiple emails with with comma.<br/>
-                                <strong>To:</strong>
-                                <input type="text" id="theme_1_send_to" name="to" value="" placeholder="Enter email"/>
-
-                                <button type='button' class='button button-primary' id="theme_1_send_btn_ok" name="theme_1_send_btn_ok">Send</button>
-                                <a href='javascript:void(0)' class='app-button-negative00 button delete'
-                                   id="theme_1_send_btn_cancel" name="theme_1_send_btn_cancel">Cancel</a>
-                            </p>
-                        </div>
-                        <!-- /send -->
-
-
-                        <!-- new folder -->
-                        <!--
-                        <div id='theme_1_new_folder_container' class="theme_1_new_folder_container app-hide">
-                            <strong>New Folder</strong>
-                            <input type="text" id="theme_1_new_folder" name="theme_1_new_folder" value="" />
-							<span>e.g. includes, data</span>
-                            <span class="status"></span>
-
-							<br/>
-                            <button type='button' class='button button-primary' id="theme_1_new_folder_btn_ok" name="theme_1_new_folder_btn_ok">Save</button>
-                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_folder_btn_cancel" name="theme_1_new_folder_btn_cancel">Cancel</a>
-                        </div>-->
-                        <!-- /new folder -->
-                    </div>
                 </td>
                 <td width="50%">
                     <form id="orbisius_ctc_theme_editor_theme_2_form" class="orbisius_ctc_theme_editor_theme_2_form">
@@ -1684,7 +1686,7 @@ function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
     }
 
     elseif ($cmd_id == 5) { // zip
-        $to = empty($req['to']) ? '' : preg_replace('#[^\w-\.@,\'"]#si', '', $req['to']);
+        $to = empty($req['email']) ? '' : preg_replace('#[^\w-\.@,\'"]#si', '', $req['email']);
         $status_rec = orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to);
 
         if (function_exists('wp_send_json')) { // since WP 3.5
