@@ -1491,7 +1491,7 @@ function orbisius_ctc_theme_editor() {
                             <div id='theme_1_send_container' class="theme_1_send_container app-hide">
                                 <p>
                                     Email selected theme and parent theme (if any) to yourself or a colleague.
-                                    Separate multiple emails with with comma.<br/>
+                                    Separate multiple emails with commas.<br/>
                                     <strong>To:</strong>
                                     <input type="text" id="theme_1_send_to" name="email" value="" placeholder="Enter email" />
 
