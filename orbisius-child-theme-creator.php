@@ -1083,11 +1083,50 @@ class orbisius_child_theme_creator_util {
     }
 
     /**
-     * Loads files from a directory but skips . and ..
+     * Create an zip file. Requires ZipArchive class to exist.
+     * Usage: $result = create_zip($files_to_zip, 'my-archive.zip', true, $prefix_to_strip, 'Slavi created this archive at ' . date('r') );
      *
-     * @since 1.1.3 it supports recusiveness
+     * @param array $files
+     * @param str $destination zip file
+     * @param str $overwrite
+     * @param str $prefix_to_strip
+     * @param str $comment
+     * @return boolean
      */
-    public static function load_files($dir) {
+    function create_zip($files = array(), $destination = '', $overwrite = false, $prefix_to_strip = '', $comment = '' ) {
+        if ((file_exists($destination) && !$overwrite) || !class_exists('ZipArchive')) {
+            return false;
+        }
+
+        $zip = new ZipArchive();
+
+        if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+            return false;
+        }
+
+        foreach ($files as $file) {
+            // if we specify abs path to the dir we'll add a relative folder in the archive.
+            $file_in_archive = str_ireplace($prefix_to_strip, '', $file);
+            $zip->addFile($file, $file_in_archive);
+        }
+
+        if (!empty($comment)) {
+            $zip->setArchiveComment($comment);
+        }
+
+        $zip->close();
+
+        return file_exists($destination);
+    }
+
+    /**
+     * Loads files from a directory and skips . and ..
+     * By default it retuns files relativ to the theme's folder.
+     * 
+     * @since 1.1.3 it supports recusiveness
+     * @param bool $ret_full_paths
+     */
+    public static function load_files($dir, $ret_full_paths = 0) {
         $files = array();
 
         $dir = rtrim($dir, '/') . '/';
@@ -1100,13 +1139,13 @@ class orbisius_child_theme_creator_util {
 
             if (is_dir($dir . $file)) {
                 $dir_in_themes_folder = $file;
-                $sub_dir_files = self::load_files($dir . $dir_in_themes_folder);
+                $sub_dir_files = self::load_files($dir . $dir_in_themes_folder, $ret_full_paths);
                 
                 foreach ($sub_dir_files as $sub_dir_file) {
-                    $files[] = $dir_in_themes_folder . '/' . $sub_dir_file;
+                    $files[] = $ret_full_paths ? $sub_dir_file : $dir_in_themes_folder . '/' . $sub_dir_file;
                 }
             } else {
-                $files[] = $file;
+                $files[] = ($ret_full_paths ? $dir : '') . $file;
             }
         }
 
@@ -1439,8 +1478,29 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
         'msg' => '',
     );
 
-    $status_rec['status'] = 1;
     $status_rec['msg'] = 'Sent.' . $theme_base_dir;
+
+    $all_themes_root = get_theme_root();
+    $theme_dir = get_theme_root() . "/$theme_base_dir/";
+
+    if (empty($theme_base_dir) || !is_dir($theme_dir)) {
+        $status_rec['status'] = 'Selected theme is invalid.';
+        return $status_rec;
+    }
+
+    $files = array();
+    $all_files = orbisius_child_theme_creator_util::load_files($theme_dir, 1);
+
+    $prefix_to_strip = $all_themes_root . '/'; // TMP: root dir
+    $result = orbisius_child_theme_creator_util::create_zip($all_files, '/' . $theme_base_dir . '.zip', true, 
+            $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
+
+    $status_rec['status'] = $result;
+
+    if ($result) {
+        // todo
+        // attach the theme to an email and send it to: $to
+    }
 
     return $status_rec;
 }
