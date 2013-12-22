@@ -200,9 +200,12 @@ function orbisius_child_theme_creator_setup_admin() {
 // Add the ? settings link in Plugins page very good
 function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
     if ($file == plugin_basename(__FILE__)) {
-        $link = orbisius_child_theme_creator_util::get_create_child_pages_link();
+        $link = orbisius_child_theme_creator_util::get_theme_editor_link();
+        $link_html = "<a href='$link'>Edit Themes</a>";
+        array_unshift($links, $link_html);
 
-        $link_html = "<a href='$link'>Create a Child Theme</a>";
+        $link = orbisius_child_theme_creator_util::get_create_child_pages_link();
+        $link_html = "<a href='$link'>Create Child Theme</a>";
         array_unshift($links, $link_html);
     }
 
@@ -1629,6 +1632,8 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
 
     $status_rec['status'] = $result;
 
+    $site_str = "Site: " . site_url();
+
     if ($result) {
        $attachments = array( $target_zip_file );
 
@@ -1639,17 +1644,19 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
            $theme_dir = get_theme_root() . "/$parent_theme_base_dir/";
            $all_files = orbisius_child_theme_creator_util::load_files($theme_dir, 1);
            $result = orbisius_child_theme_creator_util::create_zip($all_files, $target_parent_zip_file, true,
-                $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
+                $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\n" . $site_str);
 
            if ($result) {
                $attachments[] = $target_parent_zip_file;
            }
        }
 
-       $subject = $_SERVER['HTTP_HOST'] . ': Theme (zip): ' . $theme_name . ' ' . $theme_base_dir;
+       $host = empty($_SERVER['HTTP_HOST']) ? '' : str_ireplace('www.', '', $_SERVER['HTTP_HOST']);
+       $subject = 'Theme (zip): ' . $theme_name;
        $headers = array();
-       $message = "Hi,\n\nPlease find the attached theme.\n\nSent from Orbisius Child Theme Creator.\n";
-       //$headers = 'From:  <myname@example.com>' . "\r\n";
+       $message = "Hi,\n\nPlease find the attached theme file(s).
+            " . $site_str . "\n\nSent from Orbisius Child Theme Creator.\n";
+       $headers = "From: $host WordPress <wordpress@$host>" . "\r\n";
        wp_mail($to, $subject, $message, $headers, $attachments );
 
        foreach ($attachments as $attachment) {

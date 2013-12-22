@@ -125,6 +125,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Fixed JS error on Settings page.
 * Added uninstall.php file to clean after itself
 * Added a check and the notice that shows up on the plugins page won't show up after 24h
+* Added Edit Themes link to the Plugin's -> Action links
 
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
