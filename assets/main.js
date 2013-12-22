@@ -161,6 +161,129 @@ function orbisius_ctc_theme_editor_setup() {
     });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Syntax check button
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#theme_1_syntax_chk_btn').on("click", function () {
+        var form_id = '#orbisius_ctc_theme_editor_theme_1_form';
+        var action = 'syntax_check';
+        var target_container = '.orbisius_ctc_theme_editor_theme_1_primary_buttons .status';
+
+        jQuery(target_container)
+                .empty()
+                .removeClass('app-alert-success app-alert-error app-alert-notice')
+                .addClass( 'app-alert-notice')
+                .html('Checking ...');
+
+        jQuery.ajax({
+            type : "post",
+            //dataType : "json",
+            url : ajaxurl, // WP defines it and it contains all the necessary params
+            data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
+
+            success : function (json) {
+                jQuery(target_container)
+                        .empty()
+                        .removeClass('app-alert-notice')
+                        .html(json.msg)
+                        .addClass( json.status ? 'app-alert-success' : 'app-alert-error' );
+
+                if (json.status) { // auto hide on success
+                    setTimeout(function () {
+                        jQuery(target_container).empty().removeClass('app-alert-success app-alert-error');
+                    }, 2000);
+                }
+            } // success
+        }); // ajax
+    }); // click
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // New Folder
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    $('#theme_1_new_folder_btn').on("click", function () {
+        $('#theme_1_new_folder_container').toggle('slow');
+        $('#theme_1_new_folder').focus();
+    });
+
+    // The user enters a folder name. Let's check if it exists.
+    $('#theme_1_new_folder').on("input", function (event) {
+        var new_folder = $('#theme_1_new_folder').val();
+        new_folder = orbisius_child_theme_creator.sanitize_file_name(new_folder);
+
+        var ok = 1; // let's by positive by default
+
+        // Let's check if that folder exists by checking if there is an entry in the options
+        $("#theme_1_file option").each(function() { // idx, val
+            var cur_val = $(this).val();
+
+            if (cur_val == new_folder) {
+                ok = 0;
+                return ;
+            }
+        });
+
+        if (ok) {
+            $('.status', $('#theme_1_new_folder_container')).text('').removeClass('app-alert-error');
+        } else {
+            var err = 'File/folder with that name already exists.';
+            $('.status', $('#theme_1_new_folder_container')).text(err).addClass('app-alert-error');
+        }
+    });
+
+    /**
+     * New Folder: On OK this will hide the form but will add a new element
+     * to the theme files dropdown.
+     * @TODO
+     */
+    $('#theme_1_new_folder_btn_ok').on("click", function () {
+        var val = $('#theme_1_new_folder').val();
+        val = orbisius_child_theme_creator.sanitize_file_name(val);
+        var text = val;
+
+        if (val == '') {
+            alert('Invalid or empty value for folder name.');
+            $('#theme_1_new_folder').focus();
+            return ;
+        }
+
+        var ok = 1; // let's by positive by default
+
+        // Let's check if that file exists by checking if there is an entry in the options
+        $("#theme_1_folder option").each(function() { // idx, val
+            var cur_val = $(this).val();
+
+            if (cur_val == val) {
+                ok = 0;
+                return ;
+            }
+        });
+
+        if (!ok) {
+            alert('File with that name already exists.');
+            $('#theme_1_new_folder').focus();
+            return ;
+        }
+
+        // unselects current element from the dropdown.
+        $("select theme_1_folder").prop("selected", false);
+        var new_option = $('<option></option>').val(val).html(text).prop("selected", true);
+
+        $('#theme_1_folder').append( new_option ); // select
+        $('#theme_1_new_folder_container').hide('slow');
+        $('#theme_1_new_folder').val(''); // text box for new folder
+        $('#theme_1_folder_contents').val('').focus(); // textarea
+    });
+
+    // This is when the cancel button is clicked so the user doesn't want a new folder.
+    $('#theme_1_new_folder_btn_cancel').on("click", function () {
+        $('#theme_1_new_folder').val('');
+        $('#theme_1_new_folder_container').hide('slow');
+        $('.status', $('#theme_1_new_folder_container')).text('').removeClass('app-alert-error');
+    });
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
     // Change theme selection
     $('#theme_1').on("change", function () {
         app_load('#orbisius_ctc_theme_editor_theme_1_form', 'generate_dropdown', '#theme_1_file', app_handle_theme_change);

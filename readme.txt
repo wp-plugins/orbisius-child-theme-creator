@@ -114,6 +114,10 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 
 == Changelog ==
 
+= 1.1.3 =
+* Updated CSS to add some top-margin above the update/save changed buttons
+* Added php syntax check
+
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
 * Restricted the width of the dropdowns in the theme editor so they don't push the editor and the buttons down.

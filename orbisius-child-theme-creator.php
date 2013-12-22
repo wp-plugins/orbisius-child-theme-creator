@@ -1289,8 +1289,8 @@ function orbisius_ctc_theme_editor() {
                         </span>
 
                         <textarea id="theme_1_file_contents" name="theme_1_file_contents" rows="22" class="widefat"></textarea>
-                        <div>
-                            <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Update</button>
+                        <div class="orbisius_ctc_theme_editor_theme_1_primary_buttons primary_buttons">
+                            <button type='submit' class='button button-primary' id="theme_1_submit" name="theme_1_submit">Save Changes</button>
                             <span class="status"></span>
                         </div>
                     </form>
@@ -1298,6 +1298,11 @@ function orbisius_ctc_theme_editor() {
                     <hr />
                     <div>                    
 						<button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
+                        <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
+
+                        <!--
+                        <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
+
                         <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_1_delete_file_btn" name="theme_1_delete_file_btn">Delete File</a>
 						
                         <div id='theme_1_new_file_container' class="theme_1_new_file_container app-hide">
@@ -1307,9 +1312,23 @@ function orbisius_ctc_theme_editor() {
                             <span class="status"></span>
 							
 							<br/>
-                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_submit">Save</button>
-                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_submit">Cancel</a>
-                        </div>						
+                            <button type='button' class='button button-primary' id="theme_1_new_file_btn_ok" name="theme_1_new_file_btn_ok">Save</button>
+                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_file_btn_cancel" name="theme_1_new_file_btn_cancel">Cancel</a>
+                        </div>
+
+                        <!-- new folder -->
+                        <!--
+                        <div id='theme_1_new_folder_container' class="theme_1_new_folder_container app-hide">
+                            <strong>New Folder</strong>
+                            <input type="text" id="theme_1_new_folder" name="theme_1_new_folder" value="" />
+							<span>e.g. includes, data</span>
+                            <span class="status"></span>
+
+							<br/>
+                            <button type='button' class='button button-primary' id="theme_1_new_folder_btn_ok" name="theme_1_new_folder_btn_ok">Save</button>
+                            <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_1_new_folder_btn_cancel" name="theme_1_new_folder_btn_cancel">Cancel</a>
+                        </div>-->
+                        <!-- /new folder -->
                     </div>
                 </td>
                 <td width="50%">
@@ -1323,8 +1342,8 @@ function orbisius_ctc_theme_editor() {
                         </span>
 
                         <textarea id="theme_2_file_contents" name="theme_2_file_contents" rows="22" class="widefat"></textarea>
-                        <div>
-                            <button type='submit' class='button button-primary' id="theme_2_submit" name="theme_2_submit">Update</button>
+                        <div class="primary_buttons">
+                            <button type='submit' class='button button-primary' id="theme_2_submit" name="theme_2_submit">Save Changes</button>
                             <span class="status"></span>
                         </div>
                     </form>
@@ -1364,12 +1383,20 @@ function orbisius_ctc_theme_editor_ajax() {
 
             break;
 
+        case 'syntax_check':
+            $buff = orbisius_ctc_theme_editor_manage_file(4);
+
+            break;
+
         default:
             break;
     }
 
-
     die($buff);
+}
+
+function orbisius_ctc_theme_editor_check_syntax() {
+    
 }
 
 /**
@@ -1469,6 +1496,55 @@ function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
         $buff = !empty($status) ? $theme_file_contents : '';
     } elseif ($cmd_id == 3 && (!empty($req['theme_1_file']) || !empty($req['theme_2_file']))) {
         $status = unlink($theme_file);
+    } elseif ($cmd_id == 4) { // syntax check. create a tmp file and ask php to check it.
+        $status_rec = array(
+            'status' => 0,
+            'msg' => 0,
+        );
+
+        $temp = tmpfile();
+        fwrite($temp, $theme_file_contents);
+
+        if (function_exists('shell_exec') || function_exists('exec')) {
+            $ok = 0;
+            $meta_data = stream_get_meta_data($temp);
+            $file = $meta_data['uri'];
+            $file = escapeshellarg($file);
+            $cmd = "php -l $file";
+
+            // we're relying on exec's return value so we can tell
+            // if the syntax is OK
+            if (function_exists('exec')) {
+                $exit_code = $output = 0;
+                $last_line = exec($cmd, $output, $exit_code);
+                $output = join('', $output); // this is an array with multiple lines including new lines
+
+                $ok = empty($exit_code); // in linux 0 means success
+            } else { // this relies on parsing the php output but if a non-english locale is used this will fail.
+                $output = shell_exec($cmd . " 2>&1");
+                $ok = stripos($output, 'No syntax errors detected') !== false;
+            }
+
+            $error = $output;
+            
+            if ($ok) {
+                $status_rec['status'] = 1;
+                $status_rec['msg'] = 'Syntax OK.';
+            } else {
+                $status_rec['msg'] = 'Syntax check failed. Error: ' . $error;
+            }
+        } else {
+            $status_rec['msg'] = 'Syntax check: n/a. functiona: exec() and shell_exec() are not available.';
+        }
+
+        fclose($temp); // this removes the file
+        
+        if (function_exists('wp_send_json')) { // since WP 3.5
+            wp_send_json($status_rec);
+        } else {
+            @header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+            $buff = json_encode($status_rec);
+        }
     } else {
         
     }
