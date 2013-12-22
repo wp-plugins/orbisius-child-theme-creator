@@ -122,6 +122,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Added php syntax check
 * Added Send button so you can email the selected theme and parent theme (if any) to yourself or a colleague.
 * Implemented theme files to be listed recursively (i.e. all files from the selected theme)
+* Fixed JS error on Settings page.
 
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible

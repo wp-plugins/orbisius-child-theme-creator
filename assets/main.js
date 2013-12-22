@@ -379,6 +379,12 @@ function orbisius_ctc_theme_editor_setup() {
  */
 function app_handle_theme_change(form_id, action, target_container, result) {
     var form_prefix = jQuery(form_id) ? jQuery(form_id).attr('id') : ''; // orbisius_ctc_theme_editor_theme_1_form
+    form_prefix = form_prefix || '';
+
+    if (form_prefix == '') {
+        return;
+    }
+
     form_prefix = form_prefix.replace(/.+(theme[-_]*\d+).*/, '$1');
     form_prefix = '#' + form_prefix + '_'; // jQuery ID prefix. Res: #theme_2_
 
