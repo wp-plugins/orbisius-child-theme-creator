@@ -350,6 +350,9 @@ function orbisius_child_theme_creator_settings_page() {
 
                                     <form action="http://WebWeb.us2.list-manage.com/subscribe/post?u=005070a78d0e52a7b567e96df&amp;id=1b83cd2093" method="post"
                                           id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                                        <input type="hidden" value="settings" name="SRC2" />
+                                        <input type="hidden" value="orbisius-child-theme-creator" name="SRC" />
+
                                         <span>Get notified about cool plugins we release</span>
                                         <!--<div class="indicates-required"><span class="app_asterisk">*</span> indicates required
                                         </div>-->
