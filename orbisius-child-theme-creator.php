@@ -1084,9 +1084,13 @@ class orbisius_child_theme_creator_util {
 
     /**
      * Loads files from a directory but skips . and ..
+     *
+     * @since 1.1.3 it supports recusiveness
      */
     public static function load_files($dir) {
         $files = array();
+
+        $dir = rtrim($dir, '/') . '/';
         $all_files = scandir($dir);
 
         foreach ($all_files as $file) {
@@ -1094,7 +1098,16 @@ class orbisius_child_theme_creator_util {
                 continue;
             }
 
-            $files[] = $file;
+            if (is_dir($dir . $file)) {
+                $dir_in_themes_folder = $file;
+                $sub_dir_files = self::load_files($dir . $dir_in_themes_folder);
+                
+                foreach ($sub_dir_files as $sub_dir_file) {
+                    $files[] = $dir_in_themes_folder . '/' . $sub_dir_file;
+                }
+            } else {
+                $files[] = $file;
+            }
         }
 
         return $files;

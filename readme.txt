@@ -118,6 +118,7 @@ Go to http://club.orbisius.com and post suggestions in our forum for new feature
 * Updated CSS to add some top-margin above the update/save changed buttons
 * Added php syntax check
 * Added Send button so people can email the theme files to a colleague to to themselves
+* Implemented theme files to be listed recursively (i.e. all files from the selected theme)
 
 = 1.1.2 =
 * Reduced the height of the editors (to 22 rows) so the save/delete buttons are visible
