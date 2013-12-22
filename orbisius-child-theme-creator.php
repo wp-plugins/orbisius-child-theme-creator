@@ -1395,8 +1395,60 @@ function orbisius_ctc_theme_editor_ajax() {
     die($buff);
 }
 
-function orbisius_ctc_theme_editor_check_syntax() {
-    
+/**
+ * Receives and argument (string) that will be checked by php for syntax errors.
+ * A temp file is created and then php binary is called with -l (that's lowercase L).
+ * With exec() we check the return status but with shell_exec() we parse the output
+ * (not reliable due to locale).
+ * 
+ * @requires exec() or shell_exec() functions.
+ * @param string $theme_file_contents
+ * @return array
+ */
+function orbisius_ctc_theme_editor_check_syntax($theme_file_contents) {
+    $status_rec = array(
+        'status' => 0,
+        'msg' => '',
+    );
+
+    $temp = tmpfile();
+    fwrite($temp, $theme_file_contents);
+
+    if (function_exists('shell_exec') || function_exists('exec')) {
+        $ok = 0;
+        $meta_data = stream_get_meta_data($temp);
+        $file = $meta_data['uri'];
+        $file = escapeshellarg($file);
+        $cmd = "php -l $file";
+
+        // we're relying on exec's return value so we can tell
+        // if the syntax is OK
+        if (function_exists('exec')) {
+            $exit_code = $output = 0;
+            $last_line = exec($cmd, $output, $exit_code);
+            $output = join('', $output); // this is an array with multiple lines including new lines
+
+            $ok = empty($exit_code); // in linux 0 means success
+        } else { // this relies on parsing the php output but if a non-english locale is used this will fail.
+            $output = shell_exec($cmd . " 2>&1");
+            $ok = stripos($output, 'No syntax errors detected') !== false;
+        }
+
+        $error = $output;
+
+        if ($ok) {
+            $status_rec['status'] = 1;
+            $status_rec['msg'] = 'Syntax OK.';
+        } else {
+            $status_rec['msg'] = 'Syntax check failed. Error: ' . $error;
+        }
+    } else {
+        $status_rec['msg'] = 'Syntax check: n/a. functiona: exec() and shell_exec() are not available.';
+    }
+
+    fclose($temp); // this removes the file
+
+    return $status_rec;
 }
 
 /**
@@ -1497,47 +1549,7 @@ function orbisius_ctc_theme_editor_manage_file($cmd_id = 1) {
     } elseif ($cmd_id == 3 && (!empty($req['theme_1_file']) || !empty($req['theme_2_file']))) {
         $status = unlink($theme_file);
     } elseif ($cmd_id == 4) { // syntax check. create a tmp file and ask php to check it.
-        $status_rec = array(
-            'status' => 0,
-            'msg' => 0,
-        );
-
-        $temp = tmpfile();
-        fwrite($temp, $theme_file_contents);
-
-        if (function_exists('shell_exec') || function_exists('exec')) {
-            $ok = 0;
-            $meta_data = stream_get_meta_data($temp);
-            $file = $meta_data['uri'];
-            $file = escapeshellarg($file);
-            $cmd = "php -l $file";
-
-            // we're relying on exec's return value so we can tell
-            // if the syntax is OK
-            if (function_exists('exec')) {
-                $exit_code = $output = 0;
-                $last_line = exec($cmd, $output, $exit_code);
-                $output = join('', $output); // this is an array with multiple lines including new lines
-
-                $ok = empty($exit_code); // in linux 0 means success
-            } else { // this relies on parsing the php output but if a non-english locale is used this will fail.
-                $output = shell_exec($cmd . " 2>&1");
-                $ok = stripos($output, 'No syntax errors detected') !== false;
-            }
-
-            $error = $output;
-            
-            if ($ok) {
-                $status_rec['status'] = 1;
-                $status_rec['msg'] = 'Syntax OK.';
-            } else {
-                $status_rec['msg'] = 'Syntax check failed. Error: ' . $error;
-            }
-        } else {
-            $status_rec['msg'] = 'Syntax check: n/a. functiona: exec() and shell_exec() are not available.';
-        }
-
-        fclose($temp); // this removes the file
+        $status_rec = orbisius_ctc_theme_editor_check_syntax($theme_file_contents);
         
         if (function_exists('wp_send_json')) { // since WP 3.5
             wp_send_json($status_rec);
