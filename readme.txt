@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: child theme, childtheme,childthemes,child themes,CSS, styling,resposive design,design,custom themeing, shared hosting, theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.4
 Tested up to: 3.8
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
@@ -122,6 +122,9 @@ Let's talk.
                                     class="button-primary" target="_blank">Get a Free Quote</a>
 
 == Changelog ==
+
+= 1.1.4 =
+* Minor tweaks after v1.1.3
 
 = 1.1.3 =
 * Updated CSS to add some top-margin above the update/save changed buttons
