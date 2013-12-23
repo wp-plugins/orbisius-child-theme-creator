@@ -33,7 +33,7 @@
     text-align: center;
 }
 
-.orbisius_child_theme_creator_container .app-alert-success a {
+.orbisius_child_theme_creator_container .app-alert-success a, .orbisius_child_theme_creator_container .app-alert-error a {
     color: white;
 }
 

@@ -1831,8 +1831,6 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
     $result = orbisius_child_theme_creator_util::create_zip($all_files, $target_zip_file, true,
                 $prefix_to_strip, 'Created by Orbisius Child Theme Creator at ' . date('r') . "\nSite: " . site_url() );
 
-    $status_rec['status'] = $result;
-
     $site_str = "Site: " . site_url();
 
     if ($result) {
@@ -1857,11 +1855,28 @@ function orbisius_ctc_theme_editor_zip_theme($theme_base_dir, $to) {
        $headers = array();
        $message = "Hi,\n\nPlease find the attached theme file(s). \n" . $site_str . "\n\nSent from Orbisius Child Theme Creator.\n";
        $headers = "From: $host WordPress <wordpress@$host>" . "\r\n";
-       wp_mail($to, $subject, $message, $headers, $attachments );
 
-       foreach ($attachments as $attachment) {
-           unlink($attachment);
+       $mail_sent = wp_mail($to, $subject, $message, $headers, $attachments );
+
+       if ($mail_sent) {
+           $status_rec['status'] = $result;
+           
+           foreach ($attachments as $attachment) {
+              unlink($attachment);
+           }
+       } else {
+          $prefix = $upload_dir['baseurl'] . '/';
+          $status_rec['msg'] = "Couldn't send email but was able to create zip file(s). Download it/them from the link(s) below.";
+
+          foreach ($attachments as $idx => $attatchment_abs_path) {
+              $cnt = $idx + 1;
+              $file = basename($attatchment_abs_path);
+              $status_rec['msg'] .= "<br/>&nbsp;$cnt) <a href='$prefix$file'>$file</a>\n";
+          }
        }
+       
+    } else {
+        $status_rec['msg'] = "Couldn't create zip files.";
     }
 
     return $status_rec;

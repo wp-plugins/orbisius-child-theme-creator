@@ -123,6 +123,10 @@ Let's talk.
 
 == Changelog ==
 
+= 1.1.5 =
+* Added an option if the email couldn't be sent to offer the download links.
+* Unsuccessful zip creation was showing as Sent.
+
 = 1.1.4 =
 * Minor tweaks after v1.1.3
 

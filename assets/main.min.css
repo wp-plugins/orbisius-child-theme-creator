@@ -4,7 +4,7 @@
 .orbisius_child_theme_creator_container .app-serious-notice{color:red;font-weight:700}
 .orbisius_child_theme_creator_container .app-alert-error{background:#D54E21;border:1px solid #eee;color:#FFF;text-align:center;padding:3px}
 .orbisius_child_theme_creator_container .app-alert-success{background:green;border:1px solid #eee;color:#FFF;text-align:center;padding:3px}
-.orbisius_child_theme_creator_container .app-alert-success a{color:#FFF}
+.orbisius_child_theme_creator_container .app-alert-success a,.orbisius_child_theme_creator_container .app-alert-error a{color:#FFF}
 .orbisius_child_theme_creator_container .app-alert-notice{background:#FFEC8B;border:1px solid #eee;text-align:center;padding:3px}
 .orbisius_child_theme_creator_container .app-button-positive{background:green;color:#FFF;text-decoration:none;padding:3px}
 .orbisius_child_theme_creator_container .app-button-negative{background:red;color:#FFF;text-decoration:none;padding:3px}
