@@ -123,6 +123,9 @@ Let's talk.
 
 == Changelog ==
 
+= 1.1.6 =
+* Added settings link in the Plugin listing.
+
 = 1.1.5 =
 * Added an option if the email couldn't be sent to offer the download links.
 * Unsuccessful zip creation was showing as Sent.

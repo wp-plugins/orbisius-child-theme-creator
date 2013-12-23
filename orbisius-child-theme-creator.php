@@ -200,6 +200,10 @@ function orbisius_child_theme_creator_setup_admin() {
 // Add the ? settings link in Plugins page very good
 function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
     if ($file == plugin_basename(__FILE__)) {
+        $link = orbisius_child_theme_creator_util::get_settings_link();
+        $link_html = "<a href='$link'>Settings</a>";
+        array_unshift($links, $link_html);
+
         $link = orbisius_child_theme_creator_util::get_theme_editor_link();
         $link_html = "<a href='$link'>Edit Themes</a>";
         array_unshift($links, $link_html);
@@ -1348,6 +1352,25 @@ class orbisius_child_theme_creator_util {
      */
     static public function get_theme_editor_link($params = array()) {
         $rel_path = 'themes.php?page=orbisius_child_theme_creator_theme_editor_action';
+
+        if (!empty($params)) {
+            $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);
+        }
+
+        $link = is_multisite()
+                    ? network_admin_url($rel_path)
+                    : admin_url($rel_path);
+
+        return $link;
+    }
+
+    /**
+     * Returns the link to the Theme Editor e.g. when a theme_1 or theme_2 is supplied.
+     * @param type $params
+     * @return string
+     */
+    static public function get_settings_link($params = array()) {
+        $rel_path = 'options-general.php?page=orbisius_child_theme_creator_settings_page';
 
         if (!empty($params)) {
             $rel_path = orbisius_child_theme_creator_html::add_url_params($rel_path, $params);
