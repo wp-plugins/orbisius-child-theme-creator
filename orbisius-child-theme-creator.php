@@ -131,16 +131,16 @@ function orbisius_child_theme_creator_add_admin_bar($name, $href = '', $parent =
         $parent = trim($parent, '-');
     }
 
+    // links from the current host will open in the current window
+    $site_url = site_url();
+
     $meta_default = array();
     $meta_ext = array( 'target' => '_blank' ); // external links open in new tab/window
 
     $meta = (strpos($href, $site_url) !== false) ? $meta_default : $meta_ext;
     $meta = array_merge($meta, $custom_meta);
 
-    // links from the current host will open in the current window
-    $site_url = site_url();
-
-    $wp_admin_bar->add_menu(array(
+    $wp_admin_bar->add_node(array(
         'parent' => $parent,
         'id' => $id,
         'title' => $name,
