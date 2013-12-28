@@ -123,6 +123,10 @@ Let's talk.
 
 == Changelog ==
 
+= 1.1.7 =
+* Added Plugin's links to the admin nav bar.
+* Added site preview button in the theme editor
+
 = 1.1.6 =
 * Added settings link in the Plugin listing.
 

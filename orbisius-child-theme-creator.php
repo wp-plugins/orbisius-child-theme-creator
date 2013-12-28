@@ -35,11 +35,22 @@ add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000)
 add_action('admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
 add_action('network_admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
 
+add_action('wp_before_admin_bar_render', 'orbisius_child_theme_creator_admin_bar_render', 100);
+
 add_action( 'wp_ajax_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
 
 
 register_activation_hook( __FILE__, 'orbisius_child_theme_creator_on_activate' );
+
+/**
+ * Adds admin bar items for easy access to the theme creator and editor
+ */
+function orbisius_child_theme_creator_admin_bar_render() {
+    orbisius_child_theme_creator_add_admin_bar('Orbisius');
+    orbisius_child_theme_creator_add_admin_bar('Orbisius Child Theme Creator', orbisius_child_theme_creator_util::get_create_child_pages_link(), 'Orbisius');
+    orbisius_child_theme_creator_add_admin_bar('Orbisius Theme Editor', orbisius_child_theme_creator_util::get_theme_editor_link(), 'Orbisius');
+}
 
 /**
  * 
@@ -83,6 +94,59 @@ function orbisius_child_theme_creator_admin_notice_message() {
  */
 function orbisius_child_theme_creator_admin_init() {
 
+}
+
+/**
+ * Add's menu parent or submenu item.
+ * @param string $name the label of the menu item
+ * @param string $href the link to the item (settings page or ext site)
+ * @param string $parent Parent label (if creating a submenu item)
+ *
+ * @return void
+ * @author Slavi Marinov <http://orbisius.com>
+ * */
+function orbisius_child_theme_creator_add_admin_bar($name, $href = '', $parent = '', $custom_meta = array()) {
+    global $wp_admin_bar;
+
+    if (!is_super_admin()
+            || !is_admin_bar_showing()
+            || !is_object($wp_admin_bar)
+            || !function_exists('is_admin_bar_showing')) {
+        return;
+    }
+
+    // Generate ID based on the current filename and the name supplied.
+    $id = str_replace('.php', '', basename(__FILE__)) . '-' . $name;
+    $id = preg_replace('#[^\w-]#si', '-', $id);
+    $id = strtolower($id);
+    $id = trim($id, '-');
+
+    $parent = trim($parent);
+
+    // Generate the ID of the parent.
+    if (!empty($parent)) {
+        $parent = str_replace('.php', '', basename(__FILE__)) . '-' . $parent;
+        $parent = preg_replace('#[^\w-]#si', '-', $parent);
+        $parent = strtolower($parent);
+        $parent = trim($parent, '-');
+    }
+
+    $meta_default = array();
+    $meta_ext = array( 'target' => '_blank' ); // external links open in new tab/window
+
+    $meta = (strpos($href, $site_url) !== false) ? $meta_default : $meta_ext;
+    $meta = array_merge($meta, $custom_meta);
+
+    // links from the current host will open in the current window
+    $site_url = site_url();
+
+    $wp_admin_bar->add_menu(array(
+        'parent' => $parent,
+        'id' => $id,
+        'title' => $name,
+        'href' => $href,
+        'meta' => $meta,
+    ));
 }
 
 /**
@@ -1694,6 +1758,8 @@ function orbisius_ctc_theme_editor() {
                             <button type="button" class='button' id="theme_1_new_file_btn" name="theme_1_new_file_btn">New File</button>
                             <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
                             <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
+                            <a href="<?php echo site_url('/');?>" class='button' target="_blank" title="new tab/window"
+                                id="theme_1_site_preview_btn" name="theme_1_site_preview_btn">Site Preview</button>
 
                             <!--
                             <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
