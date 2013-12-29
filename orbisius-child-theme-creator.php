@@ -1759,7 +1759,7 @@ function orbisius_ctc_theme_editor() {
                             <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
                             <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
                             <a href="<?php echo site_url('/');?>" class='button' target="_blank" title="new tab/window"
-                                id="theme_1_site_preview_btn" name="theme_1_site_preview_btn">Site Preview</button>
+                                id="theme_1_site_preview_btn" name="theme_1_site_preview_btn">View Site</button>
 
                             <!--
                             <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
