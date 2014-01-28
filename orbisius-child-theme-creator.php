@@ -30,7 +30,7 @@ add_action('admin_init', 'orbisius_child_theme_creator_admin_init');
 add_action('admin_init', 'orbisius_child_theme_creator_register_settings');
 add_action('admin_enqueue_scripts', 'orbisius_child_theme_creator_admin_enqueue_scripts');
 add_action('admin_menu', 'orbisius_child_theme_creator_setup_admin');
-add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin');
+add_action('network_admin_menu', 'orbisius_child_theme_creator_setup_admin'); // manage_network_themes
 add_action('wp_footer', 'orbisius_child_theme_creator_add_plugin_credits', 1000); // be the last in the footer
 add_action('admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
 add_action('network_admin_notices', 'orbisius_child_theme_creator_admin_notice_message');
@@ -249,8 +249,8 @@ function orbisius_child_theme_creator_setup_admin() {
     add_theme_page('Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options',
             'orbisius_child_theme_creator_themes_action', 'orbisius_child_theme_creator_tools_action');
 
-    add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options',
-            'orbisius_child_theme_creator_tools_action', 'orbisius_child_theme_creator_tools_action');
+    /*add_submenu_page('tools.php', 'Orbisius Child Theme Creator', 'Orbisius Child Theme Creator', 'manage_options',
+            'orbisius_child_theme_creator_tools_action', 'orbisius_child_theme_creator_tools_action');*/
 
     // when plugins are show add a settings link near my plugin for a quick access to the settings page.
     add_filter('plugin_action_links', 'orbisius_child_theme_creator_add_plugin_settings_link', 10, 2);
