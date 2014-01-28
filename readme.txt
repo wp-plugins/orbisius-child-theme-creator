@@ -123,6 +123,9 @@ Let's talk.
 
 == Changelog ==
 
+= 1.1.9 =
+* Hid the plugin from the Tools menu
+
 = 1.1.8 =
 * Tested with WP 3.8.1
 
