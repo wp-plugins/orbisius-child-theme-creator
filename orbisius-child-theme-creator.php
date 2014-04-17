@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Child Theme Creator
   Plugin URI: http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/
   Description: This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
-  Version: 1.1.8
+  Version: 1.1.9
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
  */
@@ -223,8 +223,7 @@ function orbisius_child_theme_creator_admin_enqueue_scripts($current_page = '') 
         return ;
     }
     
-    $dev = empty($_SERVER['DEV_ENV']) ? 0 : 1;
-    $suffix = $dev ? '' : '.min';
+    $suffix = empty($_SERVER['DEV_ENV']) ? '.min' : '';
 
     wp_register_style('orbisius_child_theme_creator', plugins_url("/assets/main{$suffix}.css", __FILE__), false,
             filemtime( plugin_dir_path( __FILE__ ) . "/assets/main{$suffix}.css" ) );
@@ -438,6 +437,22 @@ function orbisius_child_theme_creator_settings_page() {
                             </div> <!-- .inside -->
                         </div> <!-- .postbox -->
 
+                        <?php
+                                        $plugin_data = get_plugin_data(__FILE__);
+                                        $product_name = trim($plugin_data['PluginName']);
+                                        $product_page = trim($plugin_data['PluginURI']);
+                                        $product_descr = trim($plugin_data['Description']);
+                                        $product_descr_short = substr($product_descr, 0, 50) . '...';
+
+                                        $base_name_slug = basename(__FILE__);
+                                        $base_name_slug = str_replace('.php', '', $base_name_slug);
+                                        $product_page .= (strpos($product_page, '?') === false) ? '?' : '&';
+                                        $product_page .= "utm_source=$base_name_slug&utm_medium=plugin-settings&utm_campaign=product";
+
+                                        $product_page_tweet_link = $product_page;
+                                        $product_page_tweet_link = str_replace('plugin-settings', 'tweet', $product_page_tweet_link);
+                                    ?>
+
                         <div class="postbox">
                             <div class="inside">
                                 <!-- Twitter: code -->
@@ -455,10 +470,13 @@ function orbisius_child_theme_creator_settings_page() {
                                 <a href="https://twitter.com/share" class="twitter-share-button"
                                    data-lang="en" data-text="Checkout Like Gate Pro #WordPress #plugin.Increase your site & fb page's likes"
                                    data-count="none" data-via="orbisius" data-related="orbisius"
-                                   data-url="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/">Tweet</a>
+                                   data-url="<?php echo $product_page_tweet_link;?>">Tweet</a>
                                 <!-- /Twitter: Tweet:js -->
 
+
                                 <br/>
+                                 <a href="<?php echo $product_page; ?>" target="_blank" title="[new window]">Product Page</a>
+                                    |
                                 <span>Support: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=plugin-settings&utm_campaign=product"
                                     target="_blank" title="[new window]">Forums</a>
 
@@ -735,7 +753,7 @@ function orbisius_child_theme_creator_tools_action() {
                     update_site_option( 'allowedthemes', $allowed_themes );
                 }
             } catch (Exception $e) {
-                $errors[] = "There was an error during the chat installation.";
+                $errors[] = "There was an error during the child theme creation.";
                 $errors[] = $e->getMessage();
 
                 if (is_object($installer->result)) {
@@ -1759,7 +1777,9 @@ function orbisius_ctc_theme_editor() {
                             <button type="button" class='button' id="theme_1_syntax_chk_btn" name="theme_1_syntax_chk_btn">PHP Syntax Check</button>
                             <button type="button" class='button' id="theme_1_send_btn" name="theme_1_send_btn">Send</button>
                             <a href="<?php echo site_url('/');?>" class='button' target="_blank" title="new tab/window"
-                                id="theme_1_site_preview_btn" name="theme_1_site_preview_btn">View Site</button>
+                                id="theme_1_site_preview_btn" name="theme_1_site_preview_btn">View Site</a>
+
+                            <?php do_action('orbisius_child_theme_creator_editors_ext_actions', 'theme_1'); ?>
 
                             <!--
                             <button type="button" class='button' id="theme_1_new_folder_btn" name="theme_1_new_folder_btn">New Folder</button>-->
@@ -1792,6 +1812,15 @@ function orbisius_ctc_theme_editor() {
                             </div>
                             <!-- /send -->
 
+                            <div>
+                                <h3>Premium Plugins/Addons</h3>
+                                <span>Please, support our work by purchasing a premium addon</span>
+                                <ul>
+                                    <li><a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-switcher/?utm_source=orbisius-child-theme-creator&utm_medium=editors&utm_campaign=product"
+                                           target="_blank" title="Opens in a new tab/window">Orbisius Theme Switcher</a> - Allows you to preview any of the installed themes on your site.</li>
+                                </ul>
+                            </div>
+
 
                             <!-- new folder -->
                             <!--
@@ -1821,9 +1850,50 @@ function orbisius_ctc_theme_editor() {
                         </span>
 
                         <textarea id="theme_2_file_contents" name="theme_2_file_contents" rows="22" class="widefat"></textarea>
-                        <div class="primary_buttons">
+                        <div class="orbisius_ctc_theme_editor_theme_2_primary_buttons primary_buttons">
                             <button type='submit' class='button button-primary' id="theme_2_submit" name="theme_2_submit">Save Changes</button>
                             <span class="status"></span>
+                        </div>
+
+                        <hr />
+                        <div class="orbisius_ctc_theme_editor_theme_2_secondary_buttons secondary_buttons">
+                            <!-- If you're looking at this code. Slavi says Hi to the curious developer! :) -->
+                            
+                            <button type="button" class='button' id="theme_2_new_file_btn" name="theme_2_new_file_btn">New File</button>
+                            <button type="button" class='button' id="theme_2_syntax_chk_btn" name="theme_2_syntax_chk_btn">PHP Syntax Check</button>
+                            <button type="button" class='button' id="theme_2_send_btn" name="theme_2_send_btn">Send</button>
+                            <a href="<?php echo site_url('/');?>" class='button' target="_blank" title="new tab/window"
+                                id="theme_2_site_preview_btn" name="theme_2_site_preview_btn">View Site</a>
+
+                            <?php do_action('orbisius_child_theme_creator_editors_ext_actions', 'theme_2'); ?>
+
+                            <a href='javascript:void(0)' class='app-button-right app-button-negative' id="theme_2_delete_file_btn" name="theme_2_delete_file_btn">Delete File</a>
+
+                            <div id='theme_2_new_file_container' class="theme_2_new_file_container app-hide">
+                                <strong>New File</strong>
+                                <input type="text" id="theme_2_new_file" name="theme_2_new_file" value="" />
+                                <span>e.g. test.js, extra.css etc</span>
+                                <span class="status"></span>
+
+                                <br/>
+                                <button type='button' class='button button-primary' id="theme_2_new_file_btn_ok" name="theme_2_new_file_btn_ok">Save</button>
+                                <a href='javascript:void(0)' class='app-button-negative00 button delete' id="theme_2_new_file_btn_cancel" name="theme_2_new_file_btn_cancel">Cancel</a>
+                            </div>
+
+                            <!-- send -->
+                            <div id='theme_2_send_container' class="theme_2_send_container app-hide">
+                                <p>
+                                    Email selected theme and parent theme (if any) to yourself or a colleague.
+                                    Separate multiple emails with commas.<br/>
+                                    <strong>To:</strong>
+                                    <input type="text" id="theme_2_send_to" name="email" value="" placeholder="Enter email" />
+
+                                    <button type='button' class='button button-primary' id="theme_2_send_btn_ok" name="theme_2_send_btn_ok">Send</button>
+                                    <a href='javascript:void(0)' class='app-button-negative00 button delete'
+                                       id="theme_2_send_btn_cancel" name="theme_2_send_btn_cancel">Cancel</a>
+                                </p>
+                            </div>
+                            <!-- /send -->
                         </div>
                     </form>
                 </td>
