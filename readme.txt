@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: child theme,childtheme,childthemes,child themes,CSS,styling,resposive design,design,custom themeing, shared hosting,theme editor theme,themes,wp,wordpress,orbisius,theme creator
 Requires at least: 3.4
 Tested up to: 3.9
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv2 or later
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
@@ -54,8 +54,11 @@ Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme 
 Go to Admin > Appearance > Orbisius Theme Editor then click on the theme you like and the child theme will be created for you.
 
 = Demo =
-
 http://www.youtube.com/watch?v=BZUVq6ZTv-o
+
+= Premium =
+Do you want to be able to preview themes from within the 2 editors?
+Get this <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-switcher/?utm_source=orbisius-child-theme-creator&utm_medium=readme_description&utm_campaign=product" target="_blank" title="[new window]">Orbisius Theme Switcher</a> plugin
 
 = Support =
 > Support is handled on our site: <a href="http://club.orbisius.com/" target="_blank" title="[new window]">http://club.orbisius.com/</a>
