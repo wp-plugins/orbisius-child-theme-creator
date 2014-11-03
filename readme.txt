@@ -14,10 +14,6 @@ Create Child Themes quickly and easily from any theme that you have currently in
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 It also creates rtl.css if exists in the parent theme.
 
-We have launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
-Join today and test themes and plugins before you actually put them on your live site. For more info go to:
-<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
-
 = Child Theme Creator Features =
 * Create a theme with a click of a button
 * Never forget what files to copy and what to skip when creating child themes.
@@ -48,12 +44,17 @@ It features two editors and you can pick snippets from one theme and paste into 
 * Keep your changes when the parent theme is updated.
 * Reduce duplicated code i.e. you need to copy and customize only the files that need to be customized
 * Child Themes are often very small in size and can easily be shared and used for another project.
-* 
+* Lots of cool and professional people do it
+* ... and a lot more
 
 = Important =
 > We have noticed that some child themes created by this plugin do not work as expected.
 > This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress' recommended functions for themes that support child themes.
 > Please check with the created of the theme first to see if their theme supports child themes.
+
+We have launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
+Join today and test themes and plugins before you actually put them on your live site. For more info go to:
+<a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
 
 = Usage : To create a child theme go to =
 Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
