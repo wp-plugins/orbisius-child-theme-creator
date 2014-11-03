@@ -1,35 +1,31 @@
-=== Orbisius Child Theme Creator ===
+=== Child Theme Creator by Orbisius ===
 Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
-Tags: child theme,childtheme,childthemes,child themes,CSS,styling,resposive design,design,custom themeing, shared hosting,theme editor theme,themes,wp,wordpress,orbisius,theme creator
+Tags: theme,child theme,childtheme,childthemes,parent theme,child themes,CSS,styling,resposive design,design,custom themeing, shared hosting,theme editor theme,themes,wp,wordpress,orbisius,theme creator,custom theme,theme generator,css,css editor
 Requires at least: 3.4
-Tested up to: 3.9
+Tested up to: 4
 Stable tag: 1.1.9
 License: GPLv2 or later
 
-This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
+Create Child Themes quickly and easily from any theme that you have currently installed on your site/blog.
 
 == Description ==
 
 This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
 It also creates rtl.css if exists in the parent theme.
 
-= Important =
-> We have noticed that some child themes created by this plugin do not work as expected.
-> This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress' recommended functions for themes that support child themes.
-> Please check with the created of the theme first to see if their theme supports child themes.
-
-We launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
+We have launched a **FREE** service that allows you to setup a test/sandbox WordPress site in seconds. No technical knowledge is required.
 Join today and test themes and plugins before you actually put them on your live site. For more info go to:
 <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product" target="_blank" title="Free Test/Sandbox WordPress Site">http://qsandbox.com</a>
 
 = Child Theme Creator Features =
-* Create a theme with one click of a button
+* Create a theme with a click of a button
 * Never forget what files to copy and what to skip when creating child themes.
 * Easy to use interface
 * When moving through the themes the currently looked one will have a nice background & border
 * Create *unlimited* child themes from a parent theme. The plugin will add Child 01, Child 02 etc.
 * Edit theme files with our two theme editors.
+* Automatically creates rtl.css if it exists in the parent theme
 
 This plugin allows you to quickly edit theme files from Appearance &gt; Orbisius Theme Editor (entry added by the same plugin)
 It features two editors and you can pick snippets from one theme and paste into another.
@@ -46,6 +42,17 @@ It features two editors and you can pick snippets from one theme and paste into 
 * Since (v1.1.3) Send selected theme and parent theme (if any) to yourself or a colleague.
 * Since (v1.1.3) Implemented theme files to be listed recursively (i.e. all files from the selected theme)
 * Since (v1.1.9) Both editors have the same buttons (in older versions only the left editor had all of the buttons).
+
+ = Important Reasons to Create Child Themes =
+* Keep your changes when the parent theme is updated.
+* Reduce duplicated code i.e. you need to copy and customize only the files that need to be customized
+* Child Themes are often very small in size and can easily be shared and used for another project.
+* 
+
+= Important =
+> We have noticed that some child themes created by this plugin do not work as expected.
+> This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress' recommended functions for themes that support child themes.
+> Please check with the created of the theme first to see if their theme supports child themes.
 
 = Usage : To create a child theme go to =
 Go to Admin > Appearance > Orbisius Child Theme Creator then click on the theme you like and the child theme will be created for you.
@@ -126,6 +133,10 @@ Let's talk.
                                     class="button-primary" target="_blank">Get a Free Quote</a>
 
 == Changelog ==
+
+= 1.2.0 =
+* Fixed: BUG - Deleting a file from Theme 1 deletes files from Theme 2. Ref: http://club.orbisius.com/forums/topic/bug-deleting-a-file-from-theme-1-deletes-files-from-theme-2/
+* Tested with WP 4
 
 = 1.1.9 =
 * Added the buttons under the 2nd editor
