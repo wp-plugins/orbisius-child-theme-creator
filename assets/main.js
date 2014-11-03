@@ -38,7 +38,7 @@ var orbisius_child_theme_creator = {
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape('delete_file'),
 
             success : function (result) {
-                var form_num = form_id.indexOf('#theme_1') >= 0 ? 1 : 2;
+                var form_num = form_id.indexOf('theme_1') >= 0 ? 1 : 2;
 
                 // theme_1_ or theme_2_
                 jQuery("#theme_" + form_num + "_file option:selected").remove();
