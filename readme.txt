@@ -26,6 +26,7 @@ Join today and test themes and plugins before you actually put them on your live
 * Create *unlimited* child themes from a parent theme. The plugin will add Child 01, Child 02 etc.
 * Edit theme files with our two theme editors.
 * Automatically creates rtl.css if it exists in the parent theme
+* The plugin uses minified css/js to make sure it loads quicker.
 
 This plugin allows you to quickly edit theme files from Appearance &gt; Orbisius Theme Editor (entry added by the same plugin)
 It features two editors and you can pick snippets from one theme and paste into another.
@@ -136,6 +137,8 @@ Let's talk.
 
 = 1.2.0 =
 * Fixed: BUG - Deleting a file from Theme 1 deletes files from Theme 2. Ref: http://club.orbisius.com/forums/topic/bug-deleting-a-file-from-theme-1-deletes-files-from-theme-2/
+* Fixes: CSS so the themes are showing up as 3 per row like they used to be.
+* Added a link to a larger version of the theme's screenshot.
 * Tested with WP 4
 
 = 1.1.9 =

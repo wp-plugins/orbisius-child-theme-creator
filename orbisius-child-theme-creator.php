@@ -861,7 +861,7 @@ function orbisius_child_theme_creator_tools_action() {
 
         $buff .= "<div class='available-theme'>\n";
         $buff .= "<form action='$create_url' method='post'>\n";
-        $buff .= "<img class='screenshot' src='$src' alt='' />\n";
+        $buff .= "<a href='$src' target='_blank' title='See larger version of the screenshot. [new window]'><img class='screenshot' src='$src' alt='' /></a>\n";
         $buff .= "<h3>$theme_name</h3>\n";
         $buff .= "<div class='theme-author'>By $author_line</div>\n";
         $buff .= "<div class='action-links'>\n";

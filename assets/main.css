@@ -90,7 +90,15 @@
 
 .orbisius_child_theme_creator_container .available-theme {
     padding:10px;
+    margin:5px;
     border: 2px solid white; /* we need this because there is a shift otherwise on hover. */
+    display:inline-block; /* so 3 themes fit on one row */
+    width: 30%;
+}
+
+.orbisius_child_theme_creator_container .available-theme img.screenshot {
+    max-height: 75%;
+    max-width: 75%;
 }
 
 .orbisius_child_theme_creator_container .available-theme:hover {
