@@ -280,7 +280,7 @@ function orbisius_child_theme_creator_add_plugin_settings_link($links, $file) {
 }
 
 /**
- * This adds an edit button in Apperance under each theme.
+ * This adds an edit button in Appearance under each theme.
  * @param array $actions
  * @param WP_Theme/string Obj $theme
  * @return array
@@ -437,9 +437,23 @@ function orbisius_child_theme_creator_settings_page() {
                             </div> <!-- .inside -->
                         </div> <!-- .postbox -->
 
+                        <!-- Orbisius JS Widget -->
+						<?php
+							$naked_domain = !empty($_SERVER['DEV_ENV']) ? 'orbclub.com.clients.com' : 'club.orbisius.com';
+
+                            if (!empty($_SERVER['DEV_ENV']) && is_ssl()) {
+                                $naked_domain = 'ssl.orbisius.com/club';
+                            }
+
+							$params = '?' . http_build_query(array('p' => str_replace('.php', '', basename(__FILE__)), 'layout' => 'plugin', ));
+                            echo '<div class="orbisius_ext_content"></div>' . "\n";
+							echo "<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://$naked_domain/wpu/widget/$params';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'orbsius-js');</script>";
+						?>
+                        <!-- /Orbisius JS Widget -->
+
                         <?php
                                         $plugin_data = get_plugin_data(__FILE__);
-                                        $product_name = trim($plugin_data['PluginName']);
+                                        $product_name = trim($plugin_data['Name']);
                                         $product_page = trim($plugin_data['PluginURI']);
                                         $product_descr = trim($plugin_data['Description']);
                                         $product_descr_short = substr($product_descr, 0, 50) . '...';
@@ -604,8 +618,7 @@ function orbisius_child_theme_creator_settings_page() {
             ** NOTE: ** Support is handled on our site: <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">http://club.orbisius.com/support/</a>.
             Please do NOT use the WordPress forums or other places to seek support.
     </p></div>-->
-
-    <?php orbisius_child_theme_creator_generate_ext_content(); ?>
+    
     <?php
 }
 
@@ -636,31 +649,6 @@ function orbisius_child_theme_creator_get_plugin_data() {
 }
 
 /**
- * Outputs or returns the HTML content for IFRAME promo content.
- */
-function orbisius_child_theme_creator_generate_ext_content($echo = 1) {
-    $plugin_slug = basename(__FILE__);
-    $plugin_slug = str_replace('.php', '', $plugin_slug);
-    $plugin_slug = strtolower($plugin_slug); // jic
-
-    $domain = !empty($_SERVER['DEV_ENV']) ? 'http://orbclub.com.clients.com' : 'http://club.orbisius.com';
-
-    $url = $domain . '/wpu/content/wp/' . $plugin_slug . '/';
-
-    $buff = <<<BUFF_EOF
-    <iframe style="width:100%;min-height:300px;height: auto;" width="100%" height="480"
-            src="$url" frameborder="0" allowfullscreen></iframe>
-
-BUFF_EOF;
-
-    if ($echo) {
-        echo $buff;
-    } else {
-        return $buff;
-    }
-}
-
-/**
  * Upload page.
  * Ask the user to upload a file
  * Preview
@@ -681,7 +669,7 @@ function orbisius_child_theme_creator_tools_action() {
         $next_url = orbisius_child_theme_creator_util::get_create_child_pages_link();
 
         if (headers_sent()) {
-            $success = "In order to create a child theme in a multisite WordPress environment you must do it from Network Admin &gt; Apperance"
+            $success = "In order to create a child theme in a multisite WordPress environment you must do it from Network Admin &gt; Appearance"
                     . "<br/><a href='$next_url' class='button button-primary'>Continue</a>";
             wp_die($success);
         } else {
@@ -1672,7 +1660,7 @@ function orbisius_ctc_theme_editor() {
         $next_url = orbisius_child_theme_creator_util::get_create_child_pages_link();
 
         if (headers_sent()) {
-            $success = "In order to edit a theme in a multisite WordPress environment you must do it from Network Admin &gt; Apperance"
+            $success = "In order to edit a theme in a multisite WordPress environment you must do it from Network Admin &gt; Appearance"
                     . "<br/><a href='$next_url' class='button button-primary'>Continue</a>";
             wp_die($success);
         } else {

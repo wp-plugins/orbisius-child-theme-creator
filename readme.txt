@@ -136,6 +136,11 @@ Let's talk.
 
 == Changelog ==
 
+= 1.2.1 =
+* Fixed: A notice in the settings
+* Fixed a typo
+* Tested with WP 4.0.1
+
 = 1.2.0 =
 * Fixed: BUG - Deleting a file from Theme 1 deletes files from Theme 2. Ref: http://club.orbisius.com/forums/topic/bug-deleting-a-file-from-theme-1-deletes-files-from-theme-2/
 * Fixes: CSS so the themes are showing up as 3 per row like they used to be.
