@@ -138,6 +138,7 @@ Let's talk.
 
 = 1.2.2 =
 * Added: Create a blank functions.php file option
+* Added a link to edit theme after the child theme is created.
 
 = 1.2.1 =
 * Fixed: A notice in the settings

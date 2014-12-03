@@ -1257,7 +1257,9 @@ class orbisius_child_theme_creator {
         $app_link = $plugin_data['PluginURI'];
         $app_title = $plugin_data['Name'];
 
-        $parent_theme_data = version_compare($wp_version, '3.4', '>=') ? wp_get_theme($this->parent_theme_basedir) : (object) get_theme_data($this->target_dir_path . 'style.css');
+        $parent_theme_data = version_compare($wp_version, '3.4', '>=') 
+                ? wp_get_theme($this->parent_theme_basedir)
+                : (object) get_theme_data($this->target_dir_path . 'style.css');
 
         $theme_name = "$parent_theme_data->Name $this->target_name_suffix";
         $theme_uri = $parent_theme_data->ThemeURI;
@@ -1325,10 +1327,13 @@ class orbisius_child_theme_creator {
         }
 
         $themes_url = admin_url('themes.php');
+        $edit_new_theme_url = admin_url('themes.php?page=orbisius_child_theme_creator_theme_editor_action&theme_1=' 
+                . urlencode($this->target_base_dirname));
 
         $this->info_result = "$parent_theme_data->Name " . $this->target_name_suffix . ' has been created in ' . $this->target_dir_path
                 . ' based on ' . $parent_theme_data->Name . ' theme.'
-                . "\n<br/>Next go to <a href='$themes_url'><strong>Appearance &gt; Themes</strong></a> and Activate the new theme.";
+                . "\n<br/>Next go to <a href='$themes_url'><strong>Appearance &gt; Themes</strong></a> and Activate the new theme "
+                . "or <a href='$edit_new_theme_url'>edit the new theme</a>.";
     }
 
     /**
