@@ -137,7 +137,7 @@ Let's talk.
 == Changelog ==
 
 = 1.2.2 =
-* Added: Create a blank functions.php file option
+* Added: Create a blank functions.php file option (Thanks Tobias Kaupat for the suggestion).
 * Added a link to edit theme after the child theme is created.
 * Changed the UI. Parent and Child Themes are nicely separated.
 * Added a sidebar in the screen where child themes are created
