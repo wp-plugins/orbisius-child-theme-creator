@@ -2041,7 +2041,6 @@ function orbisius_ctc_theme_editor() {
                                 </ul>
                             </div>
 
-
                             <!-- new folder -->
                             <!--
                             <div id='theme_1_new_folder_container' class="theme_1_new_folder_container app-hide">
@@ -2119,6 +2118,9 @@ function orbisius_ctc_theme_editor() {
                 </td>
             </tr>
         </table>
+        
+        <br/>
+        <?php orbisius_child_theme_creator_util::output_orb_widget(); ?>
     <?php
 }
 
