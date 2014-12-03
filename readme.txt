@@ -3,7 +3,7 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: theme,child theme,childtheme,childthemes,parent theme,child themes,CSS,styling,resposive design,design,custom themeing, shared hosting,theme editor theme,themes,wp,wordpress,orbisius,theme creator,custom theme,theme generator,css,css editor
 Requires at least: 3.4
-Tested up to: 4
+Tested up to: 4.0.1
 Stable tag: 1.2.1
 License: GPLv2 or later
 
@@ -135,6 +135,9 @@ Let's talk.
                                     class="button-primary" target="_blank">Get a Free Quote</a>
 
 == Changelog ==
+
+= 1.2.2 =
+* Added: Create a blank functions.php file option
 
 = 1.2.1 =
 * Fixed: A notice in the settings
