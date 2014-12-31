@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Child Theme Creator
   Plugin URI: http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/
   Description: This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
-  Version: 1.2.2
+  Version: 1.2.3
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
  */
@@ -395,15 +395,17 @@ function orbisius_child_theme_creator_settings_page() {
 
                     <div class="meta-box-sortables">
 
+                        <!-- Hire Us -->
                         <div class="postbox">
                             <h3><span>Hire Us</span></h3>
                             <div class="inside">
-                                Hire us to create a plugin/web/mobile app for your business.
-                                <br/><a href="http://orbisius.com/page/free-quote/?utm_source=orbisius-child-theme-creator&utm_medium=plugin-settings&utm_campaign=product"
+                                Hire us to create a plugin/web/mobile app
+                                <br/><a href="http://orbisius.com/page/free-quote/?utm_source=<?php echo str_replace('.php', '', basename(__FILE__));?>&utm_medium=plugin-settings&utm_campaign=product"
                                    title="If you want a custom web/mobile app/plugin developed contact us. This opens in a new window/tab"
                                     class="button-primary" target="_blank">Get a Free Quote</a>
                             </div> <!-- .inside -->
                         </div> <!-- .postbox -->
+                        <!-- /Hire Us -->
 
                         <div class="postbox">
                             <h3><span>Newsletter</span></h3>
