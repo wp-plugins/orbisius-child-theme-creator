@@ -146,6 +146,7 @@ Let's talk.
 * Added another Save button near the theme and file dropdowns (for lazy people).
 * Added links to the Pro addon.
 * Added a nice global wait for all ajax calls.
+* Added an error message to be displayed when we're doing ajax and the user is not authenticated.
 
 = 1.2.3 =
 * Tested with WP 4.1

@@ -38,7 +38,7 @@ add_action('network_admin_notices', 'orbisius_child_theme_creator_admin_notice_m
 add_action('wp_before_admin_bar_render', 'orbisius_child_theme_creator_admin_bar_render', 100);
 
 add_action( 'wp_ajax_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
-add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_ajax');
+add_action( 'wp_ajax_nopriv_orbisius_ctc_theme_editor_ajax', 'orbisius_ctc_theme_editor_no_auth_ajax');
 
 
 register_activation_hook( __FILE__, 'orbisius_child_theme_creator_on_activate' );
@@ -2154,9 +2154,12 @@ function orbisius_ctc_theme_editor() {
     <?php
 }
 
+function orbisius_ctc_theme_editor_no_auth_ajax() {
+    wp_die('You need to be logged in. To call this ajax method.');
+}
+
 /**
  * This is called via ajax. Depending on the sub_cmd param a different method will be called.
- *
  */
 function orbisius_ctc_theme_editor_ajax() {
     $buff = 'INVALID AJAX SUB_CMD';
