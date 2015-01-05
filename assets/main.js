@@ -629,7 +629,8 @@ function orbisius_ctc_theme_editor_setup() {
         app_load('#orbisius_ctc_theme_editor_theme_2_form', 'generate_dropdown', '#theme_2_file', app_handle_theme_change);
     });
 
-    $('#orbisius_ctc_theme_editor_theme_1_form').submit(function () {
+    // Submit
+    $('#orbisius_ctc_theme_editor_theme_1_form').submit(function (e) {
         app_load('#orbisius_ctc_theme_editor_theme_1_form', 'save_file', '#theme_1_file_contents');
 
         return false;
@@ -646,6 +647,7 @@ function orbisius_ctc_theme_editor_setup() {
         app_load('#orbisius_ctc_theme_editor_theme_2_form', 'generate_dropdown', '#theme_2_file', app_handle_theme_change);
     });
 
+    // Submit
     $('#orbisius_ctc_theme_editor_theme_2_form').submit(function () {
         app_load('#orbisius_ctc_theme_editor_theme_2_form', 'save_file', '#theme_2_file_contents');
 
@@ -717,7 +719,7 @@ function app_load(form_id, action, target_container, callback) {
         jQuery('.status', jQuery(target_container).parent()).html(loading_text);
     } else {
         if (jQuery(target_container).is("input,textarea")) {
-            jQuery(target_container).val(loading_text_just_text);
+            //jQuery(target_container).val(loading_text_just_text);
             jQuery(target_container).addClass('saving_action');
         } else if (jQuery(target_container).is("select")) { // for loading. we want to override options of the select
             jQuery(target_container + ' option').text(loading_text_just_text);
@@ -733,12 +735,24 @@ function app_load(form_id, action, target_container, callback) {
         data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
 
         success : function (result) {
+            var custm_event_data = {
+                form_id : form_id,
+                sub_cmd: action,
+                result : result
+            };
+
             // http://stackoverflow.com/questions/2432749/jquery-delay-not-delaying
             if (result != '') {
                 if (jQuery(target_container).is("input,textarea")) {
                     jQuery(target_container).val(result);
+
+                    if (jQuery(target_container).is("textarea")) {
+                        // #theme_1_file or #theme_1_file_contents
+                        jQuery(target_container).trigger('orbisius_child_theme_editor_event_file_loaded', custm_event_data);
+                    }
                 } else {
                     jQuery(target_container).html(result);
+                    jQuery(target_container).trigger('orbisius_child_theme_editor_event_content_loaded', custm_event_data);
                 }
 
                 if (is_save_action) { // save action

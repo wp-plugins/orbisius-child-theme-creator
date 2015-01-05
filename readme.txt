@@ -136,6 +136,11 @@ Let's talk.
 
 == Changelog ==
 
+= 1.2.4 =
+* Made the plugin more extendable (js).
+* Added another Save button near the theme and file dropdowns (for lazy people).
+* Added links to the Pro addon.
+
 = 1.2.3 =
 * Tested with WP 4.1
 
