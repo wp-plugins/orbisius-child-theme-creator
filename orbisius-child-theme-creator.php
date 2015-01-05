@@ -1939,6 +1939,8 @@ function orbisius_ctc_theme_editor() {
 
         <div class="updated"><p><?php echo $msg; ?></p></div>
 
+        <div class="loader app-alert-notice"></div>
+
         <?php
             $buff = $theme_1_file = $theme_2_file = '';
             $req = orbisius_ctc_theme_editor_get_request();

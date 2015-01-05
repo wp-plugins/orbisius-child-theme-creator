@@ -140,6 +140,7 @@ Let's talk.
 * Made the plugin more extendable (js).
 * Added another Save button near the theme and file dropdowns (for lazy people).
 * Added links to the Pro addon.
+* Added a nice global wait for all ajax calls.
 
 = 1.2.3 =
 * Tested with WP 4.1

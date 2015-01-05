@@ -1,4 +1,14 @@
 var orbisius_child_theme_creator = {
+    loader: function (show_or_hide) {
+        var c = jQuery('.orbisius_child_theme_creator_container .loader');
+
+        if (show_or_hide) {
+            jQuery(c).html('Please Wait ...').show();
+        } else {
+            jQuery(c).html('').hide();
+        }
+    },
+
     /**
      * This is a file name that the user enters. It will be cleaned of spaces and repeating chars.
      * @param str val
@@ -36,6 +46,14 @@ var orbisius_child_theme_creator = {
             type : "post",
             url : ajaxurl, // WP defines it and it contains all the necessary params
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape('delete_file'),
+
+            beforeSend: function() {
+                orbisius_child_theme_creator.loader(1);
+            },
+
+            complete: function() {
+                orbisius_child_theme_creator.loader(0);
+            },
 
             success : function (result) {
                 var form_num = form_id.indexOf('theme_1') >= 0 ? 1 : 2;
@@ -282,6 +300,14 @@ function orbisius_ctc_theme_editor_setup() {
             url : ajaxurl, // WP defines it and it contains all the necessary params
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
 
+            beforeSend: function() {
+                orbisius_child_theme_creator.loader(1);
+            },
+
+            complete: function() {
+                orbisius_child_theme_creator.loader(0);
+            },
+
             success : function (json) {
                 jQuery(target_container)
                         .empty()
@@ -318,6 +344,14 @@ function orbisius_ctc_theme_editor_setup() {
             //dataType : "json",
             url : ajaxurl, // WP defines it and it contains all the necessary params
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
+
+            beforeSend: function() {
+                orbisius_child_theme_creator.loader(1);
+            },
+
+            complete: function() {
+                orbisius_child_theme_creator.loader(0);
+            },
 
             success : function (json) {
                 jQuery(target_container)
@@ -376,6 +410,14 @@ function orbisius_ctc_theme_editor_setup() {
             url : ajaxurl, // WP defines it and it contains all the necessary params
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
 
+            beforeSend: function() {
+                orbisius_child_theme_creator.loader(1);
+            },
+
+            complete: function() {
+                orbisius_child_theme_creator.loader(0);
+            },
+            
             success : function (json) {
                 jQuery(target_container)
                         .empty()
@@ -432,6 +474,14 @@ function orbisius_ctc_theme_editor_setup() {
             //dataType : "json",
             url : ajaxurl, // WP defines it and it contains all the necessary params
             data : jQuery(form_id).serialize() + '&action=orbisius_ctc_theme_editor_ajax&sub_cmd=' + escape(action),
+
+            beforeSend: function() {
+                orbisius_child_theme_creator.loader(1);
+            },
+
+            complete: function() {
+                orbisius_child_theme_creator.loader(0);
+            },
 
             success : function (json) {
                 jQuery(target_container)
@@ -771,7 +821,12 @@ function app_load(form_id, action, target_container, callback) {
             }
         },
 
+        beforeSend: function() {
+            orbisius_child_theme_creator.loader(1);
+        },
+
         complete : function (result) { // this is always called
+            orbisius_child_theme_creator.loader(0);
             jQuery(target_container).removeClass('saving_action');
 
             if (is_save_action) { // save action
