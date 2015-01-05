@@ -1937,9 +1937,10 @@ function orbisius_ctc_theme_editor() {
                 | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
         </div>
 
-        <div class="updated"><p><?php echo $msg; ?></p></div>
-
-        <div class="loader app-alert-notice"></div>
+        <div class="updated"><p>
+            <?php echo $msg; ?>
+            <span class="loader app-alert-notice"></span>
+        </p></div>
 
         <?php
             $buff = $theme_1_file = $theme_2_file = '';
