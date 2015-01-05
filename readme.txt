@@ -47,6 +47,11 @@ It features two editors and you can pick snippets from one theme and paste into 
 * Lots of cool and professional people do it
 * ... and a lot more
 
+= Pro Addon is Now Available =
+We've just released the
+    <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-creator&utm_medium=readme&utm_campaign=product"
+                     target="_blank" title="[new window]" style="font-weight: bolder;color:red;">Pro Addon</a> which improves on the current functionality.
+
 = Important =
 > We have noticed that some child themes created by this plugin do not work as expected.
 > This is not a bug in this plugin but could be caused by theme authors using custom theme frameworks and/or do not using WordPress' recommended functions for themes that support child themes.
