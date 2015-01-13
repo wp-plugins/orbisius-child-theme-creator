@@ -104,8 +104,6 @@ function orbisius_child_theme_creator_is_pro_installed() {
         $res = in_array( 'orbisius-child-theme-creator/orbisius-child-theme-creator.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
     }
 
-    $res = false;
-
     return $res;
 }
 
