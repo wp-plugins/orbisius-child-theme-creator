@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Child Theme Creator
   Plugin URI: http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/
   Description: This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
-  Version: 1.2.4
+  Version: 1.2.5
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
  */
@@ -94,6 +94,19 @@ function orbisius_child_theme_creator_admin_notice_message() {
  */
 function orbisius_child_theme_creator_admin_init() {
 
+}
+
+function orbisius_child_theme_creator_is_pro_installed() {
+    static $res = null;
+
+    if ( is_null( $res ) ) {
+        // is creator pro active?
+        $res = in_array( 'orbisius-child-theme-creator/orbisius-child-theme-creator.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) );
+    }
+
+    $res = false;
+
+    return $res;
 }
 
 /**
@@ -617,6 +630,49 @@ function orbisius_child_theme_creator_settings_page() {
  * comment surrounding the embed code.
  * @return array
  */
+function orbisius_child_theme_creator_top_links($slug_area = 'orbisius-child-theme-creator') {
+    ob_start();
+    $text_color = orbisius_child_theme_creator_is_pro_installed() ? 'green' : 'red';
+    ?>
+    <div style="float: right;padding: 3px;" class="updated">
+        <a href="http://qsandbox.com/?utm_source=<?php echo $slug_area; ?>&utm_medium=action_screen&utm_campaign=product"
+             target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
+             Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
+
+        | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=<?php echo $slug_area; ?>&utm_medium=action_screen&utm_campaign=product"
+             target="_blank" title="[new window]" style="font-weight: bolder;color:<?php echo $text_color;?>">Pro Addon
+
+            <?php if ( ! orbisius_child_theme_creator_is_pro_installed() ) : ?>
+                <sup>New!</sup>
+            <?php else : ?>
+                <sup>Installed!</sup>
+            <?php endif; ?>
+        </a>
+
+        | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-links&utm_campaign=plugin-update"
+             target="_blank" title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
+
+        | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=<?php echo $slug_area; ?>&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
+
+        | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=<?php echo $slug_area; ?>&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
+
+        | <a href="http://orbisius.us2.list-manage.com/subscribe?u=005070a78d0e52a7b567e96df&id=1b83cd2093" target="_blank"
+             title="This opens in a new window/tab">Newsletter</a>
+
+        <!--| <a href="#help" title="">Help</a>-->
+    </div>
+    <?php
+    $buff = ob_get_contents();
+    ob_end_clean();
+
+    return $buff;
+}
+
+/**
+ * Returns some plugin data such name and URL. This info is inserted as HTML
+ * comment surrounding the embed code.
+ * @return array
+ */
 function orbisius_child_theme_creator_get_plugin_data() {
     // pull only these vars
     $default_headers = array(
@@ -753,27 +809,7 @@ function orbisius_child_theme_creator_tools_action() {
     ?>
     <div class="wrap orbisius_child_theme_creator_container">
         <h2 style="display:inline;">Orbisius Child Theme Creator</h2>
-        <div style="float: right;padding: 3px;" class="updated">
-                <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
-                     target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
-                     Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
-
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product"
-                     target="_blank" title="[new window]" style="font-weight: bolder;color:red;">Pro Addon <sup>New!</sup></a>
-
-                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-creator&utm_medium=plugin-links&utm_campaign=plugin-update"
-                     target="_blank" title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
-
-                | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
-
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-creator&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
-
-                | <a href="http://orbisius.us2.list-manage.com/subscribe?u=005070a78d0e52a7b567e96df&id=1b83cd2093" target="_blank"
-                     title="This opens in a new window/tab">Newsletter</a>
-
-                <!--| <a href="#help" title="">Help</a>-->
-        </div>
-        
+        <?php echo orbisius_child_theme_creator_top_links('orbisius-child-theme-creator') ; ?>
     <?php echo $msg; ?>
 
     <?php
@@ -1858,8 +1894,13 @@ class orbisius_child_theme_creator_html {
         $elem_name = strtolower($elem_name);
         $elem_name = preg_replace('#[^\w]#si', '_', $elem_name);
         $elem_name = trim($elem_name, '_');
+        $cls = 'orb_ctc_html_select orb_ctc_html_select_' . $elem_name;
 
-        $html = "\n" . '<select id="' . esc_attr($elem_name) . '" name="' . esc_attr($name) . '" ' . $attr . '>' . "\n";
+        $attr = apply_filters('orbisius_child_theme_creator_ext_filter_html_select_attr', $attr, $name, $sel, $options);
+        $cls = apply_filters('orbisius_child_theme_creator_ext_filter_html_select_css', $cls, $name, $sel, $options, $attr);
+        $html_css = " class='$cls' ";
+
+        $html = "\n" . '<select id="' . esc_attr($elem_name) . '" name="' . esc_attr($name) . '" ' . $attr . $html_css . '>' . "\n";
 
         foreach ($options as $key => $label) {
             $selected = $sel == $key ? ' selected="selected"' : '';
@@ -1918,24 +1959,7 @@ function orbisius_ctc_theme_editor() {
     ?>
     <div class="wrap orbisius_child_theme_creator_container orbisius_ctc_theme_editor_container">
         <h2 style="display:inline;">Orbisius Theme Editor <small>(Part of <a href='<?php echo $plugin_data['url'];?>' target="_blank">Orbisius Child Theme Creator</a>)</small></h2>
-        <div style="float: right;padding: 3px;" class="updated">
-                <a href="http://qsandbox.com/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product"
-                     target="_blank" title="Opens in new tab/window. qSandbox is a FREE service that allows you to setup a test/sandbox WordPress site in 2 seconds. No technical knowledge is required.
-                     Test themes and plugins before you actually put them on your site">Free Test Site</a> <small>(2 sec setup)</small>
-                     
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product"
-                     target="_blank" title="[new window]" style="font-weight: bolder;color:red;">Pro Addon <sup>New!</sup></a>
-
-                | <a href="http://orbisius.com/page/free-quote/?utm_source=child-theme-editor&utm_medium=plugin-links&utm_campaign=plugin-update"
-                     target="_blank" title="If you want a custom web/mobile app or a plugin developed contact us. This opens in a new window/tab">Hire Us</a>
-
-                | <a href="http://orbisius.us2.list-manage.com/subscribe?u=005070a78d0e52a7b567e96df&id=1b83cd2093" target="_blank"
-                     title="This opens in a new window/tab">Newsletter</a>
-
-                | <a href="http://club.orbisius.com/forums/forum/community-support-forum/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Support Forums</a>
-                
-                | <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/?utm_source=orbisius-child-theme-editor&utm_medium=action_screen&utm_campaign=product" target="_blank" title="[new window]">Product Page</a>
-        </div>
+        <?php echo orbisius_child_theme_creator_top_links('orbisius-child-theme-editor') ; ?>
 
         <div class="updated"><p>
             <?php echo $msg; ?>
@@ -2028,6 +2052,13 @@ function orbisius_ctc_theme_editor() {
                                 <strong>New File</strong>
                                 <input type="text" id="theme_1_new_file" name="theme_1_new_file" value="" />
                                 <span>e.g. test.js, extra.css etc</span>
+
+                                <!--<br/>
+                                <label>
+                                <input type="checkbox" name="theme_1_new_file_type" value="folder" />
+                                Create a folder Instead
+                                </label>-->
+
                                 <span class="status"></span>
 
                                 <br/>
@@ -2051,12 +2082,25 @@ function orbisius_ctc_theme_editor() {
                             <!-- /send -->
 
                             <div style="border:1px solid #ccc;margin:10px 0;padding:3px 5px;">
-                                <h3>Pro Addon is now available!</h3>
-                                <span>Get more cool features by purchasing the </span>
+                                <h3>Pro Addon 
+                                    <?php if ( ! orbisius_child_theme_creator_is_pro_installed() ) : ?>
+                                    - starts at just $2<strong>.</strong>99 (limit time offer)
+                                    <?php endif; ?>
+                                </h3>
 
-                                <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-editor&utm_medium=footer&utm_campaign=product"
-                                    target="_blank" title="[new window]" style="font-weight: bolder;color:red;text-decoration: underline;">Pro Addon</a> <sup>New!</sup>
-                                
+                                <?php if ( orbisius_child_theme_creator_is_pro_installed() ) : ?>
+                                    <div class="app-alert-success">
+                                        The <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-editor&utm_medium=footer&utm_campaign=product"
+                                            target="_blank" title="[new window]" style="font-weight: bolder;text-decoration: underline;">Pro Addon</a>
+                                        is up and running. Thanks for supporting our <a
+                                            href="http://club.orbisius.com/products/wordpress-plugins/?utm_source=orbisius-child-theme-editor&utm_medium=footer&utm_campaign=product" target="_blank">work</a>!
+                                    </div>
+                                <?php else : ?>
+                                    <span>Get more cool features by purchasing the </span>
+                                    <a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator-pro/?utm_source=orbisius-child-theme-editor&utm_medium=footer&utm_campaign=product"
+                                        target="_blank" title="[new window]" style="font-weight: bolder;color:red;text-decoration: underline;">Pro Addon</a> <sup>New!</sup>
+                                <?php endif; ?>
+
                                 <!--<ul>
                                     <li><a href="http://club.orbisius.com/products/wordpress-plugins/orbisius-theme-switcher/?utm_source=orbisius-child-theme-creator&utm_medium=editors&utm_campaign=product"
                                            target="_blank" title="Opens in a new tab/window">Orbisius Theme Switcher</a> - Allows you to preview any of the installed themes on your site.</li>

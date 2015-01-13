@@ -141,6 +141,11 @@ Let's talk.
 
 == Changelog ==
 
+= 1.2.5 =
+* Fixes
+* Improvements
+* Made some fixes so the Pro addon shines even more.
+
 = 1.2.4 =
 * Made the plugin more extendable (js).
 * Added another Save button near the theme and file dropdowns (for lazy people).
