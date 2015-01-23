@@ -5,32 +5,32 @@
             <url>orbisius-child-theme-creator.php</url>
             <bookmark id="6">
                 <name/>
-                <line>1546</line>
+                <line>1580</line>
                 <key/>
             </bookmark>
             <bookmark id="12">
                 <name/>
-                <line>2033</line>
+                <line>2055</line>
                 <key/>
             </bookmark>
             <bookmark id="9">
                 <name/>
-                <line>2037</line>
+                <line>2060</line>
                 <key/>
             </bookmark>
             <bookmark id="5">
                 <name/>
-                <line>2067</line>
+                <line>2102</line>
                 <key/>
             </bookmark>
             <bookmark id="4">
                 <name/>
-                <line>2219</line>
+                <line>2254</line>
                 <key/>
             </bookmark>
             <bookmark id="3">
                 <name/>
-                <line>2465</line>
+                <line>2500</line>
                 <key/>
             </bookmark>
         </file>
@@ -48,6 +48,7 @@
             <file>file:/C:/projects/default/htdocs/wordpress313/wp-content/plugins/orbisius-child-theme-creator/orbisius-child-theme-creator.php</file>
             <file>file:/C:/projects/default/htdocs/wordpress313/wp-content/plugins/orbisius-child-theme-creator/assets/main.js</file>
             <file>file:/C:/projects/default/htdocs/wordpress313/wp-content/plugins/orbisius-child-theme-creator/readme.txt</file>
+            <file>file:/C:/projects/default/htdocs/wordpress313/wp-content/plugins/orbisius-child-theme-creator/assets/main.css</file>
         </group>
     </open-files>
 </project-private>
