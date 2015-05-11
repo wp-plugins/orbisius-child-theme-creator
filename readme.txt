@@ -3,7 +3,7 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: theme,child theme,childtheme,childthemes,parent theme,child themes,CSS,styling,resposive design,design,custom themeing, shared hosting,theme editor theme,themes,wp,wordpress,orbisius,theme creator,custom theme,theme generator,css,css editor
 Requires at least: 3.4
-Tested up to: 4.1
+Tested up to: 4.2.2
 Stable tag: 1.2.5
 License: GPLv2 or later
 
@@ -144,6 +144,8 @@ Let's talk.
 == Changelog ==
 
 = 1.2.6 =
+* Fixed a wrong check for the Pro version.
+* Tested with latest WP
 * Added a call to action to ask users for write a review.
 
 = 1.2.5 =
