@@ -143,6 +143,9 @@ Let's talk.
 
 == Changelog ==
 
+= 1.2.7 =
+* Improved security.
+
 = 1.2.6 =
 * Fixed a wrong check for the Pro version.
 * Tested with latest WP
