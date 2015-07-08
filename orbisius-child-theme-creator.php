@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Child Theme Creator
   Plugin URI: http://club.orbisius.com/products/wordpress-plugins/orbisius-child-theme-creator/
   Description: This plugin allows you to quickly create child themes from any theme that you have currently installed on your site/blog.
-  Version: 1.2.7
+  Version: 1.2.8
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
  */
@@ -2458,7 +2458,7 @@ function orbisius_ctc_theme_editor_generate_dropdown() {
  * @return string
  */
 function orbisius_ctc_theme_editor_manage_file( $cmd_id = 1 ) {
-    if ( ! current_user_can( 'manage_options' ) ) {
+    if ( ! current_user_can( 'edit_themes' ) ) {
         return 'Missing data!';
     }
 
